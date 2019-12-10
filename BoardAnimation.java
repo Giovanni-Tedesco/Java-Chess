@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import java.util.ArrayList;
 
+//Server side view
 public class BoardAnimation extends JPanel {
 
   public int[][] charBoard = {
@@ -17,7 +18,7 @@ public class BoardAnimation extends JPanel {
     {6, 6, 6, 6, 6, 6, 6, 6 },
     {1, 2, 3, 4, 5, 3, 2, 1 },
 
-    };
+  };
   public boolean white = true;
   public boolean pressed = false;
   // public Piece[] pieces = Pieces[32];
@@ -87,8 +88,8 @@ public class BoardAnimation extends JPanel {
     // @Override
     public void mousePressed(MouseEvent evt) {
       for(int i = 0; i < pieces.size(); i++){
-        if((evt.getX() <= pieces.get(i).xPos + 50 && evt.getX() >= pieces.get(i).xPos)
-          && (evt.getY() >= pieces.get(i).yPos && evt.getY() <= pieces.get(i).yPos + 50) && pressed == false) {
+        if((evt.getX() <= pieces.get(i).intXPos + 50 && evt.getX() >= pieces.get(i).intXPos)
+          && (evt.getY() >= pieces.get(i).intYPos && evt.getY() <= pieces.get(i).intYPos + 50) && pressed == false) {
           pressed = true;
           temp = pieces.get(i);
         }
@@ -109,15 +110,16 @@ public class BoardAnimation extends JPanel {
     }
     // @Override
     public void movePiece(Piece piece, MouseEvent evt){
-      piece.xPos = evt.getX();
-      piece.yPos = evt.getY();
+      piece.intXPos = evt.getX();
+      piece.intYPos = evt.getY();
 
 
       repaint();
     }
     public void finalMove(Piece piece, MouseEvent evt){
-      piece.xPos = roundDown(evt.getX(), 50);
-      piece.yPos = roundDown(evt.getY(), 50);
+      piece.intXPos = roundDown(evt.getX(), 50);
+      piece.intYPos = roundDown(evt.getY(), 50);
+      pressed = false;
 
       repaint();
 

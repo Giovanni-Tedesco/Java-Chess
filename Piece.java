@@ -7,26 +7,29 @@ public class Piece {
 
   //Properties
   //True means white, false means black
-  public boolean color;
-  public int piece;
-  public int xPos;
-  public int yPos;
+  public boolean blnColor;
+  public int intPiece;
+  public int intXPos;
+  public int intYPos;
+
+  public int intBoardX;
+  public int intBoardY;
 
 
   Piece(int xPos, int yPos, boolean color, int piece) {
-    this.color = color;
-    this.xPos = xPos;
-    this.yPos = yPos;
-    this.piece = Math.abs(piece);
+    this.blnColor = color;
+    this.intXPos = xPos;
+    this.intYPos = yPos;
+    this.intPiece = Math.abs(intPiece);
   }
 
   public void update(Graphics g){
-    if(this.color == true) {      //If the pieces colour is white / pink
+    if(this.blnColor == true) {      //If the pieces colour is white / pink
       g.setColor(Color.PINK);
     } else {
       g.setColor(Color.BLUE);    //If the pieces colour is dark / blue
     }
-    g.fillRect(xPos, yPos, 25, 50);
+    g.fillRect(intXPos, intYPos, 25, 50);
   }
 
 }
