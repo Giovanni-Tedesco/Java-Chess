@@ -62,6 +62,30 @@ public class BoardAnimation extends JPanel {
 
   }
 
+  public String toCoord(int x1, int y1, int x2, int y2){
+    String pos = "";
+
+    pos += (char)((char)(x1) + 97);
+    int loc = 8 - y1;
+    pos += Integer.toString(loc);
+    pos += ',';
+    pos += (char)((char)(x2) + 97);
+    loc = 8 - y2;
+    pos += loc;
+
+    System.out.println(pos);
+    return pos;
+  }
+
+  public Point coordToLoc(String coord){
+    String newCoord = coord.split(",")[1];
+
+    System.out.println(newCoord);
+
+    return null;
+
+  }
+
   public void drawPieces(Graphics g) {
     for(Piece p: pieces){
       p.update(g);
@@ -84,13 +108,16 @@ public class BoardAnimation extends JPanel {
   }
 
   private class MyMouseAdaptor extends MouseAdapter {
-
+    public int intX1;
+    public int intY1;
     // @Override
     public void mousePressed(MouseEvent evt) {
       for(int i = 0; i < pieces.size(); i++){
         if((evt.getX() <= pieces.get(i).intXPos + 50 && evt.getX() >= pieces.get(i).intXPos)
           && (evt.getY() >= pieces.get(i).intYPos && evt.getY() <= pieces.get(i).intYPos + 50) && pressed == false) {
           pressed = true;
+          intX1 = roundDown(evt.getX(), 50) / 50;
+          intY1 = roundDown(evt.getY(), 50) / 50;
           temp = pieces.get(i);
         }
       }
@@ -105,7 +132,14 @@ public class BoardAnimation extends JPanel {
     // @Override
     public void mouseReleased(MouseEvent evt) {
       finalMove(temp, evt);
+      int intX2 = roundDown(evt.getX(), 50) / 50;
+      int intY2 = roundDown(evt.getY(), 50) / 50;
+
+      String result = toCoord(intX1, intY1, intX2, intY2);
+      coordToLoc(result);
+
       pressed = false;
+
       // temp = null;
     }
     // @Override
