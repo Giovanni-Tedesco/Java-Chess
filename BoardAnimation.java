@@ -1,5 +1,9 @@
 import java.awt.*;
+import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+import javax.swing.event.*;
+import java.util.ArrayList;
 
 public class BoardAnimation extends JPanel {
 
@@ -15,6 +19,14 @@ public class BoardAnimation extends JPanel {
 
     };
   public boolean white = true;
+  public boolean pressed = false;
+  // public Piece[] pieces = Pieces[32];
+  public ArrayList<Piece> pieces = new ArrayList<Piece>();
+  public Piece temp = null;
+
+  public int roundDown(int n, int m) {
+    return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
+  }
 
   public void drawBoard(Graphics g) {
     for(int i = 0; i < 8; i++){
@@ -26,34 +38,33 @@ public class BoardAnimation extends JPanel {
           g.setColor(Color.BLACK);
         }
 
-        g.fillRect(i * 50, j * 50, 50, 50);
+        g.fillRect(j * 50, i * 50, 50, 50);
       }
     }
   }
 
-  public void drawPieces(Graphics g){
-    g.setColor(Color.RED);
+  public void initBoard(){
     for(int i = 0; i < 8; i++){
       for(int j = 0; j < 8; j++){
+        Piece p;
         int piece = charBoard[i][j];
-        if(piece == 0){
+        if(piece > 0){
+          p = new Piece(j * 50, i * 50, true, piece);
+        } else if(piece < 0){
+          p = new Piece(j * 50, i * 50, false, piece);
+        } else {
           continue;
-        } else if(Math.abs(piece) == 1){
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
-        } else if(Math.abs(piece) == 2) {
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
-        } else if(Math.abs(piece) == 3) {
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
-        } else if(Math.abs(piece) == 4) {
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
-        } else if(Math.abs(piece) == 5) {
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
-        } else if(Math.abs(piece) == 6) {
-          g.drawRect(j * 50 + 20, i * 50, 20, 40);
         }
+        pieces.add(p);
       }
     }
 
+  }
+
+  public void drawPieces(Graphics g) {
+    for(Piece p: pieces){
+      p.update(g);
+    }
   }
 
   @Override
@@ -66,7 +77,53 @@ public class BoardAnimation extends JPanel {
 
   BoardAnimation() {
     super();
+    initBoard();
+    addMouseListener(new MyMouseAdaptor());
+    addMouseMotionListener(new MyMouseAdaptor());
   }
 
+  private class MyMouseAdaptor extends MouseAdapter {
+
+    // @Override
+    public void mousePressed(MouseEvent evt) {
+      for(int i = 0; i < pieces.size(); i++){
+        if((evt.getX() <= pieces.get(i).xPos + 50 && evt.getX() >= pieces.get(i).xPos)
+          && (evt.getY() >= pieces.get(i).yPos && evt.getY() <= pieces.get(i).yPos + 50) && pressed == false) {
+          pressed = true;
+          temp = pieces.get(i);
+        }
+      }
+    }
+
+    // @Override
+    public void mouseDragged(MouseEvent evt) {
+      if(pressed){
+        movePiece(temp, evt);
+      }
+    }
+    // @Override
+    public void mouseReleased(MouseEvent evt) {
+      finalMove(temp, evt);
+      pressed = false;
+      // temp = null;
+    }
+    // @Override
+    public void movePiece(Piece piece, MouseEvent evt){
+      piece.xPos = evt.getX();
+      piece.yPos = evt.getY();
+
+
+      repaint();
+    }
+    public void finalMove(Piece piece, MouseEvent evt){
+      piece.xPos = roundDown(evt.getX(), 50);
+      piece.yPos = roundDown(evt.getY(), 50);
+
+      repaint();
+
+    }
+
+
+  }
 
 }
