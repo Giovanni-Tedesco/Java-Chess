@@ -43,7 +43,6 @@ public class Piece {
     System.out.println("hi1");
     if(intPiece == 6) {
       ArrayList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, intLastX, intLastY);
-      System.out.println(legalPawnMoves);
       int [] position = {(intXPos/50),(intYPos/50)};
       if(ChessUtility.isInList(legalPawnMoves, position)) {
         return true;
