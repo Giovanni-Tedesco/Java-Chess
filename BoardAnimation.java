@@ -116,8 +116,12 @@ public class BoardAnimation extends JPanel {
 
     Point retCoord = new Point(x, y);
 
+<<<<<<< HEAD
     return retCoord;
 
+=======
+    return null;
+>>>>>>> a2c3fee76b1d5e3cf64a5d83c9c9bb6cdc515b62
   }
 
   public void drawPieces(Graphics g) {
@@ -144,7 +148,7 @@ public class BoardAnimation extends JPanel {
   private class MyMouseAdaptor extends MouseAdapter {
     public int intX1;
     public int intY1;
-    // @Override
+    @Override
     public void mousePressed(MouseEvent evt) {
       for(int i = 0; i < pieces.size(); i++){
         if((evt.getX() <= pieces.get(i).intXPos + 50 && evt.getX() >= pieces.get(i).intXPos)
@@ -169,6 +173,7 @@ public class BoardAnimation extends JPanel {
     @Override
     public void mouseReleased(MouseEvent evt) {
       finalMove(temp, evt);
+<<<<<<< HEAD
       int intX2 = roundDown(evt.getX(), 50) / 50;
       int intY2 = roundDown(evt.getY(), 50) / 50;
 
@@ -178,10 +183,11 @@ public class BoardAnimation extends JPanel {
       charBoard = move(result, charBoard);
       printCharboard(charBoard);
 
+=======
+>>>>>>> a2c3fee76b1d5e3cf64a5d83c9c9bb6cdc515b62
       pressed = false;
 
       // temp = null;
-      //if possible, execute move here
     }
 
     public void movePiece(Piece piece, MouseEvent evt){
@@ -191,6 +197,12 @@ public class BoardAnimation extends JPanel {
     }
 
     public void finalMove(Piece piece, MouseEvent evt){
+      int intX2 = roundDown(evt.getX(), 50) / 50;
+      int intY2 = roundDown(evt.getY(), 50) / 50;
+
+      String result = toCoord(intX1, intY1, intX2, intY2);
+      coordToLoc(result);
+
       piece.intXPos = roundDown(evt.getX(), 50);
       piece.intYPos = roundDown(evt.getY(), 50);
       System.out.println("Row: " + piece.intYPos/50 + ", col: " + piece.intXPos/50);
@@ -199,12 +211,15 @@ public class BoardAnimation extends JPanel {
       boolean blnLegalMove = piece.isLegalMove(charBoard[(piece.intYPos/50)][(piece.intXPos/50)] != 0);
       System.out.println(blnLegalMove);
 
-      if(!blnLegalMove) {
+      if(!blnLegalMove || charBoard[(piece.intYPos/50)][(piece.intXPos/50)] > 0) {
         piece.intXPos = piece.intLastX;
         piece.intYPos = piece.intLastY;
       } else {
         piece.intXPos = roundDown(evt.getX(), 50);
         piece.intYPos = roundDown(evt.getY(), 50);
+        int pieceNum = charBoard[intY1][intX1];
+        charBoard[intY1][intX1] = 0;
+        charBoard[intY2][intX2] = pieceNum;
         piece.blnFirst = false;
       }
 
