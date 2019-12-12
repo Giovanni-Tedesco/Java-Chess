@@ -88,20 +88,24 @@ public class BoardAnimation extends JPanel {
   }
 
   //Changes the position of the pieces on the charBoard
-  public int[][] move(String move, int[][] charBoard){
+  public int[][] move(String move){
+    System.out.println("****************************");
     String[] moves = move.split(",");
     // System.out.println(moves[0]);
 
     Point p1 = coordToLoc(moves[0]);
     System.out.println(p1.x + " " + p1.y);
     Point p2 = coordToLoc(moves[1]);
-
     System.out.println(p2.x + " " + p2.y);
 
-    int intTemp = charBoard[p1.x][p1.y];
-    charBoard[(int)(p1.getX())][(int)(p1.getY())] = 0;
-    // System.out.println(moves[1]);
-    charBoard[(int)(p2.getX())][(int)(p2.getY())] = intTemp;
+    int intTemp = charBoard[p1.y][p1.x];
+    System.out.println("intTemp = " + intTemp);
+    charBoard[(int)(p1.y)][(int)(p1.x)] = 0;
+    System.out.println(charBoard[(int)(p1.y)][(int)(p1.x)] = 0);
+    charBoard[(int)(p2.y)][(int)(p2.x)] = intTemp;
+    System.out.println("Position 2: " + charBoard[(int)(p2.y)][(int)(p2.x)]);
+
+    System.out.println("****************************");
 
     return charBoard;
 
@@ -175,7 +179,7 @@ public class BoardAnimation extends JPanel {
       String result = toCoord(intX1, intY1, intX2, intY2);
       System.out.println(result);
       // coordToLoc(result);
-      charBoard = move(result, charBoard);
+      charBoard = move(result);
       printCharboard(charBoard);
 
       pressed = false;
@@ -210,10 +214,10 @@ public class BoardAnimation extends JPanel {
       } else {
         piece.intXPos = roundDown(evt.getX(), 50);
         piece.intYPos = roundDown(evt.getY(), 50);
-        int pieceNum = charBoard[intY1][intX1];
-        charBoard[intY1][intX1] = 0;
-        charBoard[intY2][intX2] = pieceNum;
-        piece.blnFirst = false;
+        // int pieceNum = charBoard[intY1][intX1];
+        // charBoard[intY1][intX1] = 0;
+        // charBoard[intY2][intX2] = pieceNum;
+        // piece.blnFirst = false;
       }
 
       repaint();
