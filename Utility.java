@@ -1,4 +1,4 @@
-  
+
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
@@ -10,7 +10,7 @@ public class Utility {
     //Dimensions object that is used for every panel
     public static Dimension panelDimensions = new Dimension(960, 540);
 
-    //Returns a font object of the Google Sans font 
+    //Returns a font object of the Google Sans font
     public static Font getFont() {
         Font font = null;
         try {
@@ -79,11 +79,11 @@ public class Utility {
     }
 
     //Sets a new content pane for the JFrame
-    public static void changePanel(JPanel panel) {
-        MainMenu.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        MainMenu.frame.setResizable(false);
-        MainMenu.frame.setContentPane(panel);
-        MainMenu.frame.pack();
-        MainMenu.frame.setVisible(true);
-    }
+    // public static void changePanel(JPanel panel) {
+    //     MainMenu.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     MainMenu.frame.setResizable(false);
+    //     MainMenu.frame.setContentPane(panel);
+    //     MainMenu.frame.pack();
+    //     MainMenu.frame.setVisible(true);
+    // }
 }

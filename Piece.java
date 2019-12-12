@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
@@ -35,8 +36,12 @@ public class Piece {
     } else {
       g.setColor(Color.BLUE);//If the pieces colour is dark / blue
     }
+    // if(this.intPiece == 1){
+    //   g.drawImage(img, intXPos, intYPos, null);
+    // } else {
+      g.fillRect(intXPos, intYPos, 25, 50);
+    // }
 
-    g.fillRect(intXPos, intYPos, 25, 50);
   }
 
   public boolean isLegalMove(boolean blnHasPiece) {

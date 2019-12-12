@@ -23,6 +23,7 @@ public class BoardAnimation extends JPanel {
   public boolean pressed = false;
   // public Piece[] pieces = Pieces[32];
   public ArrayList<Piece> pieces = new ArrayList<Piece>();
+  public ArrayList<Piece> captured = new ArrayList<Piece>();
   public Piece temp = null;
 
   public int roundDown(int n, int m) {
@@ -41,6 +42,15 @@ public class BoardAnimation extends JPanel {
 
         g.fillRect(j * 50, i * 50, 50, 50);
       }
+    }
+  }
+
+  public void printCharboard(int[][] arr){
+    for(int i = 0; i < arr.length; i++){
+      for(int j = 0; j < arr[0].length; j++){
+        System.out.print(arr[i][j]);
+      }
+      System.out.println("");
     }
   }
 
@@ -77,12 +87,36 @@ public class BoardAnimation extends JPanel {
     return pos;
   }
 
+  //Changes the position of the pieces on the charBoard
+  public int[][] move(String move, int[][] charBoard){
+    String[] moves = move.split(",");
+    // System.out.println(moves[0]);
+
+    Point p1 = coordToLoc(moves[0]);
+    System.out.println(p1.x + " " + p1.y);
+    Point p2 = coordToLoc(moves[1]);
+
+    System.out.println(p2.x + " " + p2.y);
+
+    int intTemp = charBoard[p1.x][p1.y];
+    charBoard[(int)(p1.getX())][(int)(p1.getY())] = 0;
+    // System.out.println(moves[1]);
+    charBoard[(int)(p2.getX())][(int)(p2.getY())] = intTemp;
+
+    return charBoard;
+
+
+  }
+
   public Point coordToLoc(String coord){
-    String newCoord = coord.split(",")[1];
+    // System.out.println(newCoord);
+    int x = (int)(coord.charAt(0) - 97);
+    int y = (int)(7 - coord.charAt(1) + 49 );
+    // System.out.println(x + ", " + y);
 
-    System.out.println(newCoord);
+    Point retCoord = new Point(x, y);
 
-    return null;
+    return retCoord;
 
   }
 
@@ -139,7 +173,10 @@ public class BoardAnimation extends JPanel {
       int intY2 = roundDown(evt.getY(), 50) / 50;
 
       String result = toCoord(intX1, intY1, intX2, intY2);
-      coordToLoc(result);
+      System.out.println(result);
+      // coordToLoc(result);
+      charBoard = move(result, charBoard);
+      printCharboard(charBoard);
 
       pressed = false;
 
