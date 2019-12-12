@@ -116,12 +116,8 @@ public class BoardAnimation extends JPanel {
 
     Point retCoord = new Point(x, y);
 
-<<<<<<< HEAD
     return retCoord;
 
-=======
-    return null;
->>>>>>> a2c3fee76b1d5e3cf64a5d83c9c9bb6cdc515b62
   }
 
   public void drawPieces(Graphics g) {
@@ -173,7 +169,6 @@ public class BoardAnimation extends JPanel {
     @Override
     public void mouseReleased(MouseEvent evt) {
       finalMove(temp, evt);
-<<<<<<< HEAD
       int intX2 = roundDown(evt.getX(), 50) / 50;
       int intY2 = roundDown(evt.getY(), 50) / 50;
 
@@ -183,8 +178,6 @@ public class BoardAnimation extends JPanel {
       charBoard = move(result, charBoard);
       printCharboard(charBoard);
 
-=======
->>>>>>> a2c3fee76b1d5e3cf64a5d83c9c9bb6cdc515b62
       pressed = false;
 
       // temp = null;
