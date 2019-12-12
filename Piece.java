@@ -13,10 +13,6 @@ public class Piece {
   public int intPiece;
   public int intXPos;
   public int intYPos;
-
-  public int intBoardX;
-  public int intBoardY;
-
   public int intLastX;
   public int intLastY;
 
@@ -42,6 +38,16 @@ public class Piece {
       g.fillRect(intXPos, intYPos, 25, 50);
     // }
 
+  }
+
+  public void setPreviousPosition(int intPosX, int intPosY) {
+      intLastX = intPosX;
+      intLastY = intPosY;
+  }
+
+  public void setPosition(int intPosX, int intPosY) {
+      intXPos = intPosX;
+      intYPos = intPosY;
   }
 
   public boolean isLegalMove(boolean blnHasPiece) {
