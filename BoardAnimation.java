@@ -4,6 +4,20 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.util.ArrayList;
+//1) Have main screen -> options like play, help, settings, quit
+//2) Have splash screen before main screen
+//3) 1280 x 720, and has to be one window
+//4) Help to have text and graphics maybe a tutorial
+//5) Rock solid 60fps
+//6) Settings -> change the port number and three other settings. Remember settings between instances
+//7) Host game or join game option
+//8) While in game, implement chat between players
+//9) Gameplay must be animation based
+//10) Use mouse or key listener to control animation
+//11) Be able to go back and then play again
+//12) Want to have some sound
+//13) All images need to be made from scratch
+//14) Write up req doc with needs but keep track of the wants
 
 //Server side view
 public class BoardAnimation extends JPanel {
@@ -170,6 +184,7 @@ public class BoardAnimation extends JPanel {
         movePiece(temp, evt);
       }
     }
+
     @Override
     public void mouseReleased(MouseEvent evt) {
       finalMove(temp, evt);
