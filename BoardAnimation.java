@@ -70,6 +70,7 @@ public class BoardAnimation extends JPanel {
                     pressed = true;
                     temp = chessBoard.pieces.get(i);
                     temp.setPreviousPosition(temp.intXPos, temp.intYPos);
+                    
                 }
             }
         }
@@ -97,9 +98,8 @@ public class BoardAnimation extends JPanel {
 
             piece.setPosition(chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
             boolean blnLegalMove = piece.isLegalMove(chessBoard.getPiece((piece.intXPos/50), (piece.intYPos/50)) != 0);
-            System.out.println(blnLegalMove);
             if(!blnLegalMove || chessBoard.isWhite((piece.intXPos/50), (piece.intYPos/50))) {
-            piece.setPosition(piece.intLastX, piece.intLastY);
+                piece.setPosition(piece.intLastX, piece.intLastY);
             } else {
                 String result = chessBoard.toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
                 System.out.println(result);
