@@ -29,6 +29,7 @@ public class Driver implements ActionListener {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setContentPane(panel);
     frame.pack();
+    frame.setResizable(false);
     frame.setVisible(true);
     timer.start();
 
