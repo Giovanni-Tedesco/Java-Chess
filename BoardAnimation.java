@@ -69,7 +69,6 @@ public class BoardAnimation extends JPanel {
                 && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 50) && pressed == false) {
                     pressed = true;
                     temp = chessBoard.pieces.get(i);
-                    //System.out.println("x: " + temp.intXPos/50 + ", y: " + temp.intYPos/50);
                     temp.setPreviousPosition(temp.intXPos, temp.intYPos);
                 }
             }

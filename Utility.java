@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 //This class has some methods to make things convenient
 public class Utility {
     //Dimensions object that is used for every panel
-    public static Dimension panelDimensions = new Dimension(960, 540);
+    public static Dimension panelDimensions = new Dimension(1280, 720);
 
     //Returns a font object of the Google Sans font
     public static Font getFont() {
@@ -79,11 +79,11 @@ public class Utility {
     }
 
     //Sets a new content pane for the JFrame
-    // public static void changePanel(JPanel panel) {
-    //     MainMenu.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //     MainMenu.frame.setResizable(false);
-    //     MainMenu.frame.setContentPane(panel);
-    //     MainMenu.frame.pack();
-    //     MainMenu.frame.setVisible(true);
-    // }
+    public static void changePanel(JPanel panel) {
+        MainMenu.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        MainMenu.frame.setResizable(false);
+        MainMenu.frame.setContentPane(panel);
+        MainMenu.frame.pack();
+        MainMenu.frame.setVisible(true);
+    }
 }
