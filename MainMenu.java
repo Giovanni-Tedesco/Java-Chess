@@ -19,12 +19,14 @@ public class MainMenu implements ActionListener {
     private JButton aboutButton = new JButton("ABOUT");
     private JButton quitButton = new JButton("QUIT");
 
+    private BoardAnimation board = new BoardAnimation();
+
     //Methods
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Set JFrame content depending on the button chosen  
+        //Set JFrame content depending on the button chosen
         if(e.getSource() == playButton) {
-            Utility.changePanel(menuPanel);
+            Utility.changePanel(board);
         } else if(e.getSource() == helpButton) {
             Utility.changePanel(menuPanel);
         } else if(e.getSource() == settingButton) {
@@ -43,6 +45,7 @@ public class MainMenu implements ActionListener {
     //Constructor
     //Initialize the panel and all the JComponents
     public MainMenu() {
+        board.setPreferredSize(new Dimension(400, 400));
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
         menuPanel.setBackground(Color.BLACK);

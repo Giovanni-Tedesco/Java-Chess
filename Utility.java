@@ -74,7 +74,7 @@ public class Utility {
     //Sets the font and color of buttons
     public static void setButtonStyle(JButton button, int intFontSize) {
         button.setBackground(new Color(53,53,56));
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
     }
 
