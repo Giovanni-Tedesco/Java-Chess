@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Board {
-
-
     private int [][] chessBoard = {
         {-1,-2,-3,-4,-5,-3,-2,-1},
         {-6,-6,-6,-6,-6,-6,-6,-6},
@@ -17,10 +15,6 @@ public class Board {
     public ArrayList<Piece> pieces = new ArrayList<Piece>();
     private ArrayList<Piece> captured = new ArrayList<Piece>();
 
-    public ArrayList<Piece> getPieces() {
-        return pieces;
-    }
-
     public int roundDown(int n, int m) {
         return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
     }
@@ -34,7 +28,7 @@ public class Board {
         }
     }
     
-    public void initBoard(){
+    private void initBoard(){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 Piece p;
@@ -107,6 +101,6 @@ public class Board {
     }
 
     public Board() {
-
+        initBoard();
     }
 }

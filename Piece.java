@@ -28,13 +28,9 @@ public class Piece {
         if(this.blnColor == true) {//If the pieces colour is white / pink
             g.setColor(Color.PINK);
         } else {
-        g.setColor(Color.BLUE);//If the pieces colour is dark / blue
+            g.setColor(Color.BLUE);//If the pieces colour is dark / blue
         }
-        // if(this.intPiece == 1){
-        //   g.drawImage(img, intXPos, intYPos, null);
-        // } else {
         g.fillRect(intXPos, intYPos, 25, 50);
-        // }
     }
 
     public void setPreviousPosition(int intPosX, int intPosY) {
@@ -56,6 +52,7 @@ public class Piece {
             ArrayList<int []> legalKnightMoves = ChessUtility.getLegalKnightMoves(intLastX, intLastY);
             return ChessUtility.isInList(legalKnightMoves, position);
         }
+        
         return false;
     }
 }

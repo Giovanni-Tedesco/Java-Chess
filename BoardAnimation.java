@@ -18,28 +18,22 @@ import java.util.ArrayList;
 //13) All images need to be made from scratch
 //14) Write up req doc with needs but keep track of the wants
 
-//Server side view
 public class BoardAnimation extends JPanel {
 
-    Board chessBoard = new Board();
+    Board chessBoard;
     public boolean pressed = false;
     public Piece temp = null;
 
-    public void drawBoard(Graphics g) {
+    private void drawBoard(Graphics g) {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if ((i % 2 == 0) == (j % 2 == 0)) {
-                    g.setColor(Color.WHITE);
-                }
-                else {
-                    g.setColor(Color.BLACK);
-                }
-            g.fillRect(j * 50, i * 50, 50, 50);
+                g.setColor(((i % 2 == 0) == (j % 2 == 0))?Color.WHITE:Color.BLACK);
+                g.fillRect(j * 50, i * 50, 50, 50);
             }
         }
     }
 
-    public void drawPieces(Graphics g) {
+    private void drawPieces(Graphics g) {
         for(Piece p: chessBoard.pieces) {
             p.update(g);
         }
@@ -55,7 +49,7 @@ public class BoardAnimation extends JPanel {
 
     BoardAnimation() {
         super();
-        chessBoard.initBoard();
+        chessBoard = new Board();
         addMouseListener(new MyMouseAdaptor());
         addMouseMotionListener(new MyMouseAdaptor());
     }
@@ -64,13 +58,12 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent evt) {
-            for(int i = 0; i < chessBoard.getPieces().size(); i++){
+            for(int i = 0; i < chessBoard.pieces.size(); i++){
                 if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 50 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
                 && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 50) && pressed == false) {
                     pressed = true;
                     temp = chessBoard.pieces.get(i);
                     temp.setPreviousPosition(temp.intXPos, temp.intYPos);
-                    
                 }
             }
         }
@@ -85,19 +78,19 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mouseReleased(MouseEvent evt) {
             finalMove(temp, evt);
-            // temp = null;
         }
 
-        public void movePiece(Piece piece, MouseEvent evt){
+        private void movePiece(Piece piece, MouseEvent evt){
             piece.setPosition(evt.getX(), evt.getY());
             repaint();
         }
 
-        public void finalMove(Piece piece, MouseEvent evt){
+        private void finalMove(Piece piece, MouseEvent evt){
             pressed = false;
-
             piece.setPosition(chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
+            
             boolean blnLegalMove = piece.isLegalMove(chessBoard.getPiece((piece.intXPos/50), (piece.intYPos/50)) != 0);
+
             if(!blnLegalMove || chessBoard.isWhite((piece.intXPos/50), (piece.intYPos/50))) {
                 piece.setPosition(piece.intLastX, piece.intLastY);
             } else {
