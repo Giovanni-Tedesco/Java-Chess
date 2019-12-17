@@ -72,63 +72,114 @@ public class ChessUtility {
 
         return legalKingMoves;
     }
+    public static ArrayList<int[]> getLegalBishopMoves(int lastIndexX, int lastIndexY){
+      int intX = lastIndexX / 50;
+      int intY = lastIndexY / 50;
 
-    public static ArrayList<int []> getLegalBishopMoves(int intLastX, int intLastY) {
-        ArrayList<int []> legalBishopMoves = new ArrayList<int []>();
+      int[][] possibleMoves = {
+        {-1, 1}, // Upper left
+        {1, 1}, // Upper right
+        {1, -1}, // Botton right
+        {-1, -1} // Bottom left
+      };
 
-        int intXIndex = intLastX/50;
-        int intYIndex = intLastY/50;
-        Board chessBoard = BoardAnimation.getBoard();
-        //diag right up
-        for(int i = intXIndex, j = intYIndex; i < 8 && j > 0; i++, j--) {
-            if(chessBoard.getPiece(i, j) != 0) {
-                continue;
-            } else {
-                legalBishopMoves.add(new int [] {i, j});
-            }
+      ArrayList<int[]> legalBishopMoves = new ArrayList<int[]>();
+
+      //Upper Left
+      int tempX = intX;
+      int tempY = intY;
+      while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8){
+        if(tempX == intX && tempY == intY){
+          tempX += possibleMoves[0][0];
+          tempY += possibleMoves[0][1];
+          continue;
+        }
+        else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
+          break;
+        }
+        else {
+          legalBishopMoves.add(new int[] {tempX, tempY});
         }
 
-        //diag right down
-        for(int i = intXIndex, j = intYIndex; i < 8 && j < 8; i++, j++) {
-            if(chessBoard.getPiece(i, j) != 0) {
-                continue;
-            } else {
-                legalBishopMoves.add(new int [] {i, j});
-            }
-        }
+        tempX += possibleMoves[0][0];
+        tempY += possibleMoves[0][1];
+      }
 
-        //diag left up
-        for(int i = intXIndex, j = intYIndex; i >= 0 && j > 0; i--, j--) {
-            if(chessBoard.getPiece(i, j) != 0) {
-                continue;
-            } else {
-                legalBishopMoves.add(new int [] {i, j});
-            }
+      //Upper Right
+      tempX = intX;
+      tempY = intY;
+      while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8){
+        if(tempX == intX && tempY == intY){
+          tempX += possibleMoves[1][0];
+          tempY += possibleMoves[1][1];
+          continue;
         }
-
-        //diag left down
-        for(int i = intXIndex, j = intYIndex; i >= 0 && j < 8; i--, j++) {
-            if(chessBoard.getPiece(i, j) != 0) {
-                continue;
-            } else {
-                legalBishopMoves.add(new int [] {i, j});
-            }
+        else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
+          break;
         }
+        else {
+          legalBishopMoves.add(new int[] {tempX, tempY});
+        }
+        tempX += possibleMoves[1][0];
+        tempY += possibleMoves[1][1];
 
-        return legalBishopMoves;
+        System.out.println("Temp X: " + tempX);
+        System.out.println("Temp Y: " + tempY);
+      }
+
+      //Bottom Right
+      tempX = intX;
+      tempY = intY;
+      while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8){
+        if(tempX == intX && tempY == intY){
+          tempX += possibleMoves[2][0];
+          tempY += possibleMoves[2][1];
+          continue;
+        }
+        else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
+          break;
+        }
+        else {
+          legalBishopMoves.add(new int[] {tempX, tempY});
+        }
+        tempX += possibleMoves[2][0];
+        tempY += possibleMoves[2][1];
+      }
+
+      //Bottom Left
+      tempX = intX;
+      tempY = intY;
+      while(tempX >= 0 && tempX < 8 && tempY >= 0  && tempY < 8){
+        if(tempX == intX && tempY == intY){
+          tempX += possibleMoves[3][0];
+          tempY += possibleMoves[3][1];
+          continue;
+        }
+        else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
+          break;
+        }
+        else {
+          legalBishopMoves.add(new int[] {tempX, tempY});
+        }
+        tempX += possibleMoves[3][0];
+        tempY += possibleMoves[3][1];
+
+      }
+
+      return legalBishopMoves;
     }
 
-    public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY){
+      public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY){
         int intX = lastIndexX / 50;
         int intY = lastIndexY / 50;
         ArrayList<int[]> legalRookMoves = new ArrayList<int[]>();
-        
+
         //Check in x+ direction
         for(int i = intX; i < 8; i++){
             if(i == intX) {
                 continue;
             }
-            
+
             if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
@@ -141,7 +192,7 @@ public class ChessUtility {
             if(i == intX){
                 continue;
             }
-            
+
             if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
@@ -154,7 +205,7 @@ public class ChessUtility {
             if(i == intY){
                 continue;
             }
-            
+
             if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
                 break;
             } else {
@@ -167,8 +218,13 @@ public class ChessUtility {
             if(i == intY){
                 continue;
             }
-            
+<<<<<<< Updated upstream
+
             if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+=======
+
+            if(BoardAnimation.getBoard().getPiece(intX, i) > 1){
+>>>>>>> Stashed changes
                 break;
             } else {
                 legalRookMoves.add(new int[] {intX, i});

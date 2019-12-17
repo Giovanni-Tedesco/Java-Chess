@@ -30,19 +30,20 @@ public class ConnectPlayer implements ActionListener {
     }
 
     public ConnectPlayer() {
-        serverButton.setSize();
-        serverButton.setLocation();
-        serverButton.addActionListener(this);
-        Utility.setButtonStyle(serverButton, 24);
-
-        clientButton.setSize();
-        clientButton.setLocation();
-        clientButton.addActionListener(this);
-        Utility.setButtonStyle(clientButton, 24);
-
-        connectPanel.add(serverButton);
-        connectPanel.add(clientButton);        
-    }   
+        
+        // serverButton.setSize();
+        // serverButton.setLocation();
+        // serverButton.addActionListener(this);
+        // Utility.setButtonStyle(serverButton, 24);
+        //
+        // clientButton.setSize();
+        // clientButton.setLocation();
+        // clientButton.addActionListener(this);
+        // Utility.setButtonStyle(clientButton, 24);
+        //
+        // connectPanel.add(serverButton);
+        // connectPanel.add(clientButton);
+    }
 
     private JPanel getConnectPanel() {
         return connectPanel;
