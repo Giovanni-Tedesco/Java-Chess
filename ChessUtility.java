@@ -1,6 +1,18 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 public class ChessUtility {
+    public static boolean isInList(ArrayList<int []> moveList, int [] positions) {
+        System.out.println("positions: " + Arrays.toString(positions));
+        for(int [] legalMove : moveList) {
+            System.out.println("legal: " + Arrays.toString(legalMove));
+            if(Arrays.equals(positions, legalMove)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, int intLastX, int intLastY) {
         ArrayList<int []> legalPawnMoves = new ArrayList<int []>();
         int intXIndex = intLastX/50;
@@ -33,18 +45,6 @@ public class ChessUtility {
         return legalKnightMoves;
     }
 
-    public static boolean isInList(ArrayList<int []> moveList, int [] positions) {
-        System.out.println("positions: " + Arrays.toString(positions));
-        for(int [] legalMove : moveList) {
-            System.out.println("legal: " + Arrays.toString(legalMove));
-            if(Arrays.equals(positions, legalMove)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     //This will most likely be extremely frustrating to do as it involves moving two seperate pieces.
     //Perhaps we can pass in an array of past moves from the board to see if the king or rook has moved at all.
     // public static ArrayList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
@@ -71,6 +71,51 @@ public class ChessUtility {
         }
 
         return legalKingMoves;
+    }
+
+    public static ArrayList<int []> getLegalBishopMoves(int intLastX, int intLastY) {
+        ArrayList<int []> legalBishopMoves = new ArrayList<int []>();
+
+        int intXIndex = intLastX/50;
+        int intYIndex = intLastY/50;
+        Board chessBoard = BoardAnimation.getBoard();
+        //diag right up
+        for(int i = intXIndex, j = intYIndex; i < 8 && j > 0; i++, j--) {
+            if(chessBoard.getPiece(i, j) != 0) {
+                continue;
+            } else {
+                legalBishopMoves.add(new int [] {i, j});
+            }
+        }
+
+        //diag right down
+        for(int i = intXIndex, j = intYIndex; i < 8 && j < 8; i++, j++) {
+            if(chessBoard.getPiece(i, j) != 0) {
+                continue;
+            } else {
+                legalBishopMoves.add(new int [] {i, j});
+            }
+        }
+
+        //diag left up
+        for(int i = intXIndex, j = intYIndex; i >= 0 && j > 0; i--, j--) {
+            if(chessBoard.getPiece(i, j) != 0) {
+                continue;
+            } else {
+                legalBishopMoves.add(new int [] {i, j});
+            }
+        }
+
+        //diag left down
+        for(int i = intXIndex, j = intYIndex; i >= 0 && j < 8; i--, j++) {
+            if(chessBoard.getPiece(i, j) != 0) {
+                continue;
+            } else {
+                legalBishopMoves.add(new int [] {i, j});
+            }
+        }
+
+        return legalBishopMoves;
     }
 
     public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY){
@@ -123,7 +168,7 @@ public class ChessUtility {
                 continue;
             }
             
-            if(BoardAnimation.getBoard().getPiece(intX, i) > 1){
+            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
                 break;
             } else {
                 legalRookMoves.add(new int[] {intX, i});
