@@ -47,12 +47,12 @@ public class ChessUtility {
 
     //This will most likely be extremely frustrating to do as it involves moving two seperate pieces.
     //Perhaps we can pass in an array of past moves from the board to see if the king or rook has moved at all.
-    public static ArrayList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
+    // public static ArrayList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
+    //
+    //
+    // }
 
-
-    }
-
-    public static ArrayList<int []> getLegalKingMoves(boolean inCheck, int lastIndexX, int lastIndexY){
+    public static ArrayList<int []> getLegalKingMoves(boolean blnInCheck, int lastIndexX, int lastIndexY){
         ArrayList<int[]> legalKingMoves = new ArrayList<int[]>();
 
         int[] translateX = {1, -1, 0, 0, 1, -1, 1, -1}; //Just for regular moves
@@ -71,5 +71,51 @@ public class ChessUtility {
         }
 
         return legalKingMoves;
+    }
+
+    public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY){
+        int intX = lastIndexX / 50;
+        int intY = lastIndexY / 50;
+        ArrayList<int[]> legalRookMoves = new ArrayList<int[]>();
+        int[] translateY = {0, 0, 1, -1};
+
+        //Check in x+ direction
+        for(int i = intX; i < 8; i++){
+            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+                break;
+            } else {
+                legalRookMoves.add(new int[] {intX + i, intY});
+            }
+        }
+
+        //Check in x- direction
+        for(int i = intX; i >= 0; i--){
+            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+                break;
+            } else {
+                legalRookMoves.add(new int[] {intX - i, intY});
+            }
+        }
+
+        //Check in y+ direction
+        for(int i = intY; i < 8; i++){
+            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+                break;
+            } else {
+                legalRookMoves.add(new int[] {intX, intY + i});
+            }
+        }
+
+        //Check in y- direction
+        for(int i = intY; i >= 0; i--){
+            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+                break;
+            } else {
+                legalRookMoves.add(new int[] {intX, intY - i});
+            }
+        }
+
+        return legalRookMoves;
+
     }
 }

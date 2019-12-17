@@ -20,9 +20,14 @@ import java.util.ArrayList;
 
 public class BoardAnimation extends JPanel {
 
-    Board chessBoard;
+    static Board chessBoard;
     public boolean pressed = false;
     public Piece temp = null;
+
+
+    public static Board getBoard() {
+        return chessBoard;
+    }
 
     private void drawBoard(Graphics g) {
         for(int i = 0; i < 8; i++){
@@ -88,7 +93,7 @@ public class BoardAnimation extends JPanel {
         private void finalMove(Piece piece, MouseEvent evt){
             pressed = false;
             piece.setPosition(chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
-            
+
             boolean blnLegalMove = piece.isLegalMove(chessBoard.getPiece((piece.intXPos/50), (piece.intYPos/50)) != 0);
 
             if(!blnLegalMove || chessBoard.isWhite((piece.intXPos/50), (piece.intYPos/50))) {

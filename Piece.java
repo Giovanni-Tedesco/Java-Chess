@@ -54,8 +54,11 @@ public class Piece {
         } else if(intPiece == 5){
             ArrayList<int []> legalKingMoves = ChessUtility.getLegalKingMoves(blnFirst, intLastX, intLastY);
             return ChessUtility.isInList(legalKingMoves, position);
+        } else if(intPiece == 1){
+            ArrayList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY);
+            return ChessUtility.isInList(legalRookMoves, position);
         }
-
         return false;
     }
+
 }
