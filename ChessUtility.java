@@ -81,37 +81,49 @@ public class ChessUtility {
 
         //Check in x+ direction
         for(int i = intX; i < 8; i++){
-            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+            if(i == intX){
+                continue;
+            }
+            else if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX + i, intY});
+                legalRookMoves.add(new int[] {i + intX, intY});
             }
         }
 
         //Check in x- direction
-        for(int i = intX; i >= 0; i--){
-            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+        for(int i = intX; i > -1; i--){
+            if(i == intX){
+                continue;
+            }
+            else if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX - i, intY});
+                legalRookMoves.add(new int[] {(i - intX) + intX, intY});
             }
         }
 
         //Check in y+ direction
         for(int i = intY; i < 8; i++){
-            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+            if(i == intY){
+                continue;
+            }
+            else if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX, intY + i});
+                legalRookMoves.add(new int[] {intX, i + intY} );
             }
         }
 
         //Check in y- direction
-        for(int i = intY; i >= 0; i--){
-            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+        for(int i = intY; i > -1; i--){
+            if(i == intY){
+                continue;
+            }
+            else if(BoardAnimation.getBoard().getPiece(intX, i) > 1){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX, intY - i});
+                legalRookMoves.add(new int[] {intX, (i - intY) + intY});
             }
         }
 
