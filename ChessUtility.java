@@ -10,7 +10,7 @@ public class ChessUtility {
             legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
         } else {
             if(blnFirstMove) legalPawnMoves.add(new int [] {intXIndex, intYIndex-2});
-            
+
             legalPawnMoves.add(new int [] {intXIndex, intYIndex-1});
         }
 
@@ -43,5 +43,33 @@ public class ChessUtility {
         }
 
         return false;
+    }
+
+    //This will most likely be extremely frustrating to do as it involves moving two seperate pieces.
+    //Perhaps we can pass in an array of past moves from the board to see if the king or rook has moved at all.
+    public static ArrayList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
+
+
+    }
+
+    public static ArrayList<int []> getLegalKingMoves(boolean inCheck, int lastIndexX, int lastIndexY){
+        ArrayList<int[]> legalKingMoves = new ArrayList<int[]>();
+
+        int[] translateX = {1, -1, 0, 0, 1, -1, 1, -1}; //Just for regular moves
+        int[] translateY = {0, 0, 1, -1, 1, -1, -1, 1}; //Just for regular moves
+
+        int intXIndex = lastIndexX / 50;
+        int intYIndex = lastIndexY / 50;
+
+        //Regular moves
+        for(int i = 0; i < translateX.length; i++){
+            if(intXIndex + translateX[i] >= 0 && intXIndex + translateX[i] < 8 &&
+                intYIndex + translateY[i] >= 0 && intYIndex + translateY[i] < 8) {
+                    legalKingMoves.add(new int[] {intXIndex + translateX[i], intYIndex + translateY[i]});
+
+                }
+        }
+
+        return legalKingMoves;
     }
 }
