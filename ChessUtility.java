@@ -77,29 +77,30 @@ public class ChessUtility {
         int intX = lastIndexX / 50;
         int intY = lastIndexY / 50;
         ArrayList<int[]> legalRookMoves = new ArrayList<int[]>();
-        int[] translateY = {0, 0, 1, -1};
-
+        
         //Check in x+ direction
         for(int i = intX; i < 8; i++){
-            if(i == intX){
+            if(i == intX) {
                 continue;
             }
-            else if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+            
+            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
-                legalRookMoves.add(new int[] {i + intX, intY});
+                legalRookMoves.add(new int[] {i, intY});
             }
         }
 
         //Check in x- direction
-        for(int i = intX; i > -1; i--){
+        for(int i = intX; i >= 0; i--) {
             if(i == intX){
                 continue;
             }
-            else if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
+            
+            if(BoardAnimation.getBoard().getPiece(i, intY) != 0 && i != intX){
                 break;
             } else {
-                legalRookMoves.add(new int[] {(i - intX) + intX, intY});
+                legalRookMoves.add(new int[] {i, intY});
             }
         }
 
@@ -108,26 +109,27 @@ public class ChessUtility {
             if(i == intY){
                 continue;
             }
-            else if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
+            
+            if(BoardAnimation.getBoard().getPiece(intX, i) != 0 && i != intY){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX, i + intY} );
+                legalRookMoves.add(new int[] {intX, i});
             }
         }
 
         //Check in y- direction
-        for(int i = intY; i > -1; i--){
+        for(int i = intY; i > 0; i--){
             if(i == intY){
                 continue;
             }
-            else if(BoardAnimation.getBoard().getPiece(intX, i) > 1){
+            
+            if(BoardAnimation.getBoard().getPiece(intX, i) > 1){
                 break;
             } else {
-                legalRookMoves.add(new int[] {intX, (i - intY) + intY});
+                legalRookMoves.add(new int[] {intX, i});
             }
         }
 
         return legalRookMoves;
-
     }
 }
