@@ -15,13 +15,13 @@ public class Board {
     };
 
     public ArrayList<Piece> pieces = new ArrayList<Piece>();
-    private ArrayList<Piece> captured = new ArrayList<Piece>();
+    public ArrayList<Piece> captured = new ArrayList<Piece>();
 
     public int roundDown(int n, int m) {
         return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
     }
 
-    public void printCharboard(){
+    private void printCharboard(){
         for(int i = 0; i < chessBoard.length; i++) {
             for(int j = 0; j < chessBoard[0].length; j++) {
                 System.out.print(chessBoard[i][j]);
@@ -47,7 +47,7 @@ public class Board {
         }
     }
 
-    public String toCoord(int x1, int y1, int x2, int y2){
+    private String toCoord(int x1, int y1, int x2, int y2){
         String pos = "";
 
         pos += (char)((char)(x1) + 97);
@@ -63,7 +63,7 @@ public class Board {
     }
 
     //Changes the position of the pieces on the charBoard
-    public void move(String move){
+    private void move(String move){
         System.out.println("****************************");
         String[] moves = move.split(",");
         // System.out.println(moves[0]);
@@ -83,7 +83,7 @@ public class Board {
         System.out.println("****************************");
     }
 
-    public Point coordToLoc(String coord){
+    private Point coordToLoc(String coord){
         // System.out.println(newCoord);
         int x = (int)(coord.charAt(0) - 97);
         int y = (int)(7 - coord.charAt(1) + 49 );
@@ -95,8 +95,6 @@ public class Board {
     }
 
     public boolean isWhite(int intXIndex, int intYIndex) {
-        if(chessBoard[intYIndex][intXIndex] == 0) return false;
-
         return chessBoard[intYIndex][intXIndex] > 0;
     }
 
