@@ -55,15 +55,10 @@ public class Piece {
             ArrayList<int []> legalKingMoves = ChessUtility.getLegalKingMoves(blnFirst, intLastX, intLastY);
             return ChessUtility.isInList(legalKingMoves, position);
         } else if(intPiece == 1){
-            ArrayList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY);
+            ArrayList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalRookMoves, position);
-<<<<<<< Updated upstream
-        } else if(intPiece == 3) {
-            ArrayList<int []> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY);
-=======
         } else if(intPiece == 3){
             ArrayList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY);
->>>>>>> Stashed changes
             return ChessUtility.isInList(legalBishopMoves, position);
         }
         return false;
