@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Board {
+    //Will be used later for networking
+    boolean blnServer = true;
     private int [][] chessBoard = {
         {-1,-2,-3,-4,-5,-3,-2,-1},
         {-6,-6,-6,-6,-6,-6,-6,-6},
@@ -93,11 +95,39 @@ public class Board {
     }
 
     public boolean isWhite(int intXIndex, int intYIndex) {
+        if(chessBoard[intYIndex][intXIndex] == 0) return false;
+
         return chessBoard[intYIndex][intXIndex] > 0;
     }
 
     public int getPiece(int intXIndex, int intYIndex) {
         return chessBoard[intYIndex][intXIndex];
+    }
+
+    //TODO: Implement captures. Remove pieces and add pieces to captured list
+    public void executeMove(Piece piece, int intXPos, int intYPos) {
+        piece.setPosition(intXPos, intYPos);
+
+        boolean blnLegalMove = piece.isLegalMove(chessBoard[intYPos/50][intXPos/50] != 0);
+        //if player is white and the spot has a white piece
+        boolean blnSamePieceWhite = blnServer && isWhite(intXPos/50, intYPos/50);
+        //if the player is black and the spot has a black piece
+        boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/50, intYPos/50);
+        if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
+            piece.setPosition(piece.intLastX, piece.intLastY);
+        } else if(blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
+            //white captures black
+            System.out.println("White -> Black");
+        } else if(!blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
+            //black captures white
+        } else {
+            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            System.out.println(result);
+            move(result);
+            printCharboard();
+            piece.setPosition(intXPos, intYPos);
+            piece.blnFirst = false;
+        }
     }
 
     public Board() {

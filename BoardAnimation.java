@@ -19,6 +19,8 @@ import java.util.ArrayList;
 //14) Write up req doc with needs but keep track of the wants
 
 public class BoardAnimation extends JPanel {
+    //Will be used later for networking
+    boolean blnServer = true;
 
     static Board chessBoard;
     public boolean pressed = false;
@@ -76,37 +78,15 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mouseDragged(MouseEvent evt) {
             if(pressed){
-                movePiece(temp, evt);
+                temp.setPosition(evt.getX(), evt.getY());
+                repaint();
             }
         }
 
         @Override
         public void mouseReleased(MouseEvent evt) {
-            finalMove(temp, evt);
-        }
-
-        private void movePiece(Piece piece, MouseEvent evt){
-            piece.setPosition(evt.getX(), evt.getY());
-            repaint();
-        }
-
-        private void finalMove(Piece piece, MouseEvent evt){
             pressed = false;
-            piece.setPosition(chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
-
-            boolean blnLegalMove = piece.isLegalMove(chessBoard.getPiece((piece.intXPos/50), (piece.intYPos/50)) != 0);
-
-            if(!blnLegalMove || chessBoard.isWhite((piece.intXPos/50), (piece.intYPos/50))) {
-                piece.setPosition(piece.intLastX, piece.intLastY);
-            } else {
-                String result = chessBoard.toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
-                System.out.println(result);
-                chessBoard.move(result);
-                chessBoard.printCharboard();
-                piece.setPosition(chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
-                piece.blnFirst = false;
-            }
-
+            chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
             repaint();
         }
     }
