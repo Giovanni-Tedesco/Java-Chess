@@ -7,7 +7,7 @@
   - *Special Mention to Mr. Cadawas*
 
 ## Required Features
- - 1280x900 Size
+ - 1280x720 Size
  - One Window program
  - Text and graphics in help
  - Must run at 60fps
