@@ -13,7 +13,7 @@ public class ChessUtility {
         return false;
     }
 
-    public static ArrayList<int[]> checkDiagonal(int intX, int intY, int[] moveRules) {
+    public static ArrayList<int[]> checkDiagonal(int intX, int intY, int[] moveRules, boolean blnWhite) {
       ArrayList<int[]> moves = new ArrayList<int[]>();
       int tempX = intX;
       int tempY = intY;
@@ -24,7 +24,11 @@ public class ChessUtility {
           continue;
         }
         else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
-          break;
+            if((blnWhite && BoardAnimation.getBoard().getPiece(tempX, tempY) > 0) || (!blnWhite && BoardAnimation.getBoard().getPiece(tempX, tempY) < 0)) {
+                break;
+            } else {
+                moves.add(new int[] {tempX, tempY});
+            }
         }
         else {
           moves.add(new int[] {tempX, tempY});
@@ -96,7 +100,7 @@ public class ChessUtility {
 
         return legalKingMoves;
     }
-    public static ArrayList<int[]> getLegalBishopMoves(int lastIndexX, int lastIndexY){
+    public static ArrayList<int[]> getLegalBishopMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
       int intX = lastIndexX / 50;
       int intY = lastIndexY / 50;
 
@@ -108,12 +112,10 @@ public class ChessUtility {
       };
 
       ArrayList<int[]> legalBishopMoves = new ArrayList<int[]>();
-      legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[0]));
-      legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[1]));
-      legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[2]));
-      legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[3]));
+      for(int i = 0; i < possibleMoves.length; i++) {
+          legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[i], blnWhite));
+      }
 
-      
       return legalBishopMoves;
     }
 

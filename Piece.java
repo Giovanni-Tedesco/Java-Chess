@@ -58,7 +58,7 @@ public class Piece {
             ArrayList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalRookMoves, position);
         } else if(intPiece == 3){
-            ArrayList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY);
+            ArrayList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalBishopMoves, position);
         }
         return false;
