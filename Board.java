@@ -102,7 +102,7 @@ public class Board {
         return chessBoard[intYIndex][intXIndex];
     }
 
-    //TODO: Implement captures. Remove pieces and add pieces to captured list
+    //TODO: Implement captures. Remove pieces and add pieces to captured list. Update array as well
     public void executeMove(Piece piece, int intXPos, int intYPos) {
         piece.setPosition(intXPos, intYPos);
 
@@ -116,6 +116,7 @@ public class Board {
         } else if(blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
             //white captures black
             System.out.println("White -> Black");
+            capturePiece(intXPos, intYPos);
         } else if(!blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
             //black captures white
         } else {
@@ -125,6 +126,16 @@ public class Board {
             printCharboard();
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;
+        }
+    }
+
+    public void capturePiece(int intXPos, int intYPos) {
+        for(int i = 0; i < pieces.size(); i++) {
+            Piece piece = pieces.get(i);
+            if((piece.intXPos == intXPos && piece.intYPos == intYPos) && piece.blnColor != blnServer) {
+                captured.add(piece);
+                pieces.remove(i);
+            }
         }
     }
 
