@@ -162,7 +162,7 @@ public class ChessUtility {
         }
 
         //Check in y- direction
-        for(int i = intY; i > 0; i--) {
+        for(int i = intY; i >= 0; i--) {
             if(i == intY) continue;
             if(BoardAnimation.getBoard().getPiece(intX, i) != 0) {
                 if((blnWhite && BoardAnimation.getBoard().getPiece(intX, i) > 0) || (!blnWhite && BoardAnimation.getBoard().getPiece(intX, i) < 0)) {
