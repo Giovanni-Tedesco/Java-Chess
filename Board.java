@@ -116,6 +116,10 @@ public class Board {
         } else if(blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
             //white captures black
             System.out.println("White -> Black");
+            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            move(result);
+
+
             capturePiece(intXPos, intYPos);
         } else if(!blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
             //black captures white
@@ -123,10 +127,10 @@ public class Board {
             String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
             System.out.println(result);
             move(result);
-            printCharboard();
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;
         }
+        printCharboard();
     }
 
     public void capturePiece(int intXPos, int intYPos) {
