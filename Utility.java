@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.util.ArrayList;
 
 //This class has some methods to make things convenient
 public class Utility {
@@ -76,6 +77,41 @@ public class Utility {
         button.setBackground(Color.WHITE);//new Color(53,53,56));
         button.setForeground(Color.BLACK);
         button.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
+    }
+
+    //Return random name in case user does not enter name
+    public static String getRandomName() {
+        ArrayList<String> randomNameList = new ArrayList<>();
+        randomNameList.add("Boomer");
+        randomNameList.add("Bruh");
+        randomNameList.add("Donald J Trump");
+        randomNameList.add("Peter Parker");
+        randomNameList.add("Tony Stark");
+        randomNameList.add("Steve Rogers");
+        randomNameList.add("Clark Kent");
+        randomNameList.add("Bruce Wayne");
+        randomNameList.add("James Buchanan Barnes");
+        randomNameList.add("Peter Quill");
+        randomNameList.add("Bruce Banner");
+        randomNameList.add("Thor Odinson");
+        randomNameList.add("Natasha Romanoff");
+        randomNameList.add("Clint Barton");
+        randomNameList.add("James Rhodes");
+        randomNameList.add("Sam Wilson  ");
+        randomNameList.add("Pietro Maximoff");
+        randomNameList.add("Wanda");
+        randomNameList.add("J.A.R.V.I.S");
+        randomNameList.add("Hank Pym");
+        randomNameList.add("Scott Lang");
+        randomNameList.add("Hope Van Dyne");
+        randomNameList.add("Yondu");
+        randomNameList.add("T'Challa");
+        randomNameList.add("Stephen Strange");
+        randomNameList.add("Happy Hogan");
+
+
+        int intRandomIndex = (int)(Math.random()*randomNameList.size());
+        return randomNameList.get(intRandomIndex);
     }
 
     //Sets a new content pane for the JFrame
