@@ -51,13 +51,13 @@ public class Piece {
         } else if(intPiece == 2) {
             ArrayList<int []> legalKnightMoves = ChessUtility.getLegalKnightMoves(intLastX, intLastY);
             return ChessUtility.isInList(legalKnightMoves, position);
-        } else if(intPiece == 5){
+        } else if(intPiece == 5) {
             ArrayList<int []> legalKingMoves = ChessUtility.getLegalKingMoves(blnFirst, intLastX, intLastY);
             return ChessUtility.isInList(legalKingMoves, position);
-        } else if(intPiece == 1){
+        } else if(intPiece == 1) {
             ArrayList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalRookMoves, position);
-        } else if(intPiece == 3){
+        } else if(intPiece == 3) {
             ArrayList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalBishopMoves, position);
         }

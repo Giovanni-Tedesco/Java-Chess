@@ -17,14 +17,16 @@ public class ChessUtility {
       ArrayList<int[]> moves = new ArrayList<int[]>();
       int tempX = intX;
       int tempY = intY;
-      while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8){
-        if(tempX == intX && tempY == intY){
+      while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8) {
+        if(tempX == intX && tempY == intY) {
           tempX += moveRules[0];
           tempY += moveRules[1];
           continue;
         }
         else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
-            if((blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY)) || (!blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY))) {
+            if(blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY)) {
+                break;
+            } else if(!blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY)) {
                 break;
             } else {
                 moves.add(new int[] {tempX, tempY});

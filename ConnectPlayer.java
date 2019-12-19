@@ -13,7 +13,9 @@ public class ConnectPlayer implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent evt) {
         Object event = evt.getSource();
-        if(event == serverButton) {
+        if(event == backButton) {
+            Utility.changePanel(new MainMenu().getMenuPanel());
+        } else if(event == serverButton) {
             Utility.changePanel(new ConnectPlayer2(true).connectPanel2);
         } else if(event == clientButton) {
             Utility.changePanel(new ConnectPlayer2(false).connectPanel2);
@@ -113,11 +115,11 @@ public class ConnectPlayer implements ActionListener {
 
                 connectPanel2.add(ipLabel);
                 connectPanel2.add(portLabel);
-                connectPanel2.add(infoLabel1);
-                connectPanel2.add(infoLabel2);
                 connectPanel2.add(startServerButton);
             }
 
+            connectPanel2.add(infoLabel1);
+            connectPanel2.add(infoLabel2);
             connectPanel2.add(backButton);
             connectPanel2.add(nameLabel);
             connectPanel2.add(nameField);
@@ -139,18 +141,6 @@ public class ConnectPlayer implements ActionListener {
             nameLabel.setSize(185, 50);
             nameLabel.setLocation(30, 55);
             Utility.setLabelStyle(nameLabel, 32);
-            
-            ipLabel.setSize(800, 150);
-            ipLabel.setLocation(240, 100);
-            ipLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            ipLabel.setVerticalAlignment(SwingConstants.CENTER);
-            Utility.setLabelStyle(ipLabel, 72);
-
-            portLabel.setSize(800, 150);
-            portLabel.setLocation(240, 250);
-            portLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            portLabel.setVerticalAlignment(SwingConstants.CENTER);
-            Utility.setLabelStyle(portLabel, 72);
 
             infoLabel1.setSize(1200, 100);
             infoLabel1.setLocation(40, 410);
@@ -163,15 +153,47 @@ public class ConnectPlayer implements ActionListener {
             infoLabel2.setHorizontalAlignment(SwingConstants.CENTER);
             infoLabel2.setVerticalAlignment(SwingConstants.CENTER);
             Utility.setLabelStyle(infoLabel2, 30);
+            
+            //server stuff
+            ipLabel.setSize(800, 150);
+            ipLabel.setLocation(240, 100);
+            ipLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            ipLabel.setVerticalAlignment(SwingConstants.CENTER);
+            Utility.setLabelStyle(ipLabel, 72);
+
+            portLabel.setSize(800, 150);
+            portLabel.setLocation(240, 250);
+            portLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            portLabel.setVerticalAlignment(SwingConstants.CENTER);
+            Utility.setLabelStyle(portLabel, 72);
+
+            //client stuff
+            enterIpLabel.setSize(400, 100);
+            enterIpLabel.setLocation(50, 100);
+            enterIpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            enterIpLabel.setVerticalAlignment(SwingConstants.CENTER);
+            Utility.setLabelStyle(enterIpLabel, 40);
+
+            enterPortLabel.setSize(400, 100);
+            enterPortLabel.setLocation(50, 200);
+            enterPortLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            enterPortLabel.setVerticalAlignment(SwingConstants.CENTER);
+            Utility.setLabelStyle(enterPortLabel, 40);
         }
 
         private void initializeFields() {
             nameField.setSize(155, 25);
             nameField.setLocation(235, 70);
+
+            ipField.setSize(170, 30);
+            ipField.setLocation(300, 100);
+
+            //portField;
         }
 
         public void notifyFailure() {
             //error message on connection failure for client
+            //let client retry I suppose
         }
     }
 }

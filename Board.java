@@ -1,7 +1,8 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Board {
-    //Will be used later for networking
+    //Will be used later for networking 
+    //set to true to let white capture black, and vice versa
     boolean blnServer = true;
     private int [][] chessBoard = {
         {-1,-2,-3,-4,-5,-3,-2,-1},
@@ -108,9 +109,12 @@ public class Board {
 
         boolean blnLegalMove = piece.isLegalMove(chessBoard[intYPos/50][intXPos/50] != 0);
         //if player is white and the spot has a white piece
-        boolean blnSamePieceWhite = blnServer && isWhite(intXPos/50, intYPos/50);
+        boolean blnSamePieceWhite = blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0;
         //if the player is black and the spot has a black piece
-        boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/50, intYPos/50);
+        boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0;
+
+        System.out.println("WHAT THE FUCK " + !blnLegalMove + " " + blnSamePieceWhite + " " + blnSamePieceBlack);
+
         if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
             piece.setPosition(piece.intLastX, piece.intLastY);
         } else if(blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
@@ -118,11 +122,15 @@ public class Board {
             System.out.println("White -> Black");
             String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
             move(result);
-
-
+            piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
         } else if(!blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
             //black captures white
+            System.out.println("Black -> White");
+            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            move(result);
+            piece.setPosition(intXPos, intYPos);
+            capturePiece(intXPos, intYPos);
         } else {
             String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
             System.out.println(result);
