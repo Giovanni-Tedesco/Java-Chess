@@ -9,7 +9,6 @@ public class ChessUtility {
                 return true;
             }
         }
-
         return false;
     }
 

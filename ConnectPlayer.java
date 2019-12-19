@@ -94,6 +94,11 @@ public class ConnectPlayer implements ActionListener {
                 strName = (strName == null || strName.equals(""))?Utility.getRandomName():strName;
                 System.out.println("NAME: " + strName);
                 Utility.changePanel(new ChessGame(strName).getChessPanel());
+            } else if(event == joinServerButton) {
+                strName = nameField.getText();
+                strName = (strName == null || strName.equals(""))?Utility.getRandomName():strName;
+                System.out.println("NAME: " + strName);
+                //TODO: join server and do stuff
             }
         }
 
@@ -116,6 +121,15 @@ public class ConnectPlayer implements ActionListener {
                 connectPanel2.add(ipLabel);
                 connectPanel2.add(portLabel);
                 connectPanel2.add(startServerButton);
+            } else {
+                infoLabel1.setText(strClientInfo1);
+                infoLabel2.setText(strClientInfo2);
+
+                connectPanel2.add(enterIpLabel);
+                connectPanel2.add(enterPortLabel);
+                connectPanel2.add(ipField);
+                connectPanel2.add(portField);
+                connectPanel2.add(joinServerButton);
             }
 
             connectPanel2.add(infoLabel1);
@@ -135,6 +149,11 @@ public class ConnectPlayer implements ActionListener {
             startServerButton.setLocation(390, 565);
             startServerButton.addActionListener(this);
             Utility.setButtonStyle(startServerButton, 24);
+
+            joinServerButton.setSize(500, 100);
+            joinServerButton.setLocation(390, 565);
+            joinServerButton.addActionListener(this);
+            Utility.setButtonStyle(joinServerButton, 24);
         }
 
         private void initializeLabels() {
@@ -169,26 +188,23 @@ public class ConnectPlayer implements ActionListener {
 
             //client stuff
             enterIpLabel.setSize(400, 100);
-            enterIpLabel.setLocation(50, 100);
-            enterIpLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            enterIpLabel.setVerticalAlignment(SwingConstants.CENTER);
-            Utility.setLabelStyle(enterIpLabel, 40);
+            enterIpLabel.setLocation(30, 150);
+            Utility.setLabelStyle(enterIpLabel, 52);
 
-            enterPortLabel.setSize(400, 100);
-            enterPortLabel.setLocation(50, 200);
-            enterPortLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            enterPortLabel.setVerticalAlignment(SwingConstants.CENTER);
-            Utility.setLabelStyle(enterPortLabel, 40);
+            enterPortLabel.setSize(500, 100);
+            enterPortLabel.setLocation(30, 250);
+            Utility.setLabelStyle(enterPortLabel, 52);
         }
 
         private void initializeFields() {
             nameField.setSize(155, 25);
-            nameField.setLocation(235, 70);
+            nameField.setLocation(235,   70);
 
-            ipField.setSize(170, 30);
-            ipField.setLocation(300, 100);
+            ipField.setSize(400, 40);
+            ipField.setLocation(420, 180);
 
-            //portField;
+            portField.setSize(350, 40);
+            portField.setLocation(470, 280);
         }
 
         public void notifyFailure() {
