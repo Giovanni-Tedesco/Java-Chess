@@ -24,9 +24,10 @@ public class ChessUtility {
           continue;
         }
         else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
-            if(blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY)) {
+            if((blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY)) || (!blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY))) {
                 break;
-            } else if(!blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY)) {
+            } else if((blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY)) || (!blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY))) {
+                moves.add(new int[] {tempX, tempY});
                 break;
             } else {
                 moves.add(new int[] {tempX, tempY});
@@ -51,7 +52,7 @@ public class ChessUtility {
             if(blnColour == true){
                 legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
                 legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
-            } else if(blnColour == false){
+            } else if(blnColour == false) {
                 legalPawnMoves.add(new int[] {intXIndex-1, intYIndex+1});
                 legalPawnMoves.add(new int[] {intXIndex+1, intYIndex+1});
             }
@@ -145,6 +146,9 @@ public class ChessUtility {
             if(BoardAnimation.getBoard().getPiece(i, intY) != 0) {
                 if((blnWhite && chessBoard.isWhite(i, intY)) || (!blnWhite && !chessBoard.isWhite(i, intY))) {
                     break;
+                } else if((blnWhite && !chessBoard.isWhite(i, intY)) || (!blnWhite && chessBoard.isWhite(i, intY))) {
+                    fileMoves.add(new int[] {i, intY});
+                    break;
                 } else {
                     fileMoves.add(new int[] {i, intY});
                 }
@@ -157,6 +161,9 @@ public class ChessUtility {
             if(i == intX) continue;
             if(BoardAnimation.getBoard().getPiece(i, intY) != 0) {
                 if((blnWhite && chessBoard.isWhite(i, intY)) || (!blnWhite && !chessBoard.isWhite(i, intY))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(i, intY)) || (!blnWhite && chessBoard.isWhite(i, intY))) {
+                    fileMoves.add(new int[] {i, intY});
                     break;
                 } else {
                     fileMoves.add(new int[] {i, intY});
@@ -171,6 +178,9 @@ public class ChessUtility {
             if(BoardAnimation.getBoard().getPiece(intX, i) != 0) {
                 if((blnWhite && chessBoard.isWhite(intX, i)) || (!blnWhite && !chessBoard.isWhite(intX, i))) {
                     break;
+                } else if((blnWhite && !chessBoard.isWhite(intX, i)) || (!blnWhite && chessBoard.isWhite(intX, i))) {
+                    fileMoves.add(new int[] {intX, i});
+                    break;
                 } else {
                     fileMoves.add(new int[] {intX, i});
                 }
@@ -184,6 +194,9 @@ public class ChessUtility {
             if(i == intY) continue;
             if(BoardAnimation.getBoard().getPiece(intX, i) != 0) {
                 if((blnWhite && chessBoard.isWhite(intX, i)) || (!blnWhite && !chessBoard.isWhite(intX, i))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(intX, i)) || (!blnWhite && chessBoard.isWhite(intX, i))) {
+                    fileMoves.add(new int[] {intX, i});
                     break;
                 } else {
                     fileMoves.add(new int[] {intX, i});
