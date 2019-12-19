@@ -46,7 +46,7 @@ public class Piece {
     public boolean isLegalMove(boolean blnHasPiece) {
         int [] position = {(intXPos/50),(intYPos/50)};
         if(intPiece == 6) {
-            ArrayList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, intLastX, intLastY);
+            ArrayList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, blnColor,intLastX, intLastY);
             return ChessUtility.isInList(legalPawnMoves, position);
         } else if(intPiece == 2) {
             ArrayList<int []> legalKnightMoves = ChessUtility.getLegalKnightMoves(intLastX, intLastY);

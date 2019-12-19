@@ -41,17 +41,30 @@ public class ChessUtility {
       return moves;
     }
 
-    public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, int intLastX, int intLastY) {
+    public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, boolean blnColour,int intLastX, int intLastY) {
         ArrayList<int []> legalPawnMoves = new ArrayList<int []>();
         int intXIndex = intLastX/50;
         int intYIndex = intLastY/50;
         if(blnHasPiece) {
-            legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
-            legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
+            if(blnColour == true){
+                legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
+                legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
+            } else if(blnColour == false){
+                legalPawnMoves.add(new int[] {intXIndex-1, intYIndex+1});
+                legalPawnMoves.add(new int[] {intXIndex+1, intYIndex+1});
+            }
         } else {
-            if(blnFirstMove) legalPawnMoves.add(new int [] {intXIndex, intYIndex-2});
+            if(blnFirstMove && blnColour == true){
+                legalPawnMoves.add(new int [] {intXIndex, intYIndex-2});
+            } else if(blnFirstMove && blnColour == false){
+                legalPawnMoves.add(new int [] {intXIndex, intYIndex+2});
+            }
 
-            legalPawnMoves.add(new int [] {intXIndex, intYIndex-1});
+            if(blnColour == false){
+                legalPawnMoves.add(new int [] {intXIndex, intYIndex+1});
+            } else {
+                legalPawnMoves.add(new int [] {intXIndex, intYIndex-1});
+            }
         }
 
         return legalPawnMoves;
