@@ -45,8 +45,8 @@ public class ChessUtility {
 
     public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, boolean blnColour,int intLastX, int intLastY) {
         ArrayList<int []> legalPawnMoves = new ArrayList<int []>();
-        int intXIndex = intLastX/50;
-        int intYIndex = intLastY/50;
+        int intXIndex = intLastX/90;
+        int intYIndex = intLastY/90;
         if(blnHasPiece) {
             if(blnColour == true){
                 legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
@@ -76,15 +76,14 @@ public class ChessUtility {
         int [] translateY = {-1,-1,1,1,-2,-2,2,2};
         int [] translateX = {-2,2,-2,2,-1,1,-1,1};
         ArrayList<int []> legalKnightMoves = new ArrayList<int []>();
-        int intXIndex = intLastX/50;
-        int intYIndex = intLastY/50;
+        int intXIndex = intLastX/90;
+        int intYIndex = intLastY/90;
 
         for(int i = 0; i < translateY.length; i++) {
             if(intYIndex+translateY[i] >= 0 && intYIndex+translateY[i] < 8 && intXIndex+translateX[i] >= 0 && intXIndex+translateX[i] < 8 ) {
                 legalKnightMoves.add(new int [] {intXIndex+translateX[i], intYIndex+translateY[i]});
             }
         }
-
         return legalKnightMoves;
     }
 
@@ -101,8 +100,8 @@ public class ChessUtility {
         int[] translateX = {1, -1, 0, 0, 1, -1, 1, -1}; //Just for regular moves
         int[] translateY = {0, 0, 1, -1, 1, -1, -1, 1}; //Just for regular moves
 
-        int intXIndex = lastIndexX / 50;
-        int intYIndex = lastIndexY / 50;
+        int intXIndex = lastIndexX / 90;
+        int intYIndex = lastIndexY / 90;
 
         //Regular moves
         for(int i = 0; i < translateX.length; i++){
@@ -117,8 +116,8 @@ public class ChessUtility {
     }
 
     public static ArrayList<int[]> getLegalBishopMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
-      int intX = lastIndexX / 50;
-      int intY = lastIndexY / 50;
+      int intX = lastIndexX / 90;
+      int intY = lastIndexY / 90;
 
       int[][] possibleMoves = {
         {-1, 1}, // Upper left
@@ -209,8 +208,8 @@ public class ChessUtility {
     }
 
     public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
-        int intX = lastIndexX / 50;
-        int intY = lastIndexY / 50;
+        int intX = lastIndexX / 90;
+        int intY = lastIndexY / 90;
         ArrayList<int[]> legalRookMoves = new ArrayList<int[]>();
         legalRookMoves.addAll(checkFiles(intX, intY, blnWhite));
         return legalRookMoves;

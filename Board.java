@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class Board {
-    //Will be used later for networking 
+    //Will be used later for networking
     //set to true to let white capture black, and vice versa
     boolean blnServer = true;
     private int [][] chessBoard = {
@@ -37,9 +37,9 @@ public class Board {
                 Piece p;
                 int piece = chessBoard[i][j];
                 if(piece > 0){
-                    p = new Piece(j * 50, i * 50, true, piece);
+                    p = new Piece(j * 90, i * 90, true, piece);
                 } else if(piece < 0){
-                    p = new Piece(j * 50, i * 50, false, piece);
+                    p = new Piece(j * 90, i * 90, false, piece);
                 } else {
                     continue;
                 }
@@ -107,32 +107,32 @@ public class Board {
     public void executeMove(Piece piece, int intXPos, int intYPos) {
         piece.setPosition(intXPos, intYPos);
 
-        boolean blnLegalMove = piece.isLegalMove(chessBoard[intYPos/50][intXPos/50] != 0);
+        boolean blnLegalMove = piece.isLegalMove(chessBoard[intYPos/90][intXPos/90] != 0);
         //if player is white and the spot has a white piece
-        boolean blnSamePieceWhite = blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0;
+        boolean blnSamePieceWhite = blnServer && isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0;
         //if the player is black and the spot has a black piece
-        boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0;
+        boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0;
 
         System.out.println("WHAT THE FUCK " + !blnLegalMove + " " + blnSamePieceWhite + " " + blnSamePieceBlack);
 
         if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
             piece.setPosition(piece.intLastX, piece.intLastY);
-        } else if(blnServer && !isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
+        } else if(blnServer && !isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0) {
             //white captures black
             System.out.println("White -> Black");
-            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            String result = toCoord(piece.intLastX/90, piece.intLastY/90, piece.intXPos/90, piece.intYPos/90);
             move(result);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
-        } else if(!blnServer && isWhite(intXPos/50, intYPos/50) && chessBoard[intYPos/50][intXPos/50] != 0) {
+        } else if(!blnServer && isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0) {
             //black captures white
             System.out.println("Black -> White");
-            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            String result = toCoord(piece.intLastX/90, piece.intLastY/90, piece.intXPos/90, piece.intYPos/90);
             move(result);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
         } else {
-            String result = toCoord(piece.intLastX/50, piece.intLastY/50, piece.intXPos/50, piece.intYPos/50);
+            String result = toCoord(piece.intLastX/90, piece.intLastY/90, piece.intXPos/90, piece.intYPos/90);
             System.out.println(result);
             move(result);
             piece.setPosition(intXPos, intYPos);
@@ -154,4 +154,5 @@ public class Board {
     public Board() {
         initBoard();
     }
+
 }

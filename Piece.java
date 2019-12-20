@@ -30,7 +30,7 @@ public class Piece {
         } else {
             g.setColor(Color.BLUE);//If the pieces colour is dark / blue
         }
-        g.fillRect(intXPos, intYPos, 25, 50);
+        g.fillRect(intXPos, intYPos, 45, 90);
     }
 
     public void setPreviousPosition(int intPosX, int intPosY) {
@@ -44,7 +44,7 @@ public class Piece {
     }
 
     public boolean isLegalMove(boolean blnHasPiece) {
-        int [] position = {(intXPos/50),(intYPos/50)};
+        int [] position = {(intXPos/90),(intYPos/90)};
         if(intPiece == 6) {
             ArrayList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, blnColor,intLastX, intLastY);
             return ChessUtility.isInList(legalPawnMoves, position);

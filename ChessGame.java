@@ -17,7 +17,8 @@ public class ChessGame implements ActionListener {
     public ChessGame(String strName) {
         blnServer = true;
         this.strName = strName;
-        chessPanel.setPreferredSize(new Dimension(400,400));
+        chessPanel.setPreferredSize(new Dimension(1280,720));
+        chessPanel.setBackground(Color.BLACK);
         //TODO: get port from settings later
         ssm = new SuperSocketMaster(6969, this);
     }
@@ -26,7 +27,8 @@ public class ChessGame implements ActionListener {
     public ChessGame(String strName, String strIp, int intPort) {
         blnServer = false;
         this.strName = strName;
-        chessPanel.setPreferredSize(new Dimension(400,400));
+        chessPanel.setPreferredSize(new Dimension(1280,720));
+        chessPanel.setBackground(Color.BLACK);
         ssm = new SuperSocketMaster(strIp, intPort, this);
     }
 

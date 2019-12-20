@@ -35,7 +35,7 @@ public class BoardAnimation extends JPanel {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 g.setColor(((i % 2 == 0) == (j % 2 == 0))?Color.WHITE:Color.BLACK);
-                g.fillRect(j * 50, i * 50, 50, 50);
+                g.fillRect(j * 90, i * 90, 90, 90);
             }
         }
     }
@@ -51,6 +51,8 @@ public class BoardAnimation extends JPanel {
         super.paintComponent(g);
         drawBoard(g);
         drawPieces(g);
+        g.setColor(Color.WHITE);
+        g.drawLine(720, 0, 720, 720);
     }
 
 
@@ -66,8 +68,8 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mousePressed(MouseEvent evt) {
             for(int i = 0; i < chessBoard.pieces.size(); i++){
-                if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 50 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
-                && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 50) && pressed == false) {
+                if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
+                && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90) && pressed == false) {
                     pressed = true;
                     temp = chessBoard.pieces.get(i);
                     temp.setPreviousPosition(temp.intXPos, temp.intYPos);
@@ -86,7 +88,7 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mouseReleased(MouseEvent evt) {
             pressed = false;
-            chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 50), chessBoard.roundDown(evt.getY(), 50));
+            chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 90), chessBoard.roundDown(evt.getY(), 90));
             repaint();
         }
     }
