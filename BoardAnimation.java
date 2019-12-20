@@ -20,12 +20,18 @@ import java.util.ArrayList;
 
 public class BoardAnimation extends JPanel {
     //Will be used later for networking
-    boolean blnServer = true;
-
+    private boolean blnServer = true;
+    private boolean blnClientStarted = false;
     static Board chessBoard;
-    public boolean pressed = false;
-    public Piece temp = null;
+    boolean pressed = false;
+    Piece temp = null;
 
+    public void initializeGame() {
+        blnClientStarted = true;
+        chessBoard = new Board();
+        addMouseListener(new MyMouseAdaptor());
+        addMouseMotionListener(new MyMouseAdaptor());
+    }
 
     public static Board getBoard() {
         return chessBoard;
@@ -49,18 +55,16 @@ public class BoardAnimation extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        drawBoard(g);
-        drawPieces(g);
-        g.setColor(Color.WHITE);
-        g.drawLine(720, 0, 720, 720);
+        if(blnClientStarted) {
+            drawBoard(g);
+            drawPieces(g);
+            g.setColor(Color.WHITE);
+            g.drawLine(720, 0, 720, 720);
+        }
     }
-
 
     BoardAnimation() {
         super();
-        chessBoard = new Board();
-        addMouseListener(new MyMouseAdaptor());
-        addMouseMotionListener(new MyMouseAdaptor());
     }
 
     private class MyMouseAdaptor extends MouseAdapter {

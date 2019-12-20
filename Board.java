@@ -113,8 +113,6 @@ public class Board {
         //if the player is black and the spot has a black piece
         boolean blnSamePieceBlack = !blnServer && !isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0;
 
-        System.out.println("WHAT THE FUCK " + !blnLegalMove + " " + blnSamePieceWhite + " " + blnSamePieceBlack);
-
         if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
             piece.setPosition(piece.intLastX, piece.intLastY);
         } else if(blnServer && !isWhite(intXPos/90, intYPos/90) && chessBoard[intYPos/90][intXPos/90] != 0) {
