@@ -16,7 +16,7 @@ public class Piece {
     public int intLastX;
     public int intLastY;
 
-    Piece(int xPos, int yPos, boolean color, int piece) {
+    public Piece(int xPos, int yPos, boolean color, int piece) {
         this.blnColor = color;
         this.intXPos = xPos;
         this.intYPos = yPos;

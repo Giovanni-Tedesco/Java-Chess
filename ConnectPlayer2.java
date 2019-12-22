@@ -71,7 +71,7 @@ class ConnectPlayer2 implements ActionListener {
         }
     }
 
-    ConnectPlayer2(boolean blnIsServer, boolean blnError) {
+    public ConnectPlayer2(boolean blnIsServer, boolean blnError) {
         connectPanel2.setBackground(Color.BLACK);
         connectPanel2.setPreferredSize(Utility.panelDimensions);
         blnServer = blnIsServer;

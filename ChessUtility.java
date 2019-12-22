@@ -48,25 +48,13 @@ public class ChessUtility {
         int intXIndex = intLastX/90;
         int intYIndex = intLastY/90;
         if(blnHasPiece) {
-            if(blnColour == true){
-                legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
-                legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
-            } else if(blnColour == false) {
-                legalPawnMoves.add(new int[] {intXIndex-1, intYIndex+1});
-                legalPawnMoves.add(new int[] {intXIndex+1, intYIndex+1});
-            }
+            legalPawnMoves.add(new int [] {intXIndex-1, intYIndex-1});
+            legalPawnMoves.add(new int [] {intXIndex+1, intYIndex-1});
         } else {
-            if(blnFirstMove && blnColour == true){
+            if(blnFirstMove){
                 legalPawnMoves.add(new int [] {intXIndex, intYIndex-2});
-            } else if(blnFirstMove && blnColour == false){
-                legalPawnMoves.add(new int [] {intXIndex, intYIndex+2});
             }
-
-            if(blnColour == false){
-                legalPawnMoves.add(new int [] {intXIndex, intYIndex+1});
-            } else {
-                legalPawnMoves.add(new int [] {intXIndex, intYIndex-1});
-            }
+            legalPawnMoves.add(new int [] {intXIndex, intYIndex-1});
         }
 
         return legalPawnMoves;
