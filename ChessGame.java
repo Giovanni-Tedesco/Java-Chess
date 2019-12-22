@@ -9,6 +9,11 @@ public class ChessGame implements ActionListener {
     //display a message saying waiting for client or something
     //once a message is received by the client, initialize the game for server
     private static SuperSocketMaster ssm;
+    private JTextArea chatArea = new JTextArea();
+    private JScrollPane chatScroll = new JScrollPane(chatArea);
+    private JTextField chatField = new JTextField();
+    private JButton backButton = new JButton("<- BACK");
+    private JButton sendButton = new JButton("SEND");
     private String strName, strOpponentName;
     private boolean blnServer, blnConnectionFailed = false;
     private BoardAnimation chessPanel;//= new BoardAnimation();
@@ -23,11 +28,13 @@ public class ChessGame implements ActionListener {
             if(strMessage.equals("ping")) {
                 waitingLabel.setVisible(false);
                 chessPanel.remove(waitingLabel);
+                initializeChat();
                 chessPanel.initializeGame();
                 chessPanel.repaint();
-            } else if(strMessage.contains("<") && strMessage.contains(">")) {
+            } else if(strMessage.contains("<") || strMessage.contains(">")) {
                 //chat message
-            } else {
+                chatArea.append(strMessage + "\n");
+            } else if(strMessage.contains(",")) {
                 Board chessBoard = BoardAnimation.getBoard();
                 chessBoard.move(strMessage);
                 String [] strMove = strMessage.split(",");
@@ -58,6 +65,12 @@ public class ChessGame implements ActionListener {
                 temp.setPosition(intFinalX, intFinalY);
                 chessPanel.repaint();
             }
+        } else if(event == sendButton) {
+            if(ssm != null) {
+                ssm.sendText("<" + strName + ">" + " " + chatField.getText());
+            }
+            chatArea.append("<" + strName + ">" + " " + chatField.getText() + "\n");
+            chatField.setText("");
         }
     }
 
@@ -72,6 +85,7 @@ public class ChessGame implements ActionListener {
         chessPanel.setPreferredSize(new Dimension(1280,720));
         chessPanel.setBackground(Color.BLACK);
         chessPanel.initializeGame();
+        initializeChat();
     }
 
     //constructor for the server game instance
@@ -108,13 +122,40 @@ public class ChessGame implements ActionListener {
                 e.printStackTrace();
             }
             System.out.println("ping");
+            //send name later as well so that the server will know the client name
             ssm.sendText("ping");
+            initializeChat();
             chessPanel.initializeGame();
             chessPanel.repaint();
             blnConnectionFailed = false;
         } else {
             blnConnectionFailed = true;
         }
+    }
+
+    private void initializeChat() {
+        chessPanel.setLayout(null);
+        chatScroll.setLocation(725, 440);
+        chatScroll.setSize(550, 250);
+        chatArea.setEditable(false);
+        chatArea.setFont(Utility.getFont().deriveFont(Font.PLAIN, 16));
+        chatArea.setBackground(Color.GRAY);
+        chatArea.setForeground(Color.GREEN);
+
+        chatField.setLocation(725, 695);
+        chatField.setSize(450, 20);
+        chatField.setFont(Utility.getFont().deriveFont(Font.PLAIN, 12));
+        chatField.setBackground(Color.GRAY);
+        chatField.setForeground(Color.GREEN);
+
+        sendButton.setLocation(1175, 695);
+        sendButton.setSize(100, 20);
+        sendButton.addActionListener(this);
+        Utility.setButtonStyle(sendButton, 12);
+
+        chessPanel.add(chatScroll);
+        chessPanel.add(chatField);
+        chessPanel.add(sendButton);
     }
 
     public JPanel getChessPanel() {
