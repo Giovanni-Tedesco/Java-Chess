@@ -19,11 +19,15 @@ import java.util.ArrayList;
 //14) Write up req doc with needs but keep track of the wants
 public class BoardAnimation extends JPanel {
     //Will be used later for networking
-    private boolean blnServer;
+    private boolean blnServer, blnTurn;
     private boolean blnClientStarted = false;
     private static Board chessBoard;
     private boolean pressed = false;
     private Piece temp = null;
+
+    public void changeTurn() {
+        blnTurn = !blnTurn;
+    }
 
     public void initializeGame() {
         blnClientStarted = true;
@@ -72,6 +76,7 @@ public class BoardAnimation extends JPanel {
     public BoardAnimation(boolean blnIsServer) {
         super();
         this.blnServer = blnIsServer;
+        blnTurn = blnIsServer;
     }
 
     //TODO: make sure that a player cannot move other person's pieces
@@ -79,19 +84,23 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent evt) {
-            for(int i = 0; i < chessBoard.pieces.size(); i++){
-                if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
-                && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90) && pressed == false) {
-                    pressed = true;
-                    temp = chessBoard.pieces.get(i);
-                    temp.setPreviousPosition(temp.intXPos, temp.intYPos);
+            if(blnTurn) {
+                for(int i = 0; i < chessBoard.pieces.size(); i++){
+                    if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
+                    && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90)
+                    && pressed == false && chessBoard.pieces.get(i).blnColor == blnServer) {
+                        pressed = true;
+                        temp = chessBoard.pieces.get(i);
+                        temp.setPreviousPosition(temp.intXPos, temp.intYPos);
+                        break;
+                    }
                 }
             }
         }
 
         @Override
         public void mouseDragged(MouseEvent evt) {
-            if(pressed){
+            if(pressed && temp != null && blnTurn){
                 temp.setPosition(evt.getX(), evt.getY());
                 repaint();
             }
@@ -100,8 +109,12 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mouseReleased(MouseEvent evt) {
             pressed = false;
-            chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 90), chessBoard.roundDown(evt.getY(), 90));
-            repaint();
+            if(temp != null && blnTurn) {
+                if(chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 90), chessBoard.roundDown(evt.getY(), 90))) {
+                    changeTurn();
+                }
+                repaint();
+            }
         }
     }
 }

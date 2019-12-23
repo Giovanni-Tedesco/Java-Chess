@@ -122,7 +122,8 @@ public class Board {
     }
 
     //TODO: Implement captures. Remove pieces and add pieces to captured list. Update array as well
-    public void executeMove(Piece piece, int intXPos, int intYPos) {
+    //return true if move was succesful
+    public boolean executeMove(Piece piece, int intXPos, int intYPos) {
         SuperSocketMaster ssm = ChessGame.getNetwork();
         piece.setPosition(intXPos, intYPos);
 
@@ -140,37 +141,44 @@ public class Board {
 
         if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
             piece.setPosition(piece.intLastX, piece.intLastY);
+            return false;
         } else if(blnServer && !isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0) {
             //white captures black
             System.out.println("White -> Black");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result);
+            printCharboard();
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             if(ssm != null) {
                 ssm.sendText(result);
             }
+            return true;
         } else if(!blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0) {
             //black captures white
             System.out.println("Black -> White");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result);
+            printCharboard();
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             if(ssm != null) {
                 ssm.sendText(result);
             }
+            return true;
         } else {
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             System.out.println(result);
             move(result);
+            printCharboard();
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;
             if(ssm != null) {
                 ssm.sendText(result);
             }
+            return true;
         }
-        printCharboard();
+
     }
 
     public void capturePiece(int intXPos, int intYPos) {

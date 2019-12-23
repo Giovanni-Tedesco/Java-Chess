@@ -108,7 +108,8 @@ public class Utility {
         randomNameList.add("T'Challa");
         randomNameList.add("Stephen Strange");
         randomNameList.add("Happy Hogan");
-
+        randomNameList.add("Baby Yoda");
+        randomNameList.add("Dad");
 
         int intRandomIndex = (int)(Math.random()*randomNameList.size());
         return randomNameList.get(intRandomIndex);

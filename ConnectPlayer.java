@@ -32,18 +32,18 @@ public class ConnectPlayer implements ActionListener {
         testButton.setSize(100, 25);
         testButton.setLocation(190, 20);
         testButton.addActionListener(this);
-        Utility.setButtonStyle(testButton, 12);   
+        Utility.setButtonStyle(testButton, 12);
 
         backButton.setSize(100, 25);
         backButton.setLocation(30, 20);
         backButton.addActionListener(this);
-        Utility.setButtonStyle(backButton, 12);        
+        Utility.setButtonStyle(backButton, 12);
 
         serverButton.setSize(1220, 300);
         serverButton.setLocation(30, 60);
         serverButton.addActionListener(this);
         Utility.setButtonStyle(serverButton, 24);
-        
+
         clientButton.setSize(1220, 300);
         clientButton.setLocation(30, 390);
         clientButton.addActionListener(this);
@@ -51,7 +51,11 @@ public class ConnectPlayer implements ActionListener {
 
         connectPanel.add(serverButton);
         connectPanel.add(clientButton);
-        connectPanel.add(testButton);
+
+        //test mode doesn't really work anymore, all testing needs to be done with two windows of the game
+        //its probably better this way because any changes will have to work with the multiplayer aspect
+        //connectPanel.add(testButton);
+
         connectPanel.add(backButton);
     }
 

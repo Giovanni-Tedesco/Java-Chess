@@ -60,6 +60,9 @@ public class Piece {
         } else if(intPiece == 3) {
             ArrayList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalBishopMoves, position);
+        } else if(intPiece == 4) {
+            ArrayList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intLastX, intLastY, blnColor);
+            return ChessUtility.isInList(legalQueenMoves, position);
         }
         return false;
     }

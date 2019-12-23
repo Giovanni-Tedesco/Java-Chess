@@ -14,6 +14,7 @@ public class ChessGame implements ActionListener {
     private JTextField chatField = new JTextField();
     private JButton backButton = new JButton("<- BACK");
     private JButton sendButton = new JButton("SEND");
+    private JButton cancelButton = new JButton("CANCEL");
     private String strName, strOpponentName;
     private boolean blnServer, blnConnectionFailed = false;
     private BoardAnimation chessPanel;//= new BoardAnimation();
@@ -27,7 +28,9 @@ public class ChessGame implements ActionListener {
             System.out.println(strMessage);
             if(strMessage.equals("ping")) {
                 waitingLabel.setVisible(false);
+                cancelButton.setVisible(false);
                 chessPanel.remove(waitingLabel);
+                chessPanel.remove(cancelButton);
                 initializeChat();
                 chessPanel.initializeGame();
                 chessPanel.repaint();
@@ -35,6 +38,7 @@ public class ChessGame implements ActionListener {
                 //chat message
                 chatArea.append(strMessage + "\n");
             } else if(strMessage.contains(",")) {
+                chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
                 chessBoard.move(strMessage);
                 String [] strMove = strMessage.split(",");
@@ -42,18 +46,29 @@ public class ChessGame implements ActionListener {
                 Point finalPos = chessBoard.coordToLoc(strMove[1]);
                 Piece temp = null;
                 int intX, intY, intFinalX, intFinalY;
-                
+
                 if(blnServer) {
                     intX = initPos.x;
                     intY = initPos.y;
-                    intFinalX = finalPos.x * 90;
-                    intFinalY = finalPos.y * 90;
+                    intFinalX = finalPos.x;
+                    intFinalY = finalPos.y;
                 } else {
                     intX = 7 - initPos.x;
                     intY = 7 - initPos.y;
-                    intFinalX = (7 - finalPos.x) * 90;
-                    intFinalY = (7 - finalPos.y) * 90;
+                    intFinalX = 7 - finalPos.x;
+                    intFinalY = 7 - finalPos.y;
                 }
+
+                for(int i = 0; i < chessBoard.pieces.size(); i++) {
+                    Piece p = chessBoard.pieces.get(i);
+                    if(p.intXPos / 90 == intFinalX && p.intYPos / 90 == intFinalY) {
+                        chessBoard.captured.add(p);
+                        chessBoard.pieces.remove(p);
+                        break;
+                    }
+                }
+
+                //chessBoard.capturePiece(intFinalX, intFinalY);
 
                 for(Piece p : chessBoard.pieces) {
                     if(p.intXPos / 90 == intX && p.intYPos / 90 == intY) {
@@ -62,7 +77,7 @@ public class ChessGame implements ActionListener {
                     }
                 }
 
-                temp.setPosition(intFinalX, intFinalY);
+                temp.setPosition(intFinalX*90, intFinalY*90);
                 chessPanel.repaint();
             }
         } else if(event == sendButton) {
@@ -71,6 +86,12 @@ public class ChessGame implements ActionListener {
             }
             chatArea.append("<" + strName + ">" + " " + chatField.getText() + "\n");
             chatField.setText("");
+        } else if(event == cancelButton || event == backButton) {
+            if(ssm != null) {
+                ssm.disconnect();
+            }
+
+            Utility.changePanel(new MainMenu().getMenuPanel());
         }
     }
 
@@ -81,7 +102,7 @@ public class ChessGame implements ActionListener {
     //constructor for testing
     public ChessGame() {
         //set true or false here to control the black or the white
-        chessPanel = new BoardAnimation(false);
+        chessPanel = new BoardAnimation(true);
         chessPanel.setPreferredSize(new Dimension(1280,720));
         chessPanel.setBackground(Color.BLACK);
         chessPanel.initializeGame();
@@ -93,16 +114,25 @@ public class ChessGame implements ActionListener {
         blnServer = true;
         this.strName = strName;
         chessPanel = new BoardAnimation(true);
+        chessPanel.setLayout(null);
         chessPanel.setPreferredSize(new Dimension(1280,720));
         chessPanel.setBackground(Color.BLACK);
         //TODO: get port from settings later
         ssm = new SuperSocketMaster(6969, this);
         ssm.connect();
 
-        waitingLabel.setSize(300, 100);
-        waitingLabel.setLocation(400, 400);
+        waitingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        waitingLabel.setVerticalAlignment(SwingConstants.CENTER);
+        waitingLabel.setSize(600, 100);
+        waitingLabel.setLocation(340, 250);
         Utility.setLabelStyle(waitingLabel, 40);
         chessPanel.add(waitingLabel);
+
+        cancelButton.setSize(300, 100);
+        cancelButton.setLocation(490, 350);
+        cancelButton.addActionListener(this);
+        Utility.setButtonStyle(cancelButton, 20);
+        chessPanel.add(cancelButton);
     }
 
     //TODO: figure out what to do if someone disconnects in the middle of a game
@@ -141,11 +171,13 @@ public class ChessGame implements ActionListener {
         chatArea.setFont(Utility.getFont().deriveFont(Font.PLAIN, 16));
         chatArea.setBackground(Color.GRAY);
         chatArea.setForeground(Color.GREEN);
+        chatArea.setOpaque(true);
 
         chatField.setLocation(725, 695);
         chatField.setSize(450, 20);
         chatField.setFont(Utility.getFont().deriveFont(Font.PLAIN, 12));
         chatField.setBackground(Color.GRAY);
+        chatField.setOpaque(true);
         chatField.setForeground(Color.GREEN);
 
         sendButton.setLocation(1175, 695);
@@ -153,9 +185,15 @@ public class ChessGame implements ActionListener {
         sendButton.addActionListener(this);
         Utility.setButtonStyle(sendButton, 12);
 
+        backButton.setLocation(1175, 5);
+        backButton.setSize(100, 20);
+        backButton.addActionListener(this);
+        Utility.setButtonStyle(backButton, 12);
+
         chessPanel.add(chatScroll);
         chessPanel.add(chatField);
         chessPanel.add(sendButton);
+        chessPanel.add(backButton);
     }
 
     public JPanel getChessPanel() {

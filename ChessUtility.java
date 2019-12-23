@@ -198,8 +198,25 @@ public class ChessUtility {
     public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
         int intX = lastIndexX / 90;
         int intY = lastIndexY / 90;
-        ArrayList<int[]> legalRookMoves = new ArrayList<int[]>();
+        ArrayList<int[]> legalRookMoves = new ArrayList<>();
         legalRookMoves.addAll(checkFiles(intX, intY, blnWhite));
         return legalRookMoves;
+    }
+
+    public static ArrayList<int []> getLegalQueenMoves(int intLastX, int intLastY, boolean blnWhite) {
+        int intXIndex = intLastX/90;
+        int intYIndex = intLastY/90;
+        ArrayList<int []> legalQueenMoves = new ArrayList<>();
+        legalQueenMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
+        int[][] possibleMoves = {
+          {-1, 1}, // Upper left
+          {1, 1}, // Upper right
+          {1, -1}, // Botton right
+          {-1, -1} // Bottom left
+        };
+        for(int i = 0; i < possibleMoves.length; i++) {
+            legalQueenMoves.addAll(checkDiagonal(intXIndex, intYIndex, possibleMoves[i], blnWhite));
+        }
+        return legalQueenMoves;
     }
 }
