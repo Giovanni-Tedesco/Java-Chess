@@ -15,9 +15,23 @@ public class ChessGame implements ActionListener {
     private JButton backButton = new JButton("<- BACK");
     private JButton sendButton = new JButton("SEND");
     private JButton cancelButton = new JButton("CANCEL");
-    private String strName, strOpponentName;
+    private String strServerName = "", strClientName = "";
     private boolean blnServer, blnConnectionFailed = false;
     private BoardAnimation chessPanel;//= new BoardAnimation();
+
+    private JLabel serverName = new JLabel("White: ");
+    private JLabel serverPawns = new JLabel();
+    private JLabel serverRooks = new JLabel();
+    private JLabel serverKnights = new JLabel();
+    private JLabel serverBishops = new JLabel();
+    private JLabel serverQueen = new JLabel();
+
+    private JLabel clientName = new JLabel("Black: ");
+    private JLabel clientPawns = new JLabel();
+    private JLabel clientRooks = new JLabel();
+    private JLabel clientKnights = new JLabel();
+    private JLabel clientBishops = new JLabel();
+    private JLabel clientQueen = new JLabel();
 
     private JLabel waitingLabel = new JLabel("Waiting for the other player");
     @Override
@@ -26,17 +40,27 @@ public class ChessGame implements ActionListener {
         if(event == ssm) {
             String strMessage = ssm.readText();
             System.out.println(strMessage);
-            if(strMessage.equals("ping")) {
+            if(strMessage.contains("<") || strMessage.contains(">")) {
+                //chat message
+                chatArea.append(strMessage + "\n");
+            } else if(strMessage.contains("ping")) {
+                String [] strClientStart = strMessage.split(",");
+                strClientName = strClientStart[1];
                 waitingLabel.setVisible(false);
                 cancelButton.setVisible(false);
                 chessPanel.remove(waitingLabel);
                 chessPanel.remove(cancelButton);
+                initializeNameLabels();
+                clientName.setText("Black: " + strClientName);
                 initializeChat();
                 chessPanel.initializeGame();
                 chessPanel.repaint();
-            } else if(strMessage.contains("<") || strMessage.contains(">")) {
-                //chat message
-                chatArea.append(strMessage + "\n");
+                //server sends connect confirmation along with name to client
+                sendConnectMessage(true, strServerName);
+            } else if(strMessage.contains("pong")) {
+                String [] strServerStart = strMessage.split(",");
+                strServerName = strServerStart[1];
+                serverName.setText("White: " + strServerName);
             } else if(strMessage.contains(",")) {
                 chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
@@ -68,8 +92,6 @@ public class ChessGame implements ActionListener {
                     }
                 }
 
-                //chessBoard.capturePiece(intFinalX, intFinalY);
-
                 for(Piece p : chessBoard.pieces) {
                     if(p.intXPos / 90 == intX && p.intYPos / 90 == intY) {
                         temp = p;
@@ -77,14 +99,17 @@ public class ChessGame implements ActionListener {
                     }
                 }
 
+                chessPanel.updateCaptures();
+
                 temp.setPosition(intFinalX*90, intFinalY*90);
                 chessPanel.repaint();
             }
         } else if(event == sendButton) {
+            String strChatName = blnServer?strServerName:strClientName;
             if(ssm != null) {
-                ssm.sendText("<" + strName + ">" + " " + chatField.getText());
+                ssm.sendText("<" + strChatName + ">" + " " + chatField.getText());
             }
-            chatArea.append("<" + strName + ">" + " " + chatField.getText() + "\n");
+            chatArea.append("<" + strChatName + ">" + " " + chatField.getText() + "\n");
             chatField.setText("");
         } else if(event == cancelButton || event == backButton) {
             if(ssm != null) {
@@ -112,7 +137,7 @@ public class ChessGame implements ActionListener {
     //constructor for the server game instance
     public ChessGame(String strName) {
         blnServer = true;
-        this.strName = strName;
+        strServerName = strName;
         chessPanel = new BoardAnimation(true);
         chessPanel.setLayout(null);
         chessPanel.setPreferredSize(new Dimension(1280,720));
@@ -140,21 +165,16 @@ public class ChessGame implements ActionListener {
     public ChessGame(String strName, String strIp, int intPort) {
         //probably set this property in chess panel later
         blnServer = false;
-        this.strName = strName;
+        strClientName = strName;
         chessPanel = new BoardAnimation(false);
         chessPanel.setPreferredSize(new Dimension(1280,720));
         chessPanel.setBackground(Color.BLACK);
         ssm = new SuperSocketMaster(strIp, intPort, this);
         if(ssm.connect()) {
-            try {
-                Thread.sleep(10);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println("ping");
-            //send name later as well so that the server will know the client name
-            ssm.sendText("ping");
+            //client sends connect confirmation along with name
+            sendConnectMessage(false, strName);
             initializeChat();
+            initializeNameLabels();
             chessPanel.initializeGame();
             chessPanel.repaint();
             blnConnectionFailed = false;
@@ -194,6 +214,36 @@ public class ChessGame implements ActionListener {
         chessPanel.add(chatField);
         chessPanel.add(sendButton);
         chessPanel.add(backButton);
+    }
+
+    private void initializeNameLabels() {
+        serverName.setSize(300, 50);
+        serverName.setLocation(725, 5);
+        Utility.setLabelStyle(serverName, 14);
+
+        clientName.setSize(300, 50);
+        clientName.setLocation(725, 200);
+        Utility.setLabelStyle(clientName, 14);
+
+        serverName.setText("White: " + strServerName);
+        clientName.setText("Black: " + strClientName);
+
+        chessPanel.add(serverName);
+        chessPanel.add(clientName);
+    }
+
+    private void sendConnectMessage(boolean blnIsServer, String strName) {
+        String strConnect = blnIsServer?"pong":"ping";
+        try {
+            Thread.sleep(10);
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(ssm != null) {
+            System.out.println(strConnect + "," + strName);
+            ssm.sendText(strConnect + "," + strName);
+        }
     }
 
     public JPanel getChessPanel() {

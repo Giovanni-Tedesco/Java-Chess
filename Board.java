@@ -18,6 +18,18 @@ public class Board {
     public ArrayList<Piece> pieces = new ArrayList<Piece>();
     public ArrayList<Piece> captured = new ArrayList<Piece>();
 
+    public int capturedPieceCount(boolean blnColor, int intPiece) {
+        int intPieceCount = 0;
+
+        for(Piece p : captured) {
+            if(p.blnColor != blnColor && p.intPiece == intPiece) {
+                intPieceCount++;
+            }
+        }
+
+        return intPieceCount;
+    }
+
     public int roundDown(int n, int m) {
         return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
     }

@@ -24,6 +24,10 @@ public class BoardAnimation extends JPanel {
     private static Board chessBoard;
     private boolean pressed = false;
     private Piece temp = null;
+    //{queen, rook, bishop, knight, pawn}
+    //{4,1,3,2,6}
+    private JLabel [] serverCaptureLabels = new JLabel[5];
+    private JLabel [] clientCaptureLabels = new JLabel[5];
 
     public void changeTurn() {
         blnTurn = !blnTurn;
@@ -34,6 +38,37 @@ public class BoardAnimation extends JPanel {
         chessBoard = new Board(blnServer);
         addMouseListener(new MyMouseAdaptor());
         addMouseMotionListener(new MyMouseAdaptor());
+        initializeCaptureLabels();
+    }
+
+    private void initializeCaptureLabels() {
+        for(int i = 0; i < serverCaptureLabels.length; i++) {
+            serverCaptureLabels[i] = new JLabel("0");
+            Utility.setLabelStyle(serverCaptureLabels[i], 18);
+            serverCaptureLabels[i].setSize(60,20);
+            serverCaptureLabels[i].setLocation(800 + (i*80), 190);
+            serverCaptureLabels[i].setHorizontalAlignment(SwingConstants.CENTER);
+            serverCaptureLabels[i].setVerticalAlignment(SwingConstants.CENTER);
+            add(serverCaptureLabels[i]);
+        }
+
+        for(int i = 0; i < clientCaptureLabels.length; i++) {
+            clientCaptureLabels[i] = new JLabel("0");
+            Utility.setLabelStyle(clientCaptureLabels[i], 18);
+            clientCaptureLabels[i].setSize(60,20);
+            clientCaptureLabels[i].setLocation(800 + (i*80), 390);
+            clientCaptureLabels[i].setHorizontalAlignment(SwingConstants.CENTER);
+            clientCaptureLabels[i].setVerticalAlignment(SwingConstants.CENTER);
+            add(clientCaptureLabels[i]);
+        }
+    }
+
+    public void updateCaptures() {
+        int [] intPieces = {4,1,3,2,6};
+        for(int i = 0; i < 5; i++) {
+            serverCaptureLabels[i].setText(chessBoard.capturedPieceCount(true, intPieces[i]) + "");
+            clientCaptureLabels[i].setText(chessBoard.capturedPieceCount(false, intPieces[i]) + "");
+        }
     }
 
     public static Board getBoard() {
@@ -56,6 +91,21 @@ public class BoardAnimation extends JPanel {
         }
     }
 
+    //TODO: draw the images later
+    private void drawCapturedPieces(Graphics g) {
+        g.setColor(Color.BLUE);
+
+        for(int i = 0; i < 5; i++) {
+            g.fillRect(800 + (i * 80), 50, 60, 120);
+        }
+
+        g.setColor(Color.PINK);
+
+        for(int i = 0; i < 5; i++) {
+            g.fillRect(800 + (i * 80), 250, 60, 120);
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -64,6 +114,7 @@ public class BoardAnimation extends JPanel {
             drawPieces(g);
             g.setColor(Color.WHITE);
             g.drawLine(720, 0, 720, 720);
+            drawCapturedPieces(g);
         }
     }
 
@@ -79,7 +130,6 @@ public class BoardAnimation extends JPanel {
         blnTurn = blnIsServer;
     }
 
-    //TODO: make sure that a player cannot move other person's pieces
     private class MyMouseAdaptor extends MouseAdapter {
 
         @Override
@@ -111,6 +161,7 @@ public class BoardAnimation extends JPanel {
             pressed = false;
             if(temp != null && blnTurn) {
                 if(chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 90), chessBoard.roundDown(evt.getY(), 90))) {
+                    updateCaptures();
                     changeTurn();
                 }
                 repaint();
