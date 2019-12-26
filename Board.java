@@ -184,7 +184,7 @@ public class Board {
             pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
                 if(blnPromotion) {
-                    ssm.sendText(result + "," + blnServer);
+                    ssm.sendText(result + ",promotion");
                 } else {
                     ssm.sendText(result);
                 }
@@ -202,7 +202,7 @@ public class Board {
             pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
                 if(blnPromotion) {
-                    ssm.sendText(result + "," + blnServer);
+                    ssm.sendText(result + ",promotion");
                 } else {
                     ssm.sendText(result);
                 }
@@ -219,7 +219,7 @@ public class Board {
             pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
                 if(blnPromotion) {
-                    ssm.sendText(result + "," + blnServer);
+                    ssm.sendText(result + ",promotion");
                 } else {
                     ssm.sendText(result);
                 }

@@ -98,10 +98,10 @@ public class ChessGame implements ActionListener {
 
                 if(strMove.length == 3) {
                     chessPanel.changeTurn();
-                    if(strMove[2].equals("true")) {
-                        chessPanel.serverInfoLabel.setText("PROMOTION IN PROGRESS");
-                    } else {
+                    if(blnServer) {
                         chessPanel.clientInfoLabel.setText("PROMOTION IN PROGRESS");
+                    } else {
+                        chessPanel.serverInfoLabel.setText("PROMOTION IN PROGRESS");
                     }
                 }
 
@@ -135,7 +135,7 @@ public class ChessGame implements ActionListener {
 
                 chessPanel.updateCaptures();
                 if(temp != null) {
-                    temp.setPosition(intFinalX*90, intFinalY*90);                    
+                    temp.setPosition(intFinalX*90, intFinalY*90);
                 }
                 chessPanel.repaint();
             }
