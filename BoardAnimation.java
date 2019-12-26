@@ -171,8 +171,11 @@ public class BoardAnimation extends JPanel {
             int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             int intXIndex = blnServer?intXPos/90:7-(intXPos/90);
             int intYIndex = blnServer?intYPos/90:7-(intYPos/90);
-            boolean blnInBounds = intXPos/90 >= 0 && intXPos/90 < 8 && intYPos/90 >= 0 && intYPos/90 < 8;
-            if(blnTurn && blnInBounds && !chessBoard.promotionInProgress() && chessBoard.getPiece(intXIndex, intYIndex) != 0) {
+            boolean blnInBounds = intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
+            boolean blnCorrectColor = blnInBounds?(chessBoard.isWhite(intXIndex, intYIndex) && blnServer)
+                                            || (!chessBoard.isWhite(intXIndex, intYIndex) && !blnServer):false;
+            if(blnTurn && blnInBounds && !chessBoard.promotionInProgress()
+            && chessBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
                 for(int i = 0; i < chessBoard.pieces.size(); i++){
                     if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
                     && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90)
