@@ -21,18 +21,18 @@ public class ChessUtility {
           tempX += moveRules[0];
           tempY += moveRules[1];
           continue;
-        }
-        else if(BoardAnimation.getBoard().getPiece(tempX, tempY) != 0){
-            if((blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY)) || (!blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY))) {
+      } else if(BoardAnimation.getBoard().getPiece(blnWhite?tempX:7-tempX, blnWhite?tempY:7-tempY) != 0) {
+            if((blnWhite && BoardAnimation.getBoard().isWhite(blnWhite?tempX:7-tempX, blnWhite?tempY:7-tempY))
+            || (!blnWhite && !BoardAnimation.getBoard().isWhite(blnWhite?tempX:7-tempX, blnWhite?tempY:7-tempY))) {
                 break;
-            } else if((blnWhite && !BoardAnimation.getBoard().isWhite(tempX, tempY)) || (!blnWhite && BoardAnimation.getBoard().isWhite(tempX, tempY))) {
+            } else if((blnWhite && !BoardAnimation.getBoard().isWhite(blnWhite?tempX:7-tempX, blnWhite?tempY:7-tempY))
+            || (!blnWhite && BoardAnimation.getBoard().isWhite(blnWhite?tempX:7-tempX, blnWhite?tempY:7-tempY))) {
                 moves.add(new int[] {tempX, tempY});
                 break;
             } else {
                 moves.add(new int[] {tempX, tempY});
             }
-        }
-        else {
+        } else {
           moves.add(new int[] {tempX, tempY});
         }
 
@@ -42,6 +42,88 @@ public class ChessUtility {
 
       return moves;
     }
+
+
+    private static ArrayList<int[]> checkFiles(int intX, int intY, boolean blnWhite) {
+        ArrayList<int[]> fileMoves = new ArrayList<>();
+        Board chessBoard = BoardAnimation.getBoard();
+
+        //Check in x+ direction
+        for(int i = intX; i < 8; i++){
+            if(i == intX) continue;
+            if(BoardAnimation.getBoard().getPiece(blnWhite?i:7-i, blnWhite?intY:7-intY) != 0) {
+                if((blnWhite && chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))
+                 || (!blnWhite && !chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))
+                || (!blnWhite && chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))) {
+                    fileMoves.add(new int[] {i, intY});
+                    break;
+                } else {
+                    fileMoves.add(new int[] {i, intY});
+                }
+            } else {
+                fileMoves.add(new int[] {i, intY});
+            }
+        }
+        //Check in x- direction
+        for(int i = intX; i >= 0; i--) {
+            if(i == intX) continue;
+            if(BoardAnimation.getBoard().getPiece(blnWhite?i:7-i, blnWhite?intY:7-intY) != 0) {
+                if((blnWhite && chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))
+                || (!blnWhite && !chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))
+                || (!blnWhite && chessBoard.isWhite(blnWhite?i:7-i, blnWhite?intY:7-intY))) {
+                    fileMoves.add(new int[] {i, intY});
+                    break;
+                } else {
+                    fileMoves.add(new int[] {i, intY});
+                }
+            } else {
+                fileMoves.add(new int[] {i, intY});
+            }
+        }
+        //Check in y+ direction
+        for(int i = intY; i < 8; i++){
+            if(i == intY) continue;
+            if(BoardAnimation.getBoard().getPiece(blnWhite?intX:7-intX, blnWhite?i:7-i) != 0) {
+                if((blnWhite && chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))
+                 || (!blnWhite && !chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))
+                 || (!blnWhite && chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))) {
+                    fileMoves.add(new int[] {intX, i});
+                    break;
+                } else {
+                    fileMoves.add(new int[] {intX, i});
+                }
+            } else {
+                fileMoves.add(new int[] {intX, i});
+            }
+        }
+        //Check in y- direction
+        for(int i = intY; i >= 0; i--) {
+            if(i == intY) continue;
+            if(BoardAnimation.getBoard().getPiece(blnWhite?intX:7-intX, blnWhite?i:7-i) != 0) {
+                if((blnWhite && chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))
+                 || (!blnWhite && !chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))) {
+                    break;
+                } else if((blnWhite && !chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))
+                 || (!blnWhite && chessBoard.isWhite(blnWhite?intX:7-intX, blnWhite?i:7-i))) {
+                    fileMoves.add(new int[] {intX, i});
+                    break;
+                } else {
+                    fileMoves.add(new int[] {intX, i});
+                }
+            } else {
+                fileMoves.add(new int[] {intX, i});
+            }
+        }
+
+        return fileMoves;
+    }
+
 
     public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, boolean blnColour,int intLastX, int intLastY) {
         ArrayList<int []> legalPawnMoves = new ArrayList<int []>();
@@ -82,6 +164,7 @@ public class ChessUtility {
     //
     // }
 
+    //TODO:king should not be able to move to spots with pieces unless it is capturing
     public static ArrayList<int []> getLegalKingMoves(boolean blnInCheck, int lastIndexX, int lastIndexY){
         ArrayList<int[]> legalKingMoves = new ArrayList<int[]>();
 
@@ -103,9 +186,9 @@ public class ChessUtility {
         return legalKingMoves;
     }
 
-    public static ArrayList<int[]> getLegalBishopMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
-      int intX = lastIndexX / 90;
-      int intY = lastIndexY / 90;
+    public static ArrayList<int[]> getLegalBishopMoves(int intLastX, int intLastY, boolean blnWhite){
+        int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
+        int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
 
       int[][] possibleMoves = {
         {-1, 1}, // Upper left
@@ -116,96 +199,23 @@ public class ChessUtility {
 
       ArrayList<int[]> legalBishopMoves = new ArrayList<int[]>();
       for(int i = 0; i < possibleMoves.length; i++) {
-          legalBishopMoves.addAll(checkDiagonal(intX, intY, possibleMoves[i], blnWhite));
+          legalBishopMoves.addAll(checkDiagonal(intXIndex, intYIndex, possibleMoves[i], blnWhite));
       }
 
       return legalBishopMoves;
     }
 
-    private static ArrayList<int[]> checkFiles(int intX, int intY, boolean blnWhite) {
-        ArrayList<int[]> fileMoves = new ArrayList<>();
-        Board chessBoard = BoardAnimation.getBoard();
-
-         //Check in x+ direction
-        for(int i = intX; i < 8; i++){
-            if(i == intX) continue;
-            if(BoardAnimation.getBoard().getPiece(i, intY) != 0) {
-                if((blnWhite && chessBoard.isWhite(i, intY)) || (!blnWhite && !chessBoard.isWhite(i, intY))) {
-                    break;
-                } else if((blnWhite && !chessBoard.isWhite(i, intY)) || (!blnWhite && chessBoard.isWhite(i, intY))) {
-                    fileMoves.add(new int[] {i, intY});
-                    break;
-                } else {
-                    fileMoves.add(new int[] {i, intY});
-                }
-            } else {
-                fileMoves.add(new int[] {i, intY});
-            }
-        }
-        //Check in x- direction
-        for(int i = intX; i >= 0; i--) {
-            if(i == intX) continue;
-            if(BoardAnimation.getBoard().getPiece(i, intY) != 0) {
-                if((blnWhite && chessBoard.isWhite(i, intY)) || (!blnWhite && !chessBoard.isWhite(i, intY))) {
-                    break;
-                } else if((blnWhite && !chessBoard.isWhite(i, intY)) || (!blnWhite && chessBoard.isWhite(i, intY))) {
-                    fileMoves.add(new int[] {i, intY});
-                    break;
-                } else {
-                    fileMoves.add(new int[] {i, intY});
-                }
-            } else {
-                fileMoves.add(new int[] {i, intY});
-            }
-        }
-        //Check in y+ direction
-        for(int i = intY; i < 8; i++){
-            if(i == intY) continue;
-            if(BoardAnimation.getBoard().getPiece(intX, i) != 0) {
-                if((blnWhite && chessBoard.isWhite(intX, i)) || (!blnWhite && !chessBoard.isWhite(intX, i))) {
-                    break;
-                } else if((blnWhite && !chessBoard.isWhite(intX, i)) || (!blnWhite && chessBoard.isWhite(intX, i))) {
-                    fileMoves.add(new int[] {intX, i});
-                    break;
-                } else {
-                    fileMoves.add(new int[] {intX, i});
-                }
-            } else {
-                fileMoves.add(new int[] {intX, i});
-            }
-        }
-
-        //Check in y- direction
-        for(int i = intY; i >= 0; i--) {
-            if(i == intY) continue;
-            if(BoardAnimation.getBoard().getPiece(intX, i) != 0) {
-                if((blnWhite && chessBoard.isWhite(intX, i)) || (!blnWhite && !chessBoard.isWhite(intX, i))) {
-                    break;
-                } else if((blnWhite && !chessBoard.isWhite(intX, i)) || (!blnWhite && chessBoard.isWhite(intX, i))) {
-                    fileMoves.add(new int[] {intX, i});
-                    break;
-                } else {
-                    fileMoves.add(new int[] {intX, i});
-                }
-            } else {
-                fileMoves.add(new int[] {intX, i});
-            }
-        }
-
-        return fileMoves;
-    }
-
-    public static ArrayList<int []> getLegalRookMoves(int lastIndexX, int lastIndexY, boolean blnWhite){
-        int intX = lastIndexX / 90;
-        int intY = lastIndexY / 90;
+    public static ArrayList<int []> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite){
+        int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
+        int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
         ArrayList<int[]> legalRookMoves = new ArrayList<>();
-        legalRookMoves.addAll(checkFiles(intX, intY, blnWhite));
+        legalRookMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
         return legalRookMoves;
     }
 
     public static ArrayList<int []> getLegalQueenMoves(int intLastX, int intLastY, boolean blnWhite) {
-        int intXIndex = intLastX/90;
-        int intYIndex = intLastY/90;
+        int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
+        int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
         ArrayList<int []> legalQueenMoves = new ArrayList<>();
         legalQueenMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
         int[][] possibleMoves = {

@@ -13,7 +13,7 @@ class ConnectPlayer2 implements ActionListener {
     private boolean blnServer, blnWrongPort = false, blnError;
     private JPanel connectPanel2 = new JPanel(null);
 
-    private JButton backButton = new JButton("<- BACK");
+    private JButton backButton = new JButton("BACK");
     private JButton startServerButton = new JButton("START SERVER");
     private JButton joinServerButton = new JButton("CONNECT TO SERVER");
 

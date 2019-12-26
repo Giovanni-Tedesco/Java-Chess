@@ -44,6 +44,8 @@ public class Piece {
     }
 
     public boolean isLegalMove(boolean blnHasPiece) {
+        //int intXIndex = blnColor?intXPos/90:7-(intXPos/90);
+        //int intYIndex = blnColor?intYPos/90:7-(intYPos/90);
         int [] position = {(intXPos/90),(intYPos/90)};
         if(intPiece == 6) {
             ArrayList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, blnColor,intLastX, intLastY);

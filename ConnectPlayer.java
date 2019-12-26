@@ -6,7 +6,7 @@ import javax.swing.event.*;
 public class ConnectPlayer implements ActionListener {
     private JPanel connectPanel = new JPanel(null);
     private JButton testButton = new JButton("test");
-    private JButton backButton = new JButton("<- BACK");
+    private JButton backButton = new JButton("BACK");
     private JButton serverButton = new JButton("HOST GAME");
     private JButton clientButton = new JButton("JOIN GAME");
 
@@ -28,24 +28,24 @@ public class ConnectPlayer implements ActionListener {
         connectPanel.setBackground(Color.BLACK);
         connectPanel.setPreferredSize(Utility.panelDimensions);
 
-        //tegmporary
-        testButton.setSize(100, 25);
-        testButton.setLocation(190, 20);
-        testButton.addActionListener(this);
-        Utility.setButtonStyle(testButton, 12);
+        //temporary
+        //testButton.setSize(100, 25);
+        //testButton.setLocation(190, 20);
+        //testButton.addActionListener(this);
+        //Utility.setButtonStyle(testButton, 12);
 
         backButton.setSize(100, 25);
         backButton.setLocation(30, 20);
         backButton.addActionListener(this);
         Utility.setButtonStyle(backButton, 12);
 
-        serverButton.setSize(1220, 300);
-        serverButton.setLocation(30, 60);
+        serverButton.setSize(595, 600);
+        serverButton.setLocation(30, 70);
         serverButton.addActionListener(this);
         Utility.setButtonStyle(serverButton, 24);
 
-        clientButton.setSize(1220, 300);
-        clientButton.setLocation(30, 390);
+        clientButton.setSize(595, 600);
+        clientButton.setLocation(655, 70);
         clientButton.addActionListener(this);
         Utility.setButtonStyle(clientButton, 24);
 
