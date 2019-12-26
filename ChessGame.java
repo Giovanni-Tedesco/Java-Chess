@@ -61,6 +61,31 @@ public class ChessGame implements ActionListener {
                 String [] strServerStart = strMessage.split(",");
                 strServerName = strServerStart[1];
                 serverName.setText("White: " + strServerName);
+            } else if(strMessage.contains("promotion over")) {
+                chessPanel.changeTurn();
+                String [] strPromote = strMessage.split(",");
+                Board chessBoard = BoardAnimation.getBoard();
+                int intXIndex = Integer.parseInt(strPromote[1]);
+                int intYIndex = Integer.parseInt(strPromote[2]);
+                int intXPos = blnServer?intXIndex*90:(7-intXIndex)*90;
+                int intYPos = blnServer?intYIndex*90:(7-intYIndex)*90;
+                Piece piece = new Piece(intXPos, intYPos, Boolean.parseBoolean(strPromote[3]), Integer.parseInt(strPromote[4]));
+                chessBoard.setPiece(intXIndex, intYIndex, piece.blnColor?Integer.parseInt(strPromote[4]):-Integer.parseInt(strPromote[4]));
+                for(int i = 0; i < chessBoard.pieces.size(); i++) {
+                    if(chessBoard.pieces.get(i).intXPos == intXPos && chessBoard.pieces.get(i).intYPos == intYPos && chessBoard.pieces.get(i).intPiece == 6) {
+                        System.out.println("GOT HERE X:" + intXPos + " Y: " + intYPos);
+                        chessBoard.pieces.remove(i);
+                        chessBoard.pieces.add(piece);
+                        break;
+                    }
+                }
+
+                System.out.println("AFTER PROMOTION");
+                chessBoard.printCharboard();
+
+                chessPanel.repaint();
+                chessPanel.serverInfoLabel.setText("CAPTURED PIECES");
+                chessPanel.clientInfoLabel.setText("CAPTURED PIECES");
             } else if(strMessage.contains(",")) {
                 chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
@@ -70,6 +95,15 @@ public class ChessGame implements ActionListener {
                 Point finalPos = chessBoard.coordToLoc(strMove[1]);
                 Piece temp = null;
                 int intX, intY, intFinalX, intFinalY;
+
+                if(strMove.length == 3) {
+                    chessPanel.changeTurn();
+                    if(strMove[2].equals("true")) {
+                        chessPanel.serverInfoLabel.setText("PROMOTION IN PROGRESS");
+                    } else {
+                        chessPanel.clientInfoLabel.setText("PROMOTION IN PROGRESS");
+                    }
+                }
 
                 if(blnServer) {
                     intX = initPos.x;
@@ -100,8 +134,9 @@ public class ChessGame implements ActionListener {
                 }
 
                 chessPanel.updateCaptures();
-
-                temp.setPosition(intFinalX*90, intFinalY*90);
+                if(temp != null) {
+                    temp.setPosition(intFinalX*90, intFinalY*90);                    
+                }
                 chessPanel.repaint();
             }
         } else if(event == sendButton) {
@@ -217,12 +252,12 @@ public class ChessGame implements ActionListener {
     }
 
     private void initializeNameLabels() {
-        serverName.setSize(300, 50);
+        serverName.setSize(300, 20);
         serverName.setLocation(725, 5);
         Utility.setLabelStyle(serverName, 14);
 
-        clientName.setSize(300, 50);
-        clientName.setLocation(725, 200);
+        clientName.setSize(300, 20);
+        clientName.setLocation(725, 210);
         Utility.setLabelStyle(clientName, 14);
 
         serverName.setText("White: " + strServerName);

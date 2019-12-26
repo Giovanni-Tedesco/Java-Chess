@@ -4,6 +4,8 @@ public class Board {
     //Will be used later for networking
     //set to true to let white capture black, and vice versa
     private boolean blnServer;
+    //used to check if game is in promotion state, user can choose a piece tp replace pawn
+    private boolean blnPromotion;
     private int [][] chessBoard = {
         {-1,-2,-3,-4,-5,-3,-2,-1},
         {-6,-6,-6,-6,-6,-6,-6,-6},
@@ -15,8 +17,20 @@ public class Board {
         {1, 2, 3, 4, 5, 3, 2, 1 },
     };
 
-    public ArrayList<Piece> pieces = new ArrayList<Piece>();
-    public ArrayList<Piece> captured = new ArrayList<Piece>();
+    public ArrayList<Piece> pieces = new ArrayList<>();
+    public ArrayList<Piece> captured = new ArrayList<>();
+    private ArrayList<Piece> whitePromotion = new ArrayList<>();
+    private ArrayList<Piece> blackPromotion = new ArrayList<>();
+
+    private Piece pieceToPromote = null;
+
+    public Piece getPieceToPromote() {
+        return pieceToPromote;
+    }
+
+    public ArrayList<Piece> getPromotionChoices(boolean blnServer) {
+        return blnServer?whitePromotion:blackPromotion;
+    }
 
     public int capturedPieceCount(boolean blnColor, int intPiece) {
         int intPieceCount = 0;
@@ -34,7 +48,7 @@ public class Board {
         return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
     }
 
-    private void printCharboard(){
+    public void printCharboard(){
         for(int i = 0; i < chessBoard.length; i++) {
             for(int j = 0; j < chessBoard[0].length; j++) {
                 System.out.print(chessBoard[i][j]);
@@ -133,6 +147,10 @@ public class Board {
         return chessBoard[intYIndex][intXIndex];
     }
 
+    public void setPiece(int intXIndex, int intYIndex, int intPiece) {
+        chessBoard[intYIndex][intXIndex] = intPiece;
+    }
+
     //TODO: Implement captures. Remove pieces and add pieces to captured list. Update array as well
     //return true if move was succesful
     public boolean executeMove(Piece piece, int intXPos, int intYPos) {
@@ -162,8 +180,14 @@ public class Board {
             printCharboard();
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
+            blnPromotion = promotable(piece);
+            pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
-                ssm.sendText(result);
+                if(blnPromotion) {
+                    ssm.sendText(result + "," + blnServer);
+                } else {
+                    ssm.sendText(result);
+                }
             }
             return true;
         } else if(!blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0) {
@@ -174,8 +198,14 @@ public class Board {
             printCharboard();
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
+            blnPromotion = promotable(piece);
+            pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
-                ssm.sendText(result);
+                if(blnPromotion) {
+                    ssm.sendText(result + "," + blnServer);
+                } else {
+                    ssm.sendText(result);
+                }
             }
             return true;
         } else {
@@ -185,12 +215,53 @@ public class Board {
             printCharboard();
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;
+            blnPromotion = promotable(piece);
+            pieceToPromote = blnPromotion?piece:null;
             if(ssm != null) {
-                ssm.sendText(result);
+                if(blnPromotion) {
+                    ssm.sendText(result + "," + blnServer);
+                } else {
+                    ssm.sendText(result);
+                }
             }
             return true;
         }
 
+    }
+
+    private boolean promotable(Piece piece) {
+        int intXIndex = blnServer?piece.intXPos/90:7-(piece.intXPos/90);
+        int intYIndex = blnServer?piece.intYPos/90:7-(piece.intYPos/90);
+
+        return blnServer? piece.intPiece == 6 && intYIndex == 0 && (intXIndex >= 0 && intXIndex <= 7) :
+                        piece.intPiece == 6 && intYIndex == 7 && (intXIndex >= 0 && intXIndex <= 7);
+    }
+
+    public boolean promotionInProgress() {
+        return blnPromotion;
+    }
+
+    public void promotePiece(Piece piece) {
+        Piece newPiece = piece;
+        newPiece.setPosition(pieceToPromote.intXPos, pieceToPromote.intYPos);
+        for(int i = 0; i < pieces.size(); i++) {
+            if(pieces.get(i).intXPos == newPiece.intXPos && pieces.get(i).intYPos == newPiece.intYPos && pieces.get(i).intPiece == 6) {
+                System.out.println("GOT HERE");
+                pieces.remove(i);
+                pieces.add(newPiece);
+                break;
+            }
+        }
+
+        int intXIndex = blnServer?newPiece.intXPos/90:7-(newPiece.intXPos/90);
+        int intYIndex = blnServer?newPiece.intYPos/90:7-(newPiece.intYPos/90);
+
+        chessBoard[intYIndex][intXIndex] = newPiece.blnColor?newPiece.intPiece:-newPiece.intPiece;
+        blnPromotion = false;
+        ChessGame.getNetwork().sendText("promotion over," + intXIndex + "," + intYIndex + "," + newPiece.blnColor + "," + newPiece.intPiece);
+
+        System.out.println("AFTER PROMOTION");
+        printCharboard();
     }
 
     public void capturePiece(int intXPos, int intYPos) {
@@ -212,6 +283,11 @@ public class Board {
     public Board(boolean blnServer) {
         this.blnServer = blnServer;
         initBoard();
+        int [] intPieces = {4,1,3,2,6};
+        for(int i = 0; i < 5; i++) {
+            whitePromotion.add(new Piece(800 + (i*80), 50, true, intPieces[i]));
+            blackPromotion.add(new Piece(800 + (i*80), 250, false, intPieces[i]));
+        }
     }
 
 }

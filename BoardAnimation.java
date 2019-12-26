@@ -28,6 +28,9 @@ public class BoardAnimation extends JPanel {
     //{4,1,3,2,6}
     private JLabel [] serverCaptureLabels = new JLabel[5];
     private JLabel [] clientCaptureLabels = new JLabel[5];
+    //used for labelling captures and whether it is promotion time
+    public JLabel serverInfoLabel = new JLabel("CAPTURED PIECES");
+    public JLabel clientInfoLabel = new JLabel("CAPTURED PIECES");
 
     public void changeTurn() {
         blnTurn = !blnTurn;
@@ -42,6 +45,12 @@ public class BoardAnimation extends JPanel {
     }
 
     private void initializeCaptureLabels() {
+        serverInfoLabel.setSize(200, 20);
+        serverInfoLabel.setLocation(900, 5);
+        serverInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        serverInfoLabel.setVerticalAlignment(SwingConstants.CENTER);
+        Utility.setLabelStyle(serverInfoLabel, 12);
+        add(serverInfoLabel);
         for(int i = 0; i < serverCaptureLabels.length; i++) {
             serverCaptureLabels[i] = new JLabel("0");
             Utility.setLabelStyle(serverCaptureLabels[i], 18);
@@ -52,6 +61,12 @@ public class BoardAnimation extends JPanel {
             add(serverCaptureLabels[i]);
         }
 
+        clientInfoLabel.setSize(200, 20);
+        clientInfoLabel.setLocation(900, 210);
+        clientInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        clientInfoLabel.setVerticalAlignment(SwingConstants.CENTER);
+        Utility.setLabelStyle(clientInfoLabel, 12);
+        add(clientInfoLabel);
         for(int i = 0; i < clientCaptureLabels.length; i++) {
             clientCaptureLabels[i] = new JLabel("0");
             Utility.setLabelStyle(clientCaptureLabels[i], 18);
@@ -133,8 +148,31 @@ public class BoardAnimation extends JPanel {
     private class MyMouseAdaptor extends MouseAdapter {
 
         @Override
+        public void mouseClicked(MouseEvent evt) {
+            if(blnTurn && chessBoard.promotionInProgress()) {
+                ArrayList<Piece> promotionChoices = chessBoard.getPromotionChoices(blnServer);
+                for(int i = 0; i < promotionChoices.size(); i++) {
+                    if((evt.getX() <= promotionChoices.get(i).intXPos + 60 && evt.getX() >= promotionChoices.get(i).intXPos)
+                    && (evt.getY() >= promotionChoices.get(i).intYPos && evt.getY() <= promotionChoices.get(i).intYPos + 120)) {
+                        chessBoard.promotePiece(promotionChoices.get(i));
+                        serverInfoLabel.setText("CAPTURED PIECES");
+                        clientInfoLabel.setText("CAPTURED PIECES");
+                        changeTurn();
+                        repaint();
+                        break;
+                    }
+                }
+            }
+        }
+
+        @Override
         public void mousePressed(MouseEvent evt) {
-            if(blnTurn) {
+            int intXPos = chessBoard.roundDown(evt.getX(), 90);
+            int intYPos =  chessBoard.roundDown(evt.getY(), 90);
+            int intXIndex = blnServer?intXPos/90:7-(intXPos/90);
+            int intYIndex = blnServer?intYPos/90:7-(intYPos/90);
+            boolean blnInBounds = intXPos/90 >= 0 && intXPos/90 < 8 && intYPos/90 >= 0 && intYPos/90 < 8;
+            if(blnTurn && blnInBounds && !chessBoard.promotionInProgress() && chessBoard.getPiece(intXIndex, intYIndex) != 0) {
                 for(int i = 0; i < chessBoard.pieces.size(); i++){
                     if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
                     && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90)
@@ -150,7 +188,7 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mouseDragged(MouseEvent evt) {
-            if(pressed && temp != null && blnTurn){
+            if(pressed && temp != null && blnTurn && !chessBoard.promotionInProgress()){
                 temp.setPosition(evt.getX(), evt.getY());
                 repaint();
             }
@@ -158,11 +196,22 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent evt) {
+            int intXPos = chessBoard.roundDown(evt.getX(), 90);
+            int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             pressed = false;
-            if(temp != null && blnTurn) {
-                if(chessBoard.executeMove(temp, chessBoard.roundDown(evt.getX(), 90), chessBoard.roundDown(evt.getY(), 90))) {
+            boolean blnInBounds = intXPos/90 >= 0 && intXPos/90 < 8 && intYPos/90 >= 0 && intYPos/90 < 8;
+            if(temp != null && blnTurn && blnInBounds && !chessBoard.promotionInProgress()) {
+                if(chessBoard.executeMove(temp, intXPos, intYPos)) {
                     updateCaptures();
-                    changeTurn();
+                    if(chessBoard.promotionInProgress()) {
+                        if(chessBoard.getPieceToPromote().blnColor) {
+                            serverInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
+                        } else {
+                            clientInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
+                        }
+                    } else {
+                        changeTurn();
+                    }
                 }
                 repaint();
             }
