@@ -258,7 +258,7 @@ public class Board {
 
         chessBoard[intYIndex][intXIndex] = newPiece.blnColor?newPiece.intPiece:-newPiece.intPiece;
         blnPromotion = false;
-        ChessGame.getNetwork().sendText("promotion over," + intXIndex + "," + intYIndex + "," + newPiece.blnColor + "," + newPiece.intPiece);
+        ChessGame.getNetwork().sendText("promotion over," + intXIndex + "," + intYIndex + "," + newPiece.intPiece);
 
         System.out.println("AFTER PROMOTION");
         printCharboard();

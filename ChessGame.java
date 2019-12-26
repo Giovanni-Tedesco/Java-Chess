@@ -69,8 +69,9 @@ public class ChessGame implements ActionListener {
                 int intYIndex = Integer.parseInt(strPromote[2]);
                 int intXPos = blnServer?intXIndex*90:(7-intXIndex)*90;
                 int intYPos = blnServer?intYIndex*90:(7-intYIndex)*90;
-                Piece piece = new Piece(intXPos, intYPos, Boolean.parseBoolean(strPromote[3]), Integer.parseInt(strPromote[4]));
-                chessBoard.setPiece(intXIndex, intYIndex, piece.blnColor?Integer.parseInt(strPromote[4]):-Integer.parseInt(strPromote[4]));
+
+                Piece piece = new Piece(intXPos, intYPos, !blnServer, Integer.parseInt(strPromote[3]));
+                chessBoard.setPiece(intXIndex, intYIndex, piece.blnColor?Integer.parseInt(strPromote[3]):-Integer.parseInt(strPromote[3]));
                 for(int i = 0; i < chessBoard.pieces.size(); i++) {
                     if(chessBoard.pieces.get(i).intXPos == intXPos && chessBoard.pieces.get(i).intYPos == intYPos && chessBoard.pieces.get(i).intPiece == 6) {
                         System.out.println("GOT HERE X:" + intXPos + " Y: " + intYPos);
