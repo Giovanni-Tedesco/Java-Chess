@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 public class Board {
     //Will be used later for networking
     //set to true to let white capture black, and vice versa
@@ -170,7 +171,7 @@ public class Board {
         boolean blnSamePieceBlack = !blnServer && !isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0;
 
         if(!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
-            piece.setPosition(piece.intLastX, piece.intLastY);
+            piece.goBack();
             return false;
         } else if(blnServer && !isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0) {
             //white captures black
@@ -244,10 +245,12 @@ public class Board {
     public void promotePiece(Piece piece) {
         Piece newPiece = piece;
         newPiece.setPosition(pieceToPromote.intXPos, pieceToPromote.intYPos);
-        for(int i = 0; i < pieces.size(); i++) {
-            if(pieces.get(i).intXPos == newPiece.intXPos && pieces.get(i).intYPos == newPiece.intYPos && pieces.get(i).intPiece == 6) {
+        Iterator<Piece> pieceIterator = pieces.iterator();
+        while(pieceIterator.hasNext()) {
+            Piece temp = pieceIterator.next();
+            if(temp.intXPos == newPiece.intXPos && temp.intYPos == newPiece.intYPos && temp.intPiece == 6) {
                 System.out.println("GOT HERE");
-                pieces.remove(i);
+                pieceIterator.remove();
                 pieces.add(newPiece);
                 break;
             }
@@ -265,11 +268,12 @@ public class Board {
     }
 
     public void capturePiece(int intXPos, int intYPos) {
-        for(int i = 0; i < pieces.size(); i++) {
-            Piece piece = pieces.get(i);
+        Iterator<Piece> pieceIterator = pieces.iterator();
+        while(pieceIterator.hasNext()) {
+            Piece piece = pieceIterator.next();
             if((piece.intXPos == intXPos && piece.intYPos == intYPos) && piece.blnColor != blnServer) {
                 captured.add(piece);
-                pieces.remove(i);
+                pieceIterator.remove();
             }
         }
     }

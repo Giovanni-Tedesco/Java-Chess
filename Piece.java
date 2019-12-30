@@ -43,6 +43,10 @@ public class Piece {
         intYPos = intPosY;
     }
 
+    public void goBack() {
+        setPosition(intLastX, intLastY);
+    }
+
     public boolean isLegalMove(boolean blnHasPiece) {
         //int intXIndex = blnColor?intXPos/90:7-(intXPos/90);
         //int intYIndex = blnColor?intYPos/90:7-(intYPos/90);

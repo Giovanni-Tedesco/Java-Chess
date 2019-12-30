@@ -146,15 +146,16 @@ public class BoardAnimation extends JPanel {
     }
 
     private class MyMouseAdaptor extends MouseAdapter {
+        private boolean blnWrongColor;
 
         @Override
         public void mouseClicked(MouseEvent evt) {
             if(blnTurn && chessBoard.promotionInProgress()) {
                 ArrayList<Piece> promotionChoices = chessBoard.getPromotionChoices(blnServer);
-                for(int i = 0; i < promotionChoices.size(); i++) {
-                    if((evt.getX() <= promotionChoices.get(i).intXPos + 60 && evt.getX() >= promotionChoices.get(i).intXPos)
-                    && (evt.getY() >= promotionChoices.get(i).intYPos && evt.getY() <= promotionChoices.get(i).intYPos + 120)) {
-                        chessBoard.promotePiece(promotionChoices.get(i));
+                for(Piece piece : promotionChoices) {
+                    if((evt.getX() <= piece.intXPos + 60 && evt.getX() >= piece.intXPos)
+                    && (evt.getY() >= piece.intYPos && evt.getY() <= piece.intYPos + 120)) {
+                        chessBoard.promotePiece(piece);
                         serverInfoLabel.setText("CAPTURED PIECES");
                         clientInfoLabel.setText("CAPTURED PIECES");
                         changeTurn();
@@ -167,6 +168,7 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent evt) {
+            blnWrongColor = false;
             int intXPos = chessBoard.roundDown(evt.getX(), 90);
             int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             int intXIndex = blnServer?intXPos/90:7-(intXPos/90);
@@ -174,18 +176,48 @@ public class BoardAnimation extends JPanel {
             boolean blnInBounds = intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
             boolean blnCorrectColor = blnInBounds?(chessBoard.isWhite(intXIndex, intYIndex) && blnServer)
                                             || (!chessBoard.isWhite(intXIndex, intYIndex) && !blnServer):false;
+
             if(blnTurn && blnInBounds && !chessBoard.promotionInProgress()
             && chessBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
-                for(int i = 0; i < chessBoard.pieces.size(); i++){
-                    if((evt.getX() <= chessBoard.pieces.get(i).intXPos + 90 && evt.getX() >= chessBoard.pieces.get(i).intXPos)
-                    && (evt.getY() >= chessBoard.pieces.get(i).intYPos && evt.getY() <= chessBoard.pieces.get(i).intYPos + 90)
-                    && pressed == false && chessBoard.pieces.get(i).blnColor == blnServer) {
+                for(Piece piece : chessBoard.pieces) {
+                    if((evt.getX() <= piece.intXPos + 90 && evt.getX() >= piece.intXPos)
+                    && (evt.getY() >= piece.intYPos && evt.getY() <= piece.intYPos + 90)
+                    && pressed == false && piece.blnColor == blnServer) {
                         pressed = true;
-                        temp = chessBoard.pieces.get(i);
+                        temp = piece;
                         temp.setPreviousPosition(temp.intXPos, temp.intYPos);
                         break;
                     }
                 }
+            } else if(blnTurn && blnInBounds && !chessBoard.promotionInProgress()
+            && chessBoard.getPiece(intXIndex, intYIndex) != 0 && !blnCorrectColor) {
+                //user clicks on the other side's piece
+                Timer labelTimer = null;
+                if(blnServer) {
+                    serverInfoLabel.setText("You can only move your own pieces");
+                    labelTimer = new Timer(3000, event -> serverInfoLabel.setText("CAPTURED PIECES"));
+                } else {
+                    clientInfoLabel.setText("You can only move your own pieces");
+                    labelTimer = new Timer(3000, event -> clientInfoLabel.setText("CAPTURED PIECES"));
+                }
+
+                blnWrongColor = true;
+
+                labelTimer.setRepeats(false);
+                labelTimer.start();
+            } else if(!blnTurn && blnInBounds && !chessBoard.promotionInProgress()
+            && chessBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
+                Timer labelTimer = null;
+                if(blnServer) {
+                    serverInfoLabel.setText("It is not your turn");
+                    labelTimer = new Timer(3000, event -> serverInfoLabel.setText("CAPTURED PIECES"));
+                } else {
+                    clientInfoLabel.setText("It is not your turn");
+                    labelTimer = new Timer(3000, event -> clientInfoLabel.setText("CAPTURED PIECES"));
+                }
+
+                labelTimer.setRepeats(false);
+                labelTimer.start();
             }
         }
 
@@ -203,7 +235,12 @@ public class BoardAnimation extends JPanel {
             int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             pressed = false;
             boolean blnInBounds = intXPos/90 >= 0 && intXPos/90 < 8 && intYPos/90 >= 0 && intYPos/90 < 8;
-            if(temp != null && blnTurn && blnInBounds && !chessBoard.promotionInProgress()) {
+            if(!blnTurn || blnWrongColor) {
+                return;
+            } else if(temp != null && blnTurn && !blnInBounds && !chessBoard.promotionInProgress()) {
+                //placing outside the board
+                temp.goBack();
+            } else if(temp != null && blnTurn && blnInBounds && !chessBoard.promotionInProgress()) {
                 if(chessBoard.executeMove(temp, intXPos, intYPos)) {
                     updateCaptures();
                     if(chessBoard.promotionInProgress()) {
@@ -216,8 +253,9 @@ public class BoardAnimation extends JPanel {
                         changeTurn();
                     }
                 }
-                repaint();
             }
+
+            repaint();
         }
     }
 }

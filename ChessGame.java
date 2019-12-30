@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import java.util.Iterator;
 
 //Class where the board is, the chat area is, and the captured piece display is
 public class ChessGame implements ActionListener {
@@ -72,10 +73,14 @@ public class ChessGame implements ActionListener {
 
                 Piece piece = new Piece(intXPos, intYPos, !blnServer, Integer.parseInt(strPromote[3]));
                 chessBoard.setPiece(intXIndex, intYIndex, piece.blnColor?Integer.parseInt(strPromote[3]):-Integer.parseInt(strPromote[3]));
-                for(int i = 0; i < chessBoard.pieces.size(); i++) {
-                    if(chessBoard.pieces.get(i).intXPos == intXPos && chessBoard.pieces.get(i).intYPos == intYPos && chessBoard.pieces.get(i).intPiece == 6) {
+
+                Iterator<Piece> pieceIterator = chessBoard.pieces.iterator();
+
+                while(pieceIterator.hasNext()) {
+                    Piece temp = pieceIterator.next();
+                    if(temp.intXPos == intXPos && temp.intYPos == intYPos && temp.intPiece == 6) {
                         System.out.println("GOT HERE X:" + intXPos + " Y: " + intYPos);
-                        chessBoard.pieces.remove(i);
+                        pieceIterator.remove();
                         chessBoard.pieces.add(piece);
                         break;
                     }
