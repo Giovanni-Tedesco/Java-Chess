@@ -59,38 +59,18 @@ public class Board {
     }
 
     private void initBoard(){
-        if(blnServer) {
-            for(int i = 0; i < 8; i++){
-                for(int j = 0; j < 8; j++){
-                    Piece p;
-                    int piece = chessBoard[i][j];
-                    if(piece > 0){
-                        p = new Piece(j * 90, i * 90, true, piece);
-                    } else if(piece < 0){
-                        p = new Piece(j * 90, i * 90, false, piece);
-                    } else {
-                        continue;
-                    }
-                    pieces.add(p);
+        for(int i = 0, i2 = 7; i < 8 ; i++, i2--){
+            for(int j = 0, j2 = 7; j < 8; j++, j2--){
+                Piece p;
+                int piece = chessBoard[i][j];
+                if(piece != 0){
+                    p = new Piece(blnServer?(j*90):(j2*90), blnServer?(i*90):(i2*90), piece > 0, piece);
+                } else {
+                    continue;
                 }
-            }
-        } else {
-            for(int i = 0, i2 = 7; i < 8 ; i++, i2--){
-                for(int j = 0, j2 = 7; j < 8; j++, j2--){
-                    Piece p;
-                    int piece = chessBoard[i][j];
-                    if(piece > 0){
-                        p = new Piece(j2 * 90, i2 * 90, true, piece);
-                    } else if(piece < 0){
-                        p = new Piece(j2 * 90, i2 * 90, false, piece);
-                    } else {
-                        continue;
-                    }
-                    pieces.add(p);
-                }
+                pieces.add(p);
             }
         }
-
     }
 
     public String toCoord(int x1, int y1, int x2, int y2){
@@ -152,7 +132,7 @@ public class Board {
         chessBoard[intYIndex][intXIndex] = intPiece;
     }
 
-    //TODO: Implement captures. Remove pieces and add pieces to captured list. Update array as well
+    //TODO: Clean this function up, the if statements have very similar code. Could probably be simplified
     //return true if move was succesful
     public boolean executeMove(Piece piece, int intXPos, int intYPos) {
         SuperSocketMaster ssm = ChessGame.getNetwork();
@@ -227,7 +207,6 @@ public class Board {
             }
             return true;
         }
-
     }
 
     private boolean promotable(Piece piece) {

@@ -146,7 +146,7 @@ public class BoardAnimation extends JPanel {
     }
 
     private class MyMouseAdaptor extends MouseAdapter {
-        private boolean blnWrongColor;
+        private boolean blnWrongColor, blnMouseError;
 
         @Override
         public void mouseClicked(MouseEvent evt) {
@@ -169,6 +169,7 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mousePressed(MouseEvent evt) {
             blnWrongColor = false;
+            blnMouseError = false;
             int intXPos = chessBoard.roundDown(evt.getX(), 90);
             int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             int intXIndex = blnServer?intXPos/90:7-(intXPos/90);
@@ -218,6 +219,9 @@ public class BoardAnimation extends JPanel {
 
                 labelTimer.setRepeats(false);
                 labelTimer.start();
+            } else {
+                System.out.println("mouse error");
+                blnMouseError = true;
             }
         }
 
@@ -235,7 +239,7 @@ public class BoardAnimation extends JPanel {
             int intYPos =  chessBoard.roundDown(evt.getY(), 90);
             pressed = false;
             boolean blnInBounds = intXPos/90 >= 0 && intXPos/90 < 8 && intYPos/90 >= 0 && intYPos/90 < 8;
-            if(!blnTurn || blnWrongColor) {
+            if(!blnTurn || blnWrongColor || blnMouseError) {
                 return;
             } else if(temp != null && blnTurn && !blnInBounds && !chessBoard.promotionInProgress()) {
                 //placing outside the board
