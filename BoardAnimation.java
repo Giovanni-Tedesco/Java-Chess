@@ -227,7 +227,7 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mouseDragged(MouseEvent evt) {
-            if(pressed && temp != null && blnTurn && !chessBoard.promotionInProgress()){
+            if(pressed && temp != null && blnTurn && !chessBoard.promotionInProgress() && !blnMouseError){
                 temp.setPosition(evt.getX(), evt.getY());
                 repaint();
             }

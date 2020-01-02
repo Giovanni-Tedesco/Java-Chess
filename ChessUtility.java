@@ -1,7 +1,7 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Arrays;
 public class ChessUtility {
-    public static boolean isInList(ArrayList<int []> moveList, int [] positions) {
+    public static boolean isInList(LinkedList<int []> moveList, int [] positions) {
         System.out.println("positions: " + Arrays.toString(positions));
         for(int [] legalMove : moveList) {
             System.out.println("legal: " + Arrays.toString(legalMove));
@@ -12,8 +12,8 @@ public class ChessUtility {
         return false;
     }
 
-    private static ArrayList<int[]> checkDiagonal(int intX, int intY, int[] moveRules, boolean blnWhite) {
-      ArrayList<int[]> moves = new ArrayList<int[]>();
+    private static LinkedList<int[]> checkDiagonal(int intX, int intY, int[] moveRules, boolean blnWhite) {
+      LinkedList<int[]> moves = new LinkedList<int[]>();
       int tempX = intX;
       int tempY = intY;
       while(tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8) {
@@ -44,8 +44,8 @@ public class ChessUtility {
     }
 
 
-    private static ArrayList<int[]> checkFiles(int intX, int intY, boolean blnWhite) {
-        ArrayList<int[]> fileMoves = new ArrayList<>();
+    private static LinkedList<int[]> checkFiles(int intX, int intY, boolean blnWhite) {
+        LinkedList<int[]> fileMoves = new LinkedList<>();
         Board chessBoard = BoardAnimation.getBoard();
 
         //Check in x+ direction
@@ -125,8 +125,8 @@ public class ChessUtility {
     }
 
 
-    public static ArrayList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, boolean blnColour,int intLastX, int intLastY) {
-        ArrayList<int []> legalPawnMoves = new ArrayList<int []>();
+    public static LinkedList<int []> getLegalPawnMoves(boolean blnFirstMove, boolean blnHasPiece, boolean blnColour,int intLastX, int intLastY) {
+        LinkedList<int []> legalPawnMoves = new LinkedList<int []>();
         int intXIndex = intLastX/90;
         int intYIndex = intLastY/90;
         if(blnHasPiece) {
@@ -142,10 +142,10 @@ public class ChessUtility {
         return legalPawnMoves;
     }
 
-    public static ArrayList<int []> getLegalKnightMoves(int intLastX, int intLastY) {
+    public static LinkedList<int []> getLegalKnightMoves(int intLastX, int intLastY) {
         int [] translateY = {-1,-1,1,1,-2,-2,2,2};
         int [] translateX = {-2,2,-2,2,-1,1,-1,1};
-        ArrayList<int []> legalKnightMoves = new ArrayList<int []>();
+        LinkedList<int []> legalKnightMoves = new LinkedList<int []>();
         int intXIndex = intLastX/90;
         int intYIndex = intLastY/90;
 
@@ -159,14 +159,14 @@ public class ChessUtility {
 
     //This will most likely be extremely frustrating to do as it involves moving two seperate pieces.
     //Perhaps we can pass in an array of past moves from the board to see if the king or rook has moved at all.
-    // public static ArrayList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
+    // public static LinkedList<int []> castles(boolean kingMoved, boolean rookMoved, int lastIndexX, intLastIndexY){
     //
     //
     // }
 
     //TODO:king should not be able to move to spots with pieces unless it is capturing
-    public static ArrayList<int []> getLegalKingMoves(boolean blnInCheck, int lastIndexX, int lastIndexY){
-        ArrayList<int[]> legalKingMoves = new ArrayList<int[]>();
+    public static LinkedList<int []> getLegalKingMoves(boolean blnInCheck, int lastIndexX, int lastIndexY){
+        LinkedList<int[]> legalKingMoves = new LinkedList<int[]>();
 
         int[] translateX = {1, -1, 0, 0, 1, -1, 1, -1}; //Just for regular moves
         int[] translateY = {0, 0, 1, -1, 1, -1, -1, 1}; //Just for regular moves
@@ -186,7 +186,7 @@ public class ChessUtility {
         return legalKingMoves;
     }
 
-    public static ArrayList<int[]> getLegalBishopMoves(int intLastX, int intLastY, boolean blnWhite){
+    public static LinkedList<int[]> getLegalBishopMoves(int intLastX, int intLastY, boolean blnWhite){
         int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
         int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
 
@@ -197,7 +197,7 @@ public class ChessUtility {
         {-1, -1} // Bottom left
       };
 
-      ArrayList<int[]> legalBishopMoves = new ArrayList<int[]>();
+      LinkedList<int[]> legalBishopMoves = new LinkedList<int[]>();
       for(int i = 0; i < possibleMoves.length; i++) {
           legalBishopMoves.addAll(checkDiagonal(intXIndex, intYIndex, possibleMoves[i], blnWhite));
       }
@@ -205,18 +205,18 @@ public class ChessUtility {
       return legalBishopMoves;
     }
 
-    public static ArrayList<int []> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite){
+    public static LinkedList<int []> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite){
         int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
         int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
-        ArrayList<int[]> legalRookMoves = new ArrayList<>();
+        LinkedList<int[]> legalRookMoves = new LinkedList<>();
         legalRookMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
         return legalRookMoves;
     }
 
-    public static ArrayList<int []> getLegalQueenMoves(int intLastX, int intLastY, boolean blnWhite) {
+    public static LinkedList<int []> getLegalQueenMoves(int intLastX, int intLastY, boolean blnWhite) {
         int intXIndex = intLastX/90;//blnWhite?intLastX/90:7-(intLastX/90);
         int intYIndex = intLastY/90;//blnWhite?intLastY/90:7-(intLastY/90);
-        ArrayList<int []> legalQueenMoves = new ArrayList<>();
+        LinkedList<int []> legalQueenMoves = new LinkedList<>();
         legalQueenMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
         int[][] possibleMoves = {
           {-1, 1}, // Upper left
