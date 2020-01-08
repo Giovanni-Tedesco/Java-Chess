@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class AboutPanel extends JPanel implements ActionListener {
 	private JButton backButton = new JButton("BACK");
-	String strfileName = "AboutPanel.png";
+	String strfileName = "Assets/AboutPanel.png";
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
