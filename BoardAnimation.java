@@ -18,6 +18,8 @@ import java.util.ArrayList;
 //13) All images need to be made from scratch
 //14) Write up req doc with needs but keep track of the wants
 public class BoardAnimation extends JPanel {
+    private Color darkGrey = new Color(79,76,69);
+
     //Will be used later for networking
     private boolean blnServer, blnTurn;
     private boolean blnClientStarted = false;
@@ -93,7 +95,7 @@ public class BoardAnimation extends JPanel {
     private void drawBoard(Graphics g) {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                g.setColor(((i % 2 == 0) == (j % 2 == 0))?Color.WHITE:Color.BLACK);
+                g.setColor(((i % 2 == 0) == (j % 2 == 0))?Color.WHITE:darkGrey);
                 g.fillRect(j * 90, i * 90, 90, 90);
             }
         }

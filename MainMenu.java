@@ -28,7 +28,7 @@ public class MainMenu implements ActionListener {
         if(e.getSource() == playButton) {
             Utility.changePanel(new ConnectPlayer().getConnectPanel());
         } else if(e.getSource() == helpButton) {
-            Utility.changePanel(menuPanel);
+            Utility.changePanel(new Help().getHelpPanel());
         } else if(e.getSource() == settingButton) {
             Utility.changePanel(menuPanel);
         } else if(e.getSource() == aboutButton) {
@@ -48,7 +48,7 @@ public class MainMenu implements ActionListener {
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
         menuPanel.setBackground(Color.BLACK);
-        
+
         aboutPanel.setPreferredSize(Utility.panelDimensions);
         aboutPanel.setLayout(null);
         aboutPanel.setBackground(Color.BLACK);
