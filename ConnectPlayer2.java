@@ -51,10 +51,13 @@ class ConnectPlayer2 implements ActionListener {
             try {
                 intPortNumber = Integer.parseInt(strPortNumber);
                 blnWrongPort = false;
-            } catch(NumberFormatException e) {
+            } catch(NumberFormatException exc) {
                 errorLabel.setVisible(true);
                 blnWrongPort = true;
                 errorLabel.setText("Please enter a port number");
+                Timer timer = new Timer(3000, e -> errorLabel.setVisible(false));
+                timer.setRepeats(false);
+                timer.start();
             }
 
             if(!blnWrongPort) {
@@ -62,6 +65,9 @@ class ConnectPlayer2 implements ActionListener {
                 if(chess.connectionFailed()) {
                     errorLabel.setVisible(true);
                     errorLabel.setText("Failed to connect");
+                    Timer timer = new Timer(3000, e -> errorLabel.setVisible(false));
+                    timer.setRepeats(false);
+                    timer.start();
                     System.out.println("THE ERROR");
                 } else {
                     Utility.changePanel(chess.getChessPanel());
