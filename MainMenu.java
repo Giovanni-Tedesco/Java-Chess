@@ -12,6 +12,7 @@ public class MainMenu implements ActionListener {
     private final int intButtWidth = 400, intButtHeight = 75;
 
     private JPanel menuPanel = new JPanel();
+    private AboutPanel aboutPanel = new AboutPanel();
     private JLabel titleLabel = new JLabel("CHESS");
     private JButton playButton = new JButton("PLAY");
     private JButton helpButton = new JButton("HELP");
@@ -31,7 +32,7 @@ public class MainMenu implements ActionListener {
         } else if(e.getSource() == settingButton) {
             Utility.changePanel(menuPanel);
         } else if(e.getSource() == aboutButton) {
-            Utility.changePanel(menuPanel);
+            Utility.changePanel(aboutPanel);
         } else if(e.getSource() == quitButton) {
             Utility.changePanel(menuPanel);
         }
@@ -47,6 +48,10 @@ public class MainMenu implements ActionListener {
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
         menuPanel.setBackground(Color.BLACK);
+        
+        aboutPanel.setPreferredSize(Utility.panelDimensions);
+        aboutPanel.setLayout(null);
+        aboutPanel.setBackground(Color.BLACK);
 
         titleLabel.setSize(600, 200);
         titleLabel.setLocation(340, 50);
