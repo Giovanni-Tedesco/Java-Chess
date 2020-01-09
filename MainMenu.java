@@ -30,7 +30,7 @@ public class MainMenu implements ActionListener {
         } else if(e.getSource() == helpButton) {
             Utility.changePanel(new Help().getHelpPanel());
         } else if(e.getSource() == settingButton) {
-            Utility.changePanel(menuPanel);
+            Utility.changePanel(new Settings().getsettingsPanel());
         } else if(e.getSource() == aboutButton) {
             Utility.changePanel(aboutPanel);
         } else if(e.getSource() == quitButton) {
