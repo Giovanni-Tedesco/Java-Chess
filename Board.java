@@ -20,6 +20,7 @@ public class Board {
 
     public ArrayList<Piece> pieces = new ArrayList<>();
     public ArrayList<Piece> captured = new ArrayList<>();
+    public ArrayList<String> movesMade = new ArrayList<>();
     private ArrayList<Piece> whitePromotion = new ArrayList<>();
     private ArrayList<Piece> blackPromotion = new ArrayList<>();
 
@@ -103,6 +104,15 @@ public class Board {
         return pos;
     }
 
+    public boolean searchMoves(String move) {
+        for (String mv : movesMade) {
+            if (mv.equalsIgnoreCase(move)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Changes the position of the pieces on the charBoard
     public void move(String move) {
         System.out.println("****************************");
@@ -174,8 +184,10 @@ public class Board {
             // white captures black
             System.out.println("White -> Black");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
+            movesMade.add(result);
             move(result);
             printCharboard();
+            Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -193,7 +205,9 @@ public class Board {
             System.out.println("Black -> White");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result);
+            movesMade.add(result);
             printCharboard();
+            Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -210,6 +224,8 @@ public class Board {
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             System.out.println(result);
             move(result);
+            movesMade.add(result);
+            Utility.displayArray(movesMade);
             printCharboard();
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;

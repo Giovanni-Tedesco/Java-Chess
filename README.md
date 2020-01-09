@@ -24,7 +24,7 @@
  - Chess Game
  - Move order (Saved to file)
  - MVC Scheme:
-  - This is used to seperate the actual game of chess from the view of
+  - This is used to separate the actual game of chess from the view of
     the code.
 
 ## Additional Features
