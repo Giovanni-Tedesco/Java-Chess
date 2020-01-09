@@ -24,8 +24,6 @@ public class Board {
     private ArrayList<Piece> whitePromotion = new ArrayList<>();
     private ArrayList<Piece> blackPromotion = new ArrayList<>();
 
-    static HashMap<Integer, BufferedImage> images = new HashMap<>();
-
     private Piece pieceToPromote = null;
 
     public Piece getPieceToPromote() {
@@ -74,19 +72,6 @@ public class Board {
                 pieces.add(p);
             }
         }
-    }
-
-    private static void initImages() {
-        String path = "Assets/Pieces/";
-
-        String[] fileNames = { "Rook.png", "Knight.png", "Bishop.png", "Queen.png", "King.png", "Pawn.png",
-                "RookBlack.png", "KnightBlack.png", "BishopBlack.png", "QueenBlack.png", "KingBlack.png",
-                "PawnBlack.png" };
-
-        for (int i = 0; i < fileNames.length; i++) {
-            images.put(i + 1, Utility.loadImage(path + fileNames[i]));
-        }
-
     }
 
     public String toCoord(int x1, int y1, int x2, int y2) {
@@ -300,7 +285,6 @@ public class Board {
     public Board(boolean blnServer) {
         this.blnServer = blnServer;
         initBoard();
-        initImages();
         int[] intPieces = { 4, 1, 3, 2, 6 };
         for (int i = 0; i < 5; i++) {
             whitePromotion.add(new Piece(800 + (i * 80), 50, true, intPieces[i]));

@@ -28,9 +28,9 @@ public class Piece {
     public void update(Graphics g) {
 
         if (this.blnColor == true) {// If the pieces colour is white / pink
-            g.drawImage(Board.images.get(intPiece), intXPos, intYPos, null);
+            g.drawImage(BoardAnimation.pieceImages.get(intPiece), intXPos, intYPos, null);
         } else {
-            g.drawImage(Board.images.get(intPiece + 6), intXPos, intYPos, null);// If the pieces colour is dark / blue
+            g.drawImage(BoardAnimation.pieceImages.get(intPiece + 6), intXPos, intYPos, null);// If the pieces colour is dark / blue
         }
     }
 

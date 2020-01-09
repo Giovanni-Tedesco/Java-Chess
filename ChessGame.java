@@ -96,6 +96,7 @@ public class ChessGame implements ActionListener {
                 chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
                 chessBoard.move(strMessage);
+
                 String [] strMove = strMessage.split(",");
                 Point initPos = chessBoard.coordToLoc(strMove[0]);
                 Point finalPos = chessBoard.coordToLoc(strMove[1]);
@@ -182,7 +183,6 @@ public class ChessGame implements ActionListener {
         chessPanel = new BoardAnimation(true);
         chessPanel.setLayout(null);
         chessPanel.setPreferredSize(new Dimension(1280,720));
-        chessPanel.setBackground(Color.BLACK);
         //TODO: get port from settings later
         ssm = new SuperSocketMaster(6969, this);
         ssm.connect();
@@ -209,7 +209,6 @@ public class ChessGame implements ActionListener {
         strClientName = strName;
         chessPanel = new BoardAnimation(false);
         chessPanel.setPreferredSize(new Dimension(1280,720));
-        chessPanel.setBackground(Color.BLACK);
         ssm = new SuperSocketMaster(strIp, intPort, this);
         if(ssm.connect()) {
             //client sends connect confirmation along with name

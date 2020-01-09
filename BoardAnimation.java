@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import java.util.ArrayList;
+import java.awt.image.*;
+import java.util.HashMap;
 
 //1) Have main screen -> options like play, help, settings, quit
 //2) want Have splash screen before main screen
@@ -34,6 +36,31 @@ public class BoardAnimation extends JPanel {
     // used for labelling captures and whether it is promotion time
     public JLabel serverInfoLabel = new JLabel("CAPTURED PIECES");
     public JLabel clientInfoLabel = new JLabel("CAPTURED PIECES");
+
+    private int [] intPieces = {4,1,3,2,6};
+    private ArrayList<BufferedImage> whiteCaptureImages = new ArrayList<>();
+    private ArrayList<BufferedImage> blackCaptureImages = new ArrayList<>();
+    public static HashMap<Integer, BufferedImage> pieceImages = new HashMap<>();
+
+    private static void initImages() {
+        String path = "Assets/Pieces/";
+
+        String[] fileNames = { "Rook.png", "Knight.png", "Bishop.png", "Queen.png", "King.png", "Pawn.png",
+                "RookBlack.png", "KnightBlack.png", "BishopBlack.png", "QueenBlack.png", "KingBlack.png",
+                "PawnBlack.png" };
+
+        for (int i = 0; i < fileNames.length; i++) {
+            pieceImages.put(i + 1, Utility.loadImage(path + fileNames[i]));
+        }
+
+    }
+
+    private void initCaptureImages() {
+        for(int intPiece : intPieces) {
+            blackCaptureImages.add(Utility.resizeImage(pieceImages.get(intPiece), 60, 120));
+            whiteCaptureImages.add(Utility.resizeImage(pieceImages.get(intPiece + 6), 60, 120));
+        }
+    }
 
     public void changeTurn() {
         blnTurn = !blnTurn;
@@ -113,15 +140,19 @@ public class BoardAnimation extends JPanel {
     private void drawCapturedPieces(Graphics g) {
         g.setColor(Color.BLUE);
 
+        //white captures
         for (int i = 0; i < 5; i++) {
-            g.fillRect(800 + (i * 80), 50, 60, 120);
+            //g.fillRect(800 + (i * 80), 50, 60, 120);
+            g.drawImage(whiteCaptureImages.get(i), 800 + (i*80), 50, null);
+            g.drawImage(blackCaptureImages.get(i), 800 + (i*80), 250, null);
         }
 
         g.setColor(Color.PINK);
 
-        for (int i = 0; i < 5; i++) {
-            g.fillRect(800 + (i * 80), 250, 60, 120);
-        }
+        //black captures
+        //for (int i = 0; i < 5; i++) {
+            //g.fillRect(800 + (i * 80), 250, 60, 120);
+        //}
     }
 
     @Override
@@ -144,8 +175,13 @@ public class BoardAnimation extends JPanel {
 
     public BoardAnimation(boolean blnIsServer) {
         super();
+        setBackground(darkGrey);
         this.blnServer = blnIsServer;
         blnTurn = blnIsServer;
+        initImages();
+        if(pieceImages != null) {
+            initCaptureImages();
+        }
     }
 
     private class MyMouseAdaptor extends MouseAdapter {

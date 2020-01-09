@@ -2,7 +2,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.util.ArrayList;
 
@@ -53,6 +53,29 @@ public class Utility {
         }
 
         return null;
+    }
+
+    public static BufferedImage resizeImage(BufferedImage oldImage, int intWidth, int intHeight) {
+        Image newImage = (Image)oldImage.getScaledInstance(intWidth, intHeight, Image.SCALE_DEFAULT);
+
+        return toBufferedImage(newImage);
+    }
+
+    public static BufferedImage toBufferedImage(Image image) {
+        if (image instanceof BufferedImage) {
+            return (BufferedImage) image;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage imageToBuffered = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        //Draw the image on to the buffered image
+        Graphics2D backGround = imageToBuffered.createGraphics();
+        backGround.drawImage(image, 0, 0, null);
+        backGround.dispose();
+
+        // Return the buffered image
+        return imageToBuffered;
     }
 
     // Wraps reading from a BufferedReader
