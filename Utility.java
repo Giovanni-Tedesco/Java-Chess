@@ -140,7 +140,7 @@ public class Utility {
 
     public static void displayArray(ArrayList<String> arr) {
         for (String s : arr) {
-            System.out.println(s);
+            // Do something
         }
 
     }

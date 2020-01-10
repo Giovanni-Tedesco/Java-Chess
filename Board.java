@@ -10,17 +10,28 @@ import java.util.HashMap;
 public class Board {
     // Will be used later for networking
     // set to true to let white capture black, and vice versa
+
+    /**
+     * Boolean describing which colour the player is. True is white and false is
+     * black
+     */
     private boolean blnServer;
     // used to check if game is in promotion state, user can choose a piece tp
     // replace pawn
+
+    /**
+      *
+      */
     private boolean blnPromotion;
+    private boolean inCheck;
+
     private int[][] chessBoard = { { -1, -2, -3, -4, -5, -3, -2, -1 }, { -6, -6, -6, -6, -6, -6, -6, -6 },
             { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0 }, { 6, 6, 6, 6, 6, 6, 6, 6 }, { 1, 2, 3, 4, 5, 3, 2, 1 }, };
 
     public ArrayList<Piece> pieces = new ArrayList<>();
     public ArrayList<Piece> captured = new ArrayList<>();
-    public ArrayList<String> movesMade = new ArrayList<>();
+    // public static ArrayList<String> movesMade = new ArrayList<>();
     private ArrayList<Piece> whitePromotion = new ArrayList<>();
     private ArrayList<Piece> blackPromotion = new ArrayList<>();
 
@@ -89,16 +100,16 @@ public class Board {
         return pos;
     }
 
-    public boolean searchMoves(String move) {
-        for (String mv : movesMade) {
-            if (mv.equalsIgnoreCase(move)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    // public boolean searchMoves(String move) {
+    // for (String mv : movesMade) {
+    // if (mv.equalsIgnoreCase(move)) {
+    // return true;
+    // }
+    // }
+    // return false;
+    // }
     // Changes the position of the pieces on the charBoard
+
     public void move(String move) {
         System.out.println("****************************");
         String[] moves = move.split(",");
@@ -109,6 +120,11 @@ public class Board {
         Point p2 = coordToLoc(moves[1]);
         System.out.println(p2.x + " " + p2.y);
 
+        if (moves[0].equals("e1") && moves[1].equals("g1")) {
+            System.out.println("Gets here");
+            castlesShort(p2.x * 90, p2.y * 90);
+        }
+
         int intTemp = chessBoard[p1.y][p1.x];
         System.out.println("intTemp = " + intTemp);
         chessBoard[(int) (p1.y)][(int) (p1.x)] = 0;
@@ -118,6 +134,33 @@ public class Board {
 
         System.out.println("****************************");
     }
+
+    public void castlesShort(int intXPos, int intYPos) {
+        Iterator<Piece> pieceIterator = pieces.iterator();
+
+        while (pieceIterator.hasNext()) {
+            Piece piece = pieceIterator.next();
+            if (piece.intXPos == intXPos + 90 && piece.intYPos == intYPos) {
+                System.out.println("Gets here");
+                System.out.println(piece.intPiece);
+                piece.setPosition(intXPos - 90, intYPos);
+
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                chessBoard[intTempY][intTempX + 1] = 0;
+                chessBoard[intTempY][intTempX - 1] = 1;
+            }
+        }
+    }
+    //
+    // public void castlesLong(int intXPos, intYPos) {
+    // Piece piece = pieceIterator.next();
+    // while(pieceIterator.hasNext()) {
+    // Piece piece = pieceIterator.next();
+    // // if(piece.intXPos == intXPos)
+    // }
+    //
+    // }
 
     public Point coordToLoc(String coord) {
         // System.out.println(newCoord);
@@ -169,10 +212,10 @@ public class Board {
             // white captures black
             System.out.println("White -> Black");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
-            movesMade.add(result);
+            // movesMade.add(result);
             move(result);
             printCharboard();
-            Utility.displayArray(movesMade);
+            // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -190,9 +233,9 @@ public class Board {
             System.out.println("Black -> White");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result);
-            movesMade.add(result);
+            // movesMade.add(result);
             printCharboard();
-            Utility.displayArray(movesMade);
+            // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -209,9 +252,10 @@ public class Board {
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             System.out.println(result);
             move(result);
-            movesMade.add(result);
-            Utility.displayArray(movesMade);
+            // movesMade.add(result);
+            // Utility.displayArray(movesMade);
             printCharboard();
+
             piece.setPosition(intXPos, intYPos);
             piece.blnFirst = false;
             blnPromotion = promotable(piece);
