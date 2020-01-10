@@ -124,6 +124,10 @@ public class Board {
             System.out.println("Gets here");
             castlesShort(p2.x * 90, p2.y * 90);
         }
+        if (moves[0].equals("e1") && moves[1].equals("c1")) {
+            System.out.println("Gets here");
+            castlesLong(p2.x * 90, p2.y * 90);
+        }
 
         int intTemp = chessBoard[p1.y][p1.x];
         System.out.println("intTemp = " + intTemp);
@@ -152,15 +156,24 @@ public class Board {
             }
         }
     }
-    //
-    // public void castlesLong(int intXPos, intYPos) {
-    // Piece piece = pieceIterator.next();
-    // while(pieceIterator.hasNext()) {
-    // Piece piece = pieceIterator.next();
-    // // if(piece.intXPos == intXPos)
-    // }
-    //
-    // }
+
+    public void castlesLong(int intXPos, int intYPos) {
+        Iterator<Piece> pieceIterator = pieces.iterator();
+
+        while (pieceIterator.hasNext()) {
+            Piece piece = pieceIterator.next();
+            if (piece.intXPos == intXPos - 180 && piece.intYPos == intYPos) {
+                System.out.println("Get's here");
+                piece.setPosition(intXPos + 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+
+                chessBoard[intTempY][intTempX - 2] = 0;
+                chessBoard[intTempY][intTempX + 1] = 1;
+            }
+        }
+
+    }
 
     public Point coordToLoc(String coord) {
         // System.out.println(newCoord);
