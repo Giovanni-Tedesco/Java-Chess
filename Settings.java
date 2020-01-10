@@ -35,27 +35,24 @@ public class Settings extends MouseAdapter implements ActionListener{
 		 private JButton backButton = new JButton("BACK");
 		 private JButton saveButton = new JButton("SAVE");
 		 private JTextField portField = new JTextField();
-		 private JRadioButton boardDarkGreyButt = new JRadioButton();
-		 private JRadioButton boardRedButt = new JRadioButton();
-		 private JRadioButton boardGreenButt = new JRadioButton();
-		 private JRadioButton boardBrownButt = new JRadioButton();
-		 private JRadioButton UIDarkButt = new JRadioButton();
-		 private JRadioButton UILightButt = new JRadioButton();
-		 private JRadioButton ProfanityNoButt = new JRadioButton();
-		 private JRadioButton ProfanityYesButt = new JRadioButton();
+		 private JRadioButton boardDarkGreyButt = new JRadioButton("Dark Grey");
+		 private JRadioButton boardRedButt = new JRadioButton("Red");
+		 private JRadioButton boardGreenButt = new JRadioButton("Green");
+		 private JRadioButton boardBrownButt = new JRadioButton("Brown");
+		 private JRadioButton UIDarkButt = new JRadioButton("Dark");
+		 private JRadioButton UILightButt = new JRadioButton("Light");
+		 private JRadioButton ProfanityNoButt = new JRadioButton("Yes");
+		 private JRadioButton ProfanityYesButt = new JRadioButton("No");
 		 private String strfileName = "Assets/AboutPanel.png";
 		 private JLabel portLabel = new JLabel("Change port number(Enter number above 1000): ");
 		 private JLabel boardcolorLabel = new JLabel("Change Board Color: ");
-		 private JLabel darkgreyLabel = new JLabel("Dark Grey");
-		 private JLabel redLabel = new JLabel("Red");
-		 private JLabel greenLabel = new JLabel("Green");
-		 private JLabel brownLabel = new JLabel("Brown");
 		 private JLabel UIlabel = new JLabel("UI style");
-		 private JLabel UIDark = new JLabel("Dark");
-		 private JLabel UILight = new JLabel("Light");
 		 private JLabel profLabel = new JLabel("Profanity Filter(for chat)");
-		 private JLabel profYes = new JLabel("Yes");
-		 private JLabel profNo = new JLabel("No");
+		 private ButtonGroup Boardcolortg = new ButtonGroup();
+		 private ButtonGroup UItg = new ButtonGroup();
+		 private ButtonGroup Proftg = new ButtonGroup();
+		 
+		 
 		
 		public void actionPerformed(ActionEvent evt) {
 			if(evt.getSource()== backButton){
@@ -74,11 +71,21 @@ public class Settings extends MouseAdapter implements ActionListener{
 			
 			
 			saveButton.setSize(100, 25);
-			saveButton.setLocation(30, 20);
+			saveButton.setLocation(600, 40);
 			saveButton.addActionListener(this);
 			Utility.setButtonStyle(saveButton, 12);
 			add(saveButton);
 			
+			Boardcolortg.add(boardDarkGreyButt);
+			Boardcolortg.add(boardRedButt);
+			Boardcolortg.add(boardGreenButt);
+			Boardcolortg.add(boardBrownButt);
+			
+			UItg.add(UIDarkButt);
+			UItg.add(UILightButt);
+			
+			Proftg.add(ProfanityNoButt);
+			Proftg.add(ProfanityYesButt);
 		}
 	}
 }
