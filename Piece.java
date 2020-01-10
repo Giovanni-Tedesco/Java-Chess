@@ -51,6 +51,10 @@ public class Piece {
     }
 
     public boolean isCheck(LinkedList<int[]> moves) {
+        if(BoardAnimation.getBoard() == null) {
+            return false;
+        }
+
         for (int[] mv : moves) {
             if (BoardAnimation.getBoard().getPiece(mv[0], mv[1]) == 5) {
                 return true;
