@@ -23,6 +23,10 @@ public class Board {
       *
       */
     private boolean blnPromotion;
+    private boolean hasCastled = false;
+    //This will likely be used when checking for checks impeding castling
+    //To check impeding pieces that'll be done using a seperate function
+    // private boolean canCastle = false;
     private boolean inCheck;
 
     private int[][] chessBoard = { { -1, -2, -3, -4, -5, -3, -2, -1 }, { -6, -6, -6, -6, -6, -6, -6, -6 },
@@ -100,62 +104,64 @@ public class Board {
         return pos;
     }
 
-    // public boolean searchMoves(String move) {
-    // for (String mv : movesMade) {
-    // if (mv.equalsIgnoreCase(move)) {
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
-    // Changes the position of the pieces on the charBoard
+
 
     public void move(String move) {
         System.out.println("****************************");
         String[] moves = move.split(",");
-        // System.out.println(moves[0]);
+        boolean impedingKnightWhite = (blnServer && chessBoard[7][6] != 0) ? true : false;
+        boolean impedingKnightBlack = (blnServer && chessBoard[0][1] != 0) ? true : false;
+        System.out.println("Impeding white knight: " + impedingKnightWhite);
+        System.out.println("Impeding black knight: " + impedingKnightBlack);
 
         Point p1 = coordToLoc(moves[0]);
         System.out.println(p1.x + " " + p1.y);
         Point p2 = coordToLoc(moves[1]);
         System.out.println(p2.x + " " + p2.y);
 
-        if (moves[0].equals("e1") && moves[1].equals("g1")) {
-            System.out.println("Gets here: found move");
-            if (blnServer) {
-                castlesShort(p2.x * 90, p2.y * 90);
-            } else {
-                // System.out.println("Get's here: looking for piece");
-                // System.out.println("Looking for: x" + (7 - p2.x) * 90);
-                // System.out.println("Looking for: y" + (7 - p2.y) * 90);
-                castlesShort((7 - p2.x) * 90, (7 - p2.y) * 90);
+        //This is simply to prevent someone from castling twice.
+        if(!hasCastled) {
+            if (moves[0].equals("e1") && moves[1].equals("g1")) {
+                System.out.println("Gets here: found move");
+                if (blnServer) {
+                    castlesShort(p2.x * 90, p2.y * 90);
+                    hasCastled = true;
+                } else {
+                    // System.out.println("Get's here: looking for piece");
+                    // System.out.println("Looking for: x" + (7 - p2.x) * 90);
+                    // System.out.println("Looking for: y" + (7 - p2.y) * 90);
+                    castlesShort((7 - p2.x) * 90, (7 - p2.y) * 90);
+                }
             }
-        }
-        else if (moves[0].equals("e1") && moves[1].equals("c1")) {
-            System.out.println("Gets here");
-            if(blnServer) {
-                castlesLong(p2.x * 90, p2.y * 90);
-            } else {
-                castlesLong((7 - p2.x) * 90, (7 - p2.y) * 90);
-            }
-        }
-
-        else if(moves[0].equals("e8") && moves[1].equals("g8")) {
-            System.out.println("Get's here");
-            if(!blnServer) {
-                castlesShortBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
-            } else {
-                castlesShortBlack(p2.x * 90, p2.y * 90);
+            else if (moves[0].equals("e1") && moves[1].equals("c1") && impedingKnightWhite == false) {
+                System.out.println("Gets here");
+                if(blnServer) {
+                    castlesLong(p2.x * 90, p2.y * 90);
+                    hasCastled = true;
+                } else {
+                    castlesLong((7 - p2.x) * 90, (7 - p2.y) * 90);
+                }
             }
 
-        }
+            else if(moves[0].equals("e8") && moves[1].equals("g8")) {
+                System.out.println("Get's here");
+                if(!blnServer) {
+                    castlesShortBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
+                    hasCastled = true;
+                } else {
+                    castlesShortBlack(p2.x * 90, p2.y * 90);
+                }
 
-        else if(moves[0].equals("e8") && moves[1].equals("c8")) {
-            System.out.println("Gets here");
-            if(!blnServer) {
-                castlesLongBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
-            } else {
-                castlesLongBlack(p2.x * 90, p2.y * 90);
+            }
+
+            else if(moves[0].equals("e8") && moves[1].equals("c8") && impedingKnightBlack == false) {
+                System.out.println("Gets here");
+                if(!blnServer) {
+                    castlesLongBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
+                    hasCastled = true;
+                } else {
+                    castlesLongBlack(p2.x * 90, p2.y * 90);
+                }
             }
         }
 

@@ -51,7 +51,7 @@ public class Piece {
     }
 
     public boolean isCheck(LinkedList<int[]> moves) {
-        if(BoardAnimation.getBoard() == null) {
+        if (BoardAnimation.getBoard() == null) {
             return false;
         }
 
