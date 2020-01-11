@@ -27,12 +27,12 @@ public class Piece {
     }
 
     public void update(Graphics g) {
-
         if (this.blnColor == true) {// If the pieces colour is white / pink
             g.drawImage(BoardAnimation.pieceImages.get(intPiece), intXPos, intYPos, null);
+
         } else {
             g.drawImage(BoardAnimation.pieceImages.get(intPiece + 6), intXPos, intYPos, null);// If the pieces colour is
-                                                                                              // dark / blue
+
         }
     }
 
@@ -55,9 +55,7 @@ public class Piece {
             if (BoardAnimation.getBoard().getPiece(mv[0], mv[1]) == 5) {
                 return true;
             }
-
         }
-
         return false;
     }
 

@@ -121,12 +121,23 @@ public class Board {
         System.out.println(p2.x + " " + p2.y);
 
         if (moves[0].equals("e1") && moves[1].equals("g1")) {
-            System.out.println("Gets here");
-            castlesShort(p2.x * 90, p2.y * 90);
+            System.out.println("Gets here: found move");
+            if (blnServer) {
+                castlesShort(p2.x * 90, p2.y * 90);
+            } else {
+                // System.out.println("Get's here: looking for piece");
+                // System.out.println("Looking for: x" + (7 - p2.x) * 90);
+                // System.out.println("Looking for: y" + (7 - p2.y) * 90);
+                castlesShort((7 - p2.x) * 90, (7 - p2.y) * 90);
+            }
         }
         if (moves[0].equals("e1") && moves[1].equals("c1")) {
             System.out.println("Gets here");
-            castlesLong(p2.x * 90, p2.y * 90);
+            if(blnServer) {
+                castlesLong(p2.x * 90, p2.y * 90);
+            } else {
+                castlesLong((7 - p2.x) * 90, (7 - p2.y) * 90);
+            }
         }
 
         int intTemp = chessBoard[p1.y][p1.x];
@@ -141,28 +152,43 @@ public class Board {
 
     public void castlesShort(int intXPos, int intYPos) {
         Iterator<Piece> pieceIterator = pieces.iterator();
+        System.out.println("Searching intXPos for black is: " + (intXPos - 90));
+        System.out.println("intYPos is: " + intYPos);
 
         while (pieceIterator.hasNext()) {
+
             Piece piece = pieceIterator.next();
-            if (piece.intXPos == intXPos + 90 && piece.intYPos == intYPos) {
-                System.out.println("Gets here");
+            if (blnServer && piece.intXPos == intXPos + 90 && piece.intYPos == intYPos) {
+
+                System.out.println("Gets here: checking the piece position");
                 System.out.println(piece.intPiece);
                 piece.setPosition(intXPos - 90, intYPos);
-
                 int intTempX = intXPos / 90;
                 int intTempY = intYPos / 90;
+                piece.setPosition(intXPos - 90, intYPos);
                 chessBoard[intTempY][intTempX + 1] = 0;
                 chessBoard[intTempY][intTempX - 1] = 1;
+
+            } else if(!blnServer && piece.intXPos == intXPos - 90 && piece.intYPos == intYPos) {
+                System.out.println("Got here if server == false");
+                System.out.println("The piece is: " + piece.intPiece);
+
+                piece.setPosition(intXPos + 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                chessBoard[intTempY][intTempX - 1] = 0;
+                chessBoard[intTempY][intTempX + 1] = 1;
             }
         }
     }
+
 
     public void castlesLong(int intXPos, int intYPos) {
         Iterator<Piece> pieceIterator = pieces.iterator();
 
         while (pieceIterator.hasNext()) {
             Piece piece = pieceIterator.next();
-            if (piece.intXPos == intXPos - 180 && piece.intYPos == intYPos) {
+            if (blnServer && piece.intXPos == intXPos - 180 && piece.intYPos == intYPos) {
                 System.out.println("Get's here");
                 piece.setPosition(intXPos + 90, intYPos);
                 int intTempX = intXPos / 90;
@@ -170,6 +196,13 @@ public class Board {
 
                 chessBoard[intTempY][intTempX - 2] = 0;
                 chessBoard[intTempY][intTempX + 1] = 1;
+            } else if(!blnServer && piece.intXPos == intXPos + 180 && piece.intYPos == intYPos) {
+                System.out.println("Get's here if found piece and server == false");
+                piece.setPosition(intXPos - 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                chessBoard[intTempY][intTempX + 2] = 0;
+                chessBoard[intTempY][intTempX - 1] = 1;
             }
         }
 
