@@ -131,12 +131,31 @@ public class Board {
                 castlesShort((7 - p2.x) * 90, (7 - p2.y) * 90);
             }
         }
-        if (moves[0].equals("e1") && moves[1].equals("c1")) {
+        else if (moves[0].equals("e1") && moves[1].equals("c1")) {
             System.out.println("Gets here");
             if(blnServer) {
                 castlesLong(p2.x * 90, p2.y * 90);
             } else {
                 castlesLong((7 - p2.x) * 90, (7 - p2.y) * 90);
+            }
+        }
+
+        else if(moves[0].equals("e8") && moves[1].equals("g8")) {
+            System.out.println("Get's here");
+            if(!blnServer) {
+                castlesShortBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
+            } else {
+                castlesShortBlack(p2.x * 90, p2.y * 90);
+            }
+
+        }
+
+        else if(moves[0].equals("e8") && moves[1].equals("c8")) {
+            System.out.println("Gets here");
+            if(!blnServer) {
+                castlesLongBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
+            } else {
+                castlesLongBlack(p2.x * 90, p2.y * 90);
             }
         }
 
@@ -150,6 +169,7 @@ public class Board {
         System.out.println("****************************");
     }
 
+    //This will only work for white.
     public void castlesShort(int intXPos, int intYPos) {
         Iterator<Piece> pieceIterator = pieces.iterator();
         System.out.println("Searching intXPos for black is: " + (intXPos - 90));
@@ -176,9 +196,50 @@ public class Board {
                 piece.setPosition(intXPos + 90, intYPos);
                 int intTempX = intXPos / 90;
                 int intTempY = intYPos / 90;
-                chessBoard[intTempY][intTempX - 1] = 0;
-                chessBoard[intTempY][intTempX + 1] = 1;
+                System.out.println("intTempX" + intTempX);
+                System.out.println("intTempY" + intTempY);
+                chessBoard[7 - intTempY][7 - intTempX + 1] = 0;
+                chessBoard[7 - intTempY][7 - intTempX - 1] = 1;
             }
+        }
+    }
+    //TEMP: This is a temporary fix for black side castling short. All this does
+    //      is flip the white castlesShort but for now this will do.
+    public void castlesShortBlack(int intXPos, int intYPos) {
+        Iterator<Piece> pieceIterator = pieces.iterator();
+        System.out.println("Searching intXPos for black is: " + (intXPos - 90));
+        System.out.println("intYPos is: " + intYPos);
+
+        while (pieceIterator.hasNext()) {
+
+            Piece piece = pieceIterator.next();
+            if(!blnServer && piece.intXPos == intXPos - 90 && piece.intYPos == intYPos) {
+                System.out.println(intXPos);
+                System.out.println(intYPos);
+                //Int yPos should be 0, int x Pos should be 90
+                piece.setPosition(intXPos + 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                System.out.println("tempX: " + intTempX);
+                System.out.println("tempY: " + intTempY);
+                chessBoard[7 - intTempY][7 - intTempX + 1] = 0;
+                chessBoard[7 - intTempY][7 - intTempX - 1] = -1;
+            } else if(blnServer && piece.intXPos == intXPos + 90 && piece.intYPos == intYPos) {
+                System.out.println(intXPos);
+                System.out.println(intYPos);
+                //Here int yPos should be 0 and intXPos should be 900(I think)
+                piece.setPosition(intXPos - 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                System.out.println("intTempX: " + intTempX);
+                System.out.println("intTempY: " + intTempY);
+
+                chessBoard[intTempY][intTempX + 1] = 0;
+                chessBoard[intTempY][intTempX - 1] = -1;
+
+            }
+
+
         }
     }
 
@@ -193,6 +254,9 @@ public class Board {
                 piece.setPosition(intXPos + 90, intYPos);
                 int intTempX = intXPos / 90;
                 int intTempY = intYPos / 90;
+                System.out.println("tempX: " + intTempX);
+                System.out.println("tempY: " + intTempY);
+
 
                 chessBoard[intTempY][intTempX - 2] = 0;
                 chessBoard[intTempY][intTempX + 1] = 1;
@@ -201,8 +265,41 @@ public class Board {
                 piece.setPosition(intXPos - 90, intYPos);
                 int intTempX = intXPos / 90;
                 int intTempY = intYPos / 90;
-                chessBoard[intTempY][intTempX + 2] = 0;
-                chessBoard[intTempY][intTempX - 1] = 1;
+                System.out.println("tempX: " + intTempX);
+                System.out.println("tempY: " + intTempY);
+
+                chessBoard[7 - intTempY][7 - intTempX - 2] = 0;
+                chessBoard[7 -intTempY][7 - intTempX + 1] = 1;
+            }
+        }
+    }
+    //TEMP: This is a temporary fix for the black side long castles. This will
+    //      suffice until we can find a better solution for it.
+    public void castlesLongBlack(int intXPos, int intYPos) {
+        Iterator<Piece> pieceIterator = pieces.iterator();
+
+        while (pieceIterator.hasNext()) {
+            Piece piece = pieceIterator.next();
+            if (blnServer && piece.intXPos == intXPos - 180 && piece.intYPos == intYPos) {
+                System.out.println("Get's here");
+                piece.setPosition(intXPos + 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                System.out.println("tempX" + intTempX);
+                System.out.println("tempY" + intTempY);
+
+
+                chessBoard[intTempY][intTempX - 2] = 0;
+                chessBoard[intTempY][intTempX + 1] = -1;
+            } else if(!blnServer && piece.intXPos == intXPos + 180 && piece.intYPos == intYPos) {
+                System.out.println("Get's here if found piece and server == false");
+                piece.setPosition(intXPos - 90, intYPos);
+                int intTempX = intXPos / 90;
+                int intTempY = intYPos / 90;
+                System.out.println("tempX" + intTempX);
+                System.out.println("tempY" + intTempY);
+                chessBoard[7 - intTempY][7 - intTempX - 2] = 0;
+                chessBoard[7 - intTempY][7 - intTempX + 1] = -1;
             }
         }
 
