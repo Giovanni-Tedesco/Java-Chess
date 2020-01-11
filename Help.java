@@ -5,6 +5,7 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 public class Help extends MouseAdapter implements ActionListener {
+    private int intHelpScreen;
     private Timer timer = new Timer(1000/60, this);
     private HelpPanel helpPanel;
     private BufferedImage currentHelpImage;
@@ -23,6 +24,7 @@ public class Help extends MouseAdapter implements ActionListener {
         for(ClickableArea area : clickAreaList) {
             if(area.clickedArea(evt)) {
                 currentHelpImage = helpImageList.get(area.intNumber - 1);
+                intHelpScreen = area.intNumber;
                 break;
             }
         }
@@ -35,6 +37,16 @@ public class Help extends MouseAdapter implements ActionListener {
         initializeClickAreas();
         initImages();
         timer.start();
+    }
+
+    public Help(int intScreenNum) {
+        helpPanel = new HelpPanel();
+        helpPanel.setPreferredSize(Utility.panelDimensions);
+        helpPanel.addMouseListener(this);
+        initializeClickAreas();
+        initImages();
+        timer.start();
+        currentHelpImage = helpImageList.get(intScreenNum-1<0?0:intScreenNum-1);
     }
 
     private void initializeClickAreas() {
@@ -57,6 +69,7 @@ public class Help extends MouseAdapter implements ActionListener {
 
     private class HelpPanel extends JPanel {
         private JButton backButton = new JButton("BACK");
+        private JButton tutorialButton = new JButton("TUTORIAL");
 
         HelpPanel() {
             super(null);
@@ -69,7 +82,19 @@ public class Help extends MouseAdapter implements ActionListener {
                 }
             });
             Utility.setButtonStyle(backButton, 12);
+
+            tutorialButton.setSize(150, 45);
+            tutorialButton.setLocation(1100, 28);
+            tutorialButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    Utility.changePanel(new TutorialMode(intHelpScreen).getTutorialPanel());
+                }
+            });
+            Utility.setButtonStyle(tutorialButton, 12);
+
             add(backButton);
+            add(tutorialButton);
         }
 
         @Override

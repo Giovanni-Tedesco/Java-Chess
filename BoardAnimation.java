@@ -42,7 +42,7 @@ public class BoardAnimation extends JPanel {
     private ArrayList<BufferedImage> blackCaptureImages = new ArrayList<>();
     public static HashMap<Integer, BufferedImage> pieceImages = new HashMap<>();
 
-    private static void initImages() {
+    public static void initImages() {
         String path = "Assets/Pieces/";
 
         String[] fileNames = { "Rook.png", "Knight.png", "Bishop.png", "Queen.png", "King.png", "Pawn.png",
@@ -167,15 +167,9 @@ public class BoardAnimation extends JPanel {
         }
     }
 
-    // for testing
-    public BoardAnimation() {
-        super();
-        blnServer = true;
-    }
-
     public BoardAnimation(boolean blnIsServer) {
         super();
-        setBackground(darkGrey);
+        setBackground(new Color(46, 44, 44));
         this.blnServer = blnIsServer;
         blnTurn = blnIsServer;
         initImages();

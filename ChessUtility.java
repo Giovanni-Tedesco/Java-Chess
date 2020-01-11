@@ -50,14 +50,16 @@ public class ChessUtility {
     }
 
     private static LinkedList<int[]> checkFiles(int intX, int intY, boolean blnWhite) {
+        System.out.println("GOT HE");
         LinkedList<int[]> fileMoves = new LinkedList<>();
-        Board chessBoard = BoardAnimation.getBoard();
+        Board chessBoard = (BoardAnimation.getBoard() != null) ? BoardAnimation.getBoard() : TutorialMode.getBoard();
+        System.out.println(BoardAnimation.getBoard() + " t " + TutorialMode.getBoard());
 
         // Check in x+ direction
         for (int i = intX; i < 8; i++) {
             if (i == intX)
                 continue;
-            if (BoardAnimation.getBoard().getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
+            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))) {
                     break;
@@ -76,7 +78,7 @@ public class ChessUtility {
         for (int i = intX; i >= 0; i--) {
             if (i == intX)
                 continue;
-            if (BoardAnimation.getBoard().getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
+            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))) {
                     break;
@@ -95,7 +97,7 @@ public class ChessUtility {
         for (int i = intY; i < 8; i++) {
             if (i == intY)
                 continue;
-            if (BoardAnimation.getBoard().getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
+            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))) {
                     break;
@@ -114,7 +116,7 @@ public class ChessUtility {
         for (int i = intY; i >= 0; i--) {
             if (i == intY)
                 continue;
-            if (BoardAnimation.getBoard().getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
+            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))) {
                     break;
@@ -224,6 +226,7 @@ public class ChessUtility {
     }
 
     public static LinkedList<int[]> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite) {
+        System.out.println(BoardAnimation.getBoard() + " t " + TutorialMode.getBoard());
         int intXIndex = intLastX / 90;// blnWhite?intLastX/90:7-(intLastX/90);
         int intYIndex = intLastY / 90;// blnWhite?intLastY/90:7-(intLastY/90);
         LinkedList<int[]> legalRookMoves = new LinkedList<>();
