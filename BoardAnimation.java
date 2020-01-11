@@ -167,15 +167,9 @@ public class BoardAnimation extends JPanel {
         }
     }
 
-    // for testing
-    public BoardAnimation() {
-        super();
-        blnServer = true;
-    }
-
     public BoardAnimation(boolean blnIsServer) {
         super();
-        setBackground(darkGrey);
+        setBackground(new Color(46, 44, 44));
         this.blnServer = blnIsServer;
         blnTurn = blnIsServer;
         initImages();

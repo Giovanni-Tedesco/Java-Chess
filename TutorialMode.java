@@ -4,7 +4,7 @@ import javax.swing.event.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-
+//TODO: fix file and diag checking, throws null pointer for some reason
 public class TutorialMode implements ActionListener {
     private enum tutorials {
         PAWN,
@@ -15,7 +15,7 @@ public class TutorialMode implements ActionListener {
         KING
     }
 
-    private static Board tutorialBoard;
+    private static Board tutorialBoard = new Board(true);
     private Stack<tutorials> tutorialsDone = new Stack<>();
     private TutorialAnimation tutorialPanel = new TutorialAnimation();
     private int intScreenNum;
@@ -23,6 +23,8 @@ public class TutorialMode implements ActionListener {
     private JLabel[] serverCaptureLabels = new JLabel[5];
     private JButton backButton = new JButton("BACK");
     private JButton nextButton = new JButton("NEXT");
+    private JLabel tutorialTitle = new JLabel();
+    private JLabel tutorialDesc = new JLabel();
 
     private void initTutorials() {
         tutorialsDone.push(tutorials.KING);
@@ -38,14 +40,74 @@ public class TutorialMode implements ActionListener {
             case PAWN:
                 runPawnTutorial();
                 break;
+            case ROOK:
+                runRookTutorial();
+                break;
+            case KNIGHT:
+                runKnightTutorial();
+                break;
+            case BISHOP:
+                runBishopTutorial();
+                break;
+            case QUEEN:
+                runQueenTutorial();
         }
         tutorialPanel.repaint();
     }
 
     private void runPawnTutorial() {
+        tutorialTitle.setText(tutorials.PAWN.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" + "Pawn pieces can only move forward." +
+        "For their first move, they can move two spaces forward." + "Afterwards, they can only move forward one space at a time." +
+        "They can only capture pieces by moving diagonally." + "To move the pawn, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,7*90,true,6));
-        tutorialBoard.setPiece(3, 7, 6);
+        tutorialBoard.pieces.add(new Piece(3*90,6*90,true,6));
+        tutorialBoard.setPiece(3, 6, 6);
+    }
+
+    private void runRookTutorial() {
+        tutorialTitle.setText(tutorials.ROOK.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "A Rook piece can move vertically or horizontally, as long as there are no pieces in between the initial and final positions." +
+        "To move the rook, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,1));
+        tutorialBoard.setPiece(3, 3, 1);
+    }
+
+    private void runKnightTutorial() {
+        tutorialTitle.setText(tutorials.KNIGHT.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "Knight pieces can move forward, backward, left or right two squares and must then move one square in either perpendicular direction." +
+        "To move the knight, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,2));
+        tutorialBoard.setPiece(3, 3, 2);
+    }
+
+    private void runBishopTutorial() {
+        tutorialTitle.setText(tutorials.BISHOP.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "Bishop pieces can only move diagonally (in any direction), as long as there are no pieces in between the initial and final positions." +
+        "To move the knight, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,3));
+        tutorialBoard.setPiece(3, 3, 3);
+    }
+
+    private void runQueenTutorial() {
+        tutorialTitle.setText(tutorials.QUEEN.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "The Queen piece can move both diagonally, vertically, and horizontally, as long as there are no pieces in between the initial and final positions." +
+        "To move the knight, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,4));
+        tutorialBoard.setPiece(3, 3, 4);
     }
 
     private void clearChessBoard() {
@@ -85,6 +147,12 @@ public class TutorialMode implements ActionListener {
         Utility.setButtonStyle(backButton, 12);
         tutorialPanel.add(backButton);
 
+        nextButton.setLocation(730, 660);
+        nextButton.setSize(540, 50);
+        nextButton.addActionListener(this);
+        Utility.setButtonStyle(nextButton, 18);
+        tutorialPanel.add(nextButton);
+
         serverInfoLabel.setSize(200, 20);
         serverInfoLabel.setLocation(900, 5);
         serverInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,9 +168,26 @@ public class TutorialMode implements ActionListener {
             serverCaptureLabels[i].setVerticalAlignment(SwingConstants.CENTER);
             tutorialPanel.add(serverCaptureLabels[i]);
         }
+
+        tutorialTitle.setSize(400, 100);
+        tutorialTitle.setLocation(800, 220);
+        Utility.setLabelStyle(tutorialTitle, 32);
+        tutorialTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        tutorialTitle.setVerticalAlignment(SwingConstants.CENTER);
+        tutorialPanel.add(tutorialTitle);
+
+        tutorialDesc.setSize(400, 300);
+        tutorialDesc.setLocation(800, 320);
+        Utility.setLabelStyle(tutorialDesc, 16);
+        tutorialDesc.setHorizontalAlignment(SwingConstants.CENTER);
+        tutorialDesc.setVerticalAlignment(SwingConstants.CENTER);
+        tutorialPanel.add(tutorialDesc);
     }
 
     public static Board getBoard() {
+        if(tutorialBoard == null) {
+            System.out.println("NULLLLLLL");
+        }
         return tutorialBoard;
     }
 
@@ -128,8 +213,7 @@ public class TutorialMode implements ActionListener {
         TutorialAnimation() {
             super(null);
             BoardAnimation.initImages();
-            setBackground(darkGrey);
-            tutorialBoard = new Board(true);
+            setBackground(new Color(46, 44, 44));
             initCaptureImages();
             addMouseListener(new TutorialMouse());
             addMouseMotionListener(new TutorialMouse());
@@ -208,8 +292,6 @@ public class TutorialMode implements ActionListener {
                 int intYIndex = intYPos / 90;
                 boolean blnInBounds = intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
                 boolean blnCorrectColor = blnInBounds ? tutorialBoard.isWhite(intXIndex, intYIndex): false;
-
-                 (tutorialBoard.getPiece(intXIndex, intYIndex) != 0) + blnCorrectColor);
 
                 if (blnInBounds && !tutorialBoard.promotionInProgress()
                         && tutorialBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
