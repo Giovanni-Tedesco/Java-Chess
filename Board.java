@@ -394,6 +394,8 @@ public class Board {
             Piece king = pieceLookup.get(10);
             int intXPos = king.intXPos;
             int intYPos = king.intYPos;
+            System.out.println("intXPos: " + intXPos);
+            System.out.println("intYPos: " + intYPos);
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 if (chessBoard[p[0]][p[1]] == 2) {
                     System.out.println("Knight Check weee");
@@ -409,8 +411,10 @@ public class Board {
             return false;
         } else if (!blnServer) {
             Piece king = pieceLookup.get(5);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
+            int intXPos = 630 - king.intXPos;
+            int intYPos = 630 - king.intYPos;
+            System.out.println("intXPos: " + intXPos);
+            System.out.println("intYPos: " + intYPos);
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
                 System.out.println(p[0] + " " + p[1]);
@@ -474,6 +478,9 @@ public class Board {
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
+            if(givesCheck()) {
+                System.out.println("Gives a check");
+            }
             piece.getLegalMoves();
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -495,6 +502,9 @@ public class Board {
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
+            if(givesCheck()) {
+                System.out.println("Gives a check");
+            }
             piece.getLegalMoves();
             capturePiece(intXPos, intYPos);
             blnPromotion = promotable(piece);
@@ -516,6 +526,9 @@ public class Board {
             printCharboard();
 
             piece.setPosition(intXPos, intYPos);
+            if(givesCheck()) {
+                System.out.println("Gives a check");
+            }
             System.out.println("Get's here");
             piece.getLegalMoves();
             piece.blnFirst = false;
