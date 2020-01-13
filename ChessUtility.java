@@ -199,6 +199,8 @@ public class ChessUtility {
             }
         }
 
+        // TODO: Add checking for the knight to see if it impedes the kings ability to
+        // move.
         if (blnFirst) {
             legalKingMoves.add(new int[] { intXIndex - 2, intYIndex });
             legalKingMoves.add(new int[] { intXIndex + 2, intYIndex });

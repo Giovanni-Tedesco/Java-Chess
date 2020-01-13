@@ -111,6 +111,14 @@ public class ChessGame implements ActionListener {
                 Piece temp = null;
                 int intX, intY, intFinalX, intFinalY;
 
+                if (strMessage.contains("+")) {
+                    System.out.println("This gives a check");
+                    chessBoard.setCheck(true);
+
+                }
+
+                chessBoard.displayInformation();
+
                 if (strMove.length == 3) {
                     chessPanel.changeTurn();
                     if (blnServer) {
