@@ -1,4 +1,4 @@
-port : 7777
-color : 1
+port : 6969
+color : 2
 dark : false
-filter : true
+filter : false
