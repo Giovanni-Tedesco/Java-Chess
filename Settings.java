@@ -78,7 +78,7 @@ public class Settings {
         return settingsPanel;
     }
 
-    public Settings(){
+	public Settings(){
 		loadSettings();
 		settingsPanel.setPreferredSize(Utility.panelDimensions);
 		settingsPanel.portField.setText((String)settingsMap.get("port"));
@@ -109,8 +109,8 @@ public class Settings {
 		public void actionPerformed(ActionEvent evt) {
 			if(evt.getSource() == timer) {
 				repaint();
-			} else if(evt.getSource()== backButton){
-                Utility.changePanel(new MainMenu().getMenuPanel());
+			} else if(evt.getSource() == backButton){
+				Utility.changePanel(new MainMenu().getMenuPanel());
 			}else if(evt.getSource() == saveButton){
 				boolean blnSuccess = false;
 				String strPort = portField.getText();
@@ -249,9 +249,9 @@ public class Settings {
 
 		private void initButtons() {
 			backButton.setSize(110, 45);
-            backButton.setLocation(30, 30);
-            backButton.addActionListener(this);
-            Utility.setButtonStyle(backButton, 12);
+        	backButton.setLocation(30, 30);
+        	backButton.addActionListener(this);
+        	Utility.setButtonStyle(backButton, 12);
 
 			defaultButton.setSize(200, 75);
 			defaultButton.setLocation(540, 600);
