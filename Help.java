@@ -57,7 +57,7 @@ public class Help extends MouseAdapter implements ActionListener {
 
     private void initImages() {
         for(int i = 0; i < 9; i++) {
-            helpImageList.add(Utility.loadImage("Assets/Dark_Help/help_" + (i+1) + ".png"));
+            helpImageList.add(Utility.loadImage("Assets/" + (Settings.isDark()?"Dark":"White") + "_Help/help_" + (i+1) + ".png"));
         }
 
         currentHelpImage = helpImageList.get(0);

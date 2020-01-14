@@ -294,7 +294,7 @@ public class TutorialMode implements ActionListener {
         TutorialAnimation() {
             super(null);
             BoardAnimation.initImages();
-            setBackground(new Color(46, 44, 44));
+            setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
             initCaptureImages();
             addMouseListener(new TutorialMouse());
             addMouseMotionListener(new TutorialMouse());
@@ -343,9 +343,10 @@ public class TutorialMode implements ActionListener {
         }
 
         private void drawBoard(Graphics g) {
+            Color boardColor = Settings.getBoardColor();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : darkGrey);
+                    g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : boardColor);
                     g.fillRect(j * 90, i * 90, 90, 90);
                 }
             }
@@ -373,7 +374,7 @@ public class TutorialMode implements ActionListener {
                 g.drawLine(720, 0, 720, 720);
                 drawCapturedPieces(g);
             } else {
-                g.drawImage(Utility.loadImage("Assets/Dark_Help/tutorial.png"), 0,0,null);
+                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png"), 0,0,null);
             }
         }
 

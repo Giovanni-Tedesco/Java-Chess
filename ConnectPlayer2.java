@@ -29,6 +29,8 @@ class ConnectPlayer2 implements ActionListener {
     private JTextField portField = new JTextField();
     private JTextField ipField = new JTextField();
     private JTextField nameField = new JTextField();
+
+    private int intPort = Settings.getPortNumber();
     @Override
     public void actionPerformed(ActionEvent evt) {
         Object event = evt.getSource();
@@ -87,9 +89,9 @@ class ConnectPlayer2 implements ActionListener {
         initializeFields();
 
         if(blnServer) {
-            SuperSocketMaster temp = new SuperSocketMaster(6969, this);
+            SuperSocketMaster temp = new SuperSocketMaster(intPort, this);
             ipLabel.setText(strIp + temp.getMyAddress());
-            portLabel.setText(strPort + 6969);
+            portLabel.setText(strPort + intPort);
             infoLabel1.setText(strServerInfo1);
             infoLabel2.setText(strServerInfo2);
 

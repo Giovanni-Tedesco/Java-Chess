@@ -21,8 +21,6 @@ import java.util.HashMap;
 //13) All images need to be made from scratch
 //14) Write up req doc with needs but keep track of the wants
 public class BoardAnimation extends JPanel {
-    private Color darkGrey = new Color(79, 76, 69);
-
     // Will be used later for networking
     private boolean blnServer, blnTurn;
     private boolean blnClientStarted = false;
@@ -121,9 +119,10 @@ public class BoardAnimation extends JPanel {
     }
 
     private void drawBoard(Graphics g) {
+        Color boardColor = Settings.getBoardColor();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : darkGrey);
+                g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : boardColor);
                 g.fillRect(j * 90, i * 90, 90, 90);
             }
         }
@@ -169,7 +168,7 @@ public class BoardAnimation extends JPanel {
 
     public BoardAnimation(boolean blnIsServer) {
         super();
-        setBackground(new Color(46, 44, 44));
+        setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
         this.blnServer = blnIsServer;
         blnTurn = blnIsServer;
         initImages();
