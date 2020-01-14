@@ -389,6 +389,13 @@ public class Board {
         this.inCheck = inCheck;
     }
 
+    /**
+     * Checks to see if a move gives a check to the opponent
+     *
+     * @param none
+     * @return boolean true if the move gives a check and false if it does not
+     */
+
     public boolean givesCheck() {
         if (blnServer) {
             Piece king = pieceLookup.get(10);
@@ -396,14 +403,17 @@ public class Board {
             int intYPos = king.intYPos;
             System.out.println("intXPos: " + intXPos);
             System.out.println("intYPos: " + intYPos);
+            System.out.println("white queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, true));
+            System.out.println("black queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, false));
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (chessBoard[p[0]][p[1]] == 2) {
+                if (chessBoard[p[1]][p[0]] == 2) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalQueenMoves(intXPos, intYPos, false)) {
-                if (chessBoard[p[0]][p[1]] == 3 || chessBoard[p[0]][p[1]] == 4 || chessBoard[p[0]][p[1]] == 1) {
+                System.out.println(p[0] + " " + p[1]);
+                if (chessBoard[p[1]][p[0]] == 3 || chessBoard[p[1]][p[0]] == 4 || chessBoard[p[1]][p[0]] == 1) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -415,16 +425,19 @@ public class Board {
             int intYPos = 630 - king.intYPos;
             System.out.println("intXPos: " + intXPos);
             System.out.println("intYPos: " + intYPos);
+            System.out.println("white queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, true));
+            System.out.println("black queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, false));
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
-                System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[0]][p[1]] == -2) {
+                System.out.println(p[1] + " " + p[0]);
+                if (chessBoard[p[1]][p[0]] == -2) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalQueenMoves(intXPos, intYPos, true)) {
-                if (chessBoard[p[0]][p[1]] == -3 || chessBoard[p[0]][p[1]] == -4 || chessBoard[p[0]][p[1]] == -1) {
+                System.out.println(p[0] + " " + p[1]);
+                if (chessBoard[p[1]][p[0]] == -3 || chessBoard[p[1]][p[0]] == -4 || chessBoard[p[1]][p[0]] == -1) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -432,6 +445,53 @@ public class Board {
             return false;
         }
 
+        return false;
+    }
+
+    /*
+     * This will check if after making a move the king is still in check. If the
+     * function returns true than then king is still in check and that causes the
+     * move to be illegal
+     */
+    public boolean escapesCheck() {
+        if (blnServer) {
+            Piece king = pieceLookup.get(5);
+            int intXPos = 630 - king.intXPos;
+            int intYPos = 630 - king.intYPos;
+            System.out.println("Blocking intXPos: " + intXPos);
+            System.out.println("Blocking intYPos: " + intYPos);
+
+            for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
+                if (chessBoard[p[0]][p[1]] == -2) {
+                    return true;
+                }
+            }
+
+            for (int[] p : ChessUtility.getLegalQueenMoves(intXPos, intYPos, true)) {
+                if (chessBoard[p[0]][p[1]] == -3 || chessBoard[p[0]][p[1]] == -4 || chessBoard[p[0]][p[1]] == -1) {
+                    System.out.println("Rook check");
+                    return true;
+                }
+            }
+            return false;
+        } else if (!blnServer) {
+            Piece king = pieceLookup.get(5);
+            int intXPos = king.intXPos;
+            int intYPos = king.intYPos;
+            for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
+                if (chessBoard[p[0]][p[1]] == 2) {
+                    return true;
+                }
+            }
+
+            for (int[] p : ChessUtility.getLegalQueenMoves(intXPos, intYPos, false)) {
+                if (chessBoard[p[0]][p[1]] == 3 || chessBoard[p[0]][p[1]] == 4 || chessBoard[p[0]][p[1]] == 1) {
+                    System.out.println("Blocks check");
+                    return true;
+                }
+            }
+            return false;
+        }
         return false;
     }
 
@@ -478,8 +538,18 @@ public class Board {
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
-            if(givesCheck()) {
+            // if (inCheck && escapesCheck()) {
+            // piece.goBack();
+            // return false;
+            // } else if (inCheck && !escapesCheck()) {
+            // inCheck = false;
+            // }
+
+            System.out.println("Get's here: " + inCheck);
+
+            if (givesCheck()) {
                 System.out.println("Gives a check");
+                result += "+";
             }
             piece.getLegalMoves();
             capturePiece(intXPos, intYPos);
@@ -502,8 +572,18 @@ public class Board {
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
-            if(givesCheck()) {
+            // if (inCheck && escapesCheck()) {
+            // piece.goBack();
+            // return false;
+            // } else if (inCheck && !escapesCheck()) {
+            // inCheck = false;
+            // }
+
+            System.out.println("Get's here: " + inCheck);
+
+            if (givesCheck()) {
                 System.out.println("Gives a check");
+                result += "+";
             }
             piece.getLegalMoves();
             capturePiece(intXPos, intYPos);
@@ -526,8 +606,18 @@ public class Board {
             printCharboard();
 
             piece.setPosition(intXPos, intYPos);
-            if(givesCheck()) {
+            // if (inCheck && escapesCheck()) {
+            // piece.goBack();
+            // return false;
+            // } else if (inCheck && !escapesCheck()) {
+            // inCheck = false;
+            // }
+
+            System.out.println("Get's here: " + inCheck);
+
+            if (givesCheck()) {
                 System.out.println("Gives a check");
+                result += "+";
             }
             System.out.println("Get's here");
             piece.getLegalMoves();
