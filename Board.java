@@ -111,11 +111,8 @@ public class Board {
                 } else if (!piece.blnColor) {
                     pieceLookup.put(piece.intPiece + 5, piece);
                 }
-
             }
-
         }
-
     }
 
     public String toCoord(int x1, int y1, int x2, int y2) {
@@ -666,7 +663,9 @@ public class Board {
 
         chessBoard[intYIndex][intXIndex] = newPiece.blnColor ? newPiece.intPiece : -newPiece.intPiece;
         blnPromotion = false;
-        ChessGame.getNetwork().sendText("promotion over," + intXIndex + "," + intYIndex + "," + newPiece.intPiece);
+        if(ChessGame.getNetwork() != null) {
+            ChessGame.getNetwork().sendText("promotion over," + intXIndex + "," + intYIndex + "," + newPiece.intPiece);
+        }
 
         System.out.println("AFTER PROMOTION");
         printCharboard();

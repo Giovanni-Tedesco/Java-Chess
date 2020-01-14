@@ -17,21 +17,23 @@ public class ChessUtility {
         LinkedList<int[]> moves = new LinkedList<int[]>();
         int tempX = intX;
         int tempY = intY;
+        Board chessBoard = (BoardAnimation.getBoard() != null) ? BoardAnimation.getBoard() : TutorialMode.getBoard();
+
         while (tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8) {
             if (tempX == intX && tempY == intY) {
                 tempX += moveRules[0];
                 tempY += moveRules[1];
                 continue;
-            } else if (BoardAnimation.getBoard().getPiece(blnWhite ? tempX : 7 - tempX,
+            } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX,
                     blnWhite ? tempY : 7 - tempY) != 0) {
-                if ((blnWhite && BoardAnimation.getBoard().isWhite(blnWhite ? tempX : 7 - tempX,
+                if ((blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
                         blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite && !BoardAnimation.getBoard().isWhite(blnWhite ? tempX : 7 - tempX,
+                        || (!blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
                                 blnWhite ? tempY : 7 - tempY))) {
                     break;
-                } else if ((blnWhite && !BoardAnimation.getBoard().isWhite(blnWhite ? tempX : 7 - tempX,
+                } else if ((blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
                         blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite && BoardAnimation.getBoard().isWhite(blnWhite ? tempX : 7 - tempX,
+                        || (!blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
                                 blnWhite ? tempY : 7 - tempY))) {
                     moves.add(new int[] { tempX, tempY });
                     break;
