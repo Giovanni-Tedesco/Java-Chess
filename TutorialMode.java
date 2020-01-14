@@ -12,7 +12,9 @@ public class TutorialMode implements ActionListener {
         KNIGHT,
         BISHOP,
         QUEEN,
-        KING
+        KING,
+        CAPTURING,
+        PROMOTION
     }
 
     private static Board tutorialBoard = new Board(true);
@@ -23,10 +25,36 @@ public class TutorialMode implements ActionListener {
     private JLabel[] serverCaptureLabels = new JLabel[5];
     private JButton backButton = new JButton("BACK");
     private JButton nextButton = new JButton("NEXT");
+    private JButton homeButton = new JButton("MAIN MENU");
+    private JButton helpButton = new JButton("HELP");
+    private JButton retryButton = new JButton("RETRY TUTORIAL");
     private JLabel tutorialTitle = new JLabel();
     private JLabel tutorialDesc = new JLabel();
 
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        Object event = evt.getSource();
+        if(event == backButton || event == helpButton) {
+            Utility.changePanel(new Help(intScreenNum).getHelpPanel());
+        } else if(event == nextButton) {
+            if(tutorialsDone.empty()) {
+                //end tutorial
+                System.out.println("NO MORE TUTORIALS");
+                tutorialPanel.endTutorial();
+                tutorialPanel.repaint();
+            } else {
+                runTutorial();
+            }
+        } else if(event == homeButton) {
+            Utility.changePanel(new MainMenu().getMenuPanel());
+        } else if(event == retryButton) {
+            Utility.changePanel(new TutorialMode(intScreenNum).tutorialPanel);
+        }
+    }
+
     private void initTutorials() {
+        tutorialsDone.push(tutorials.PROMOTION);
+        tutorialsDone.push(tutorials.CAPTURING);
         tutorialsDone.push(tutorials.KING);
         tutorialsDone.push(tutorials.QUEEN);
         tutorialsDone.push(tutorials.BISHOP);
@@ -36,7 +64,7 @@ public class TutorialMode implements ActionListener {
     }
 
     private void runTutorial() {
-        switch(tutorialsDone.peek()) {
+        switch(tutorialsDone.pop()) {
             case PAWN:
                 runPawnTutorial();
                 break;
@@ -51,6 +79,16 @@ public class TutorialMode implements ActionListener {
                 break;
             case QUEEN:
                 runQueenTutorial();
+                break;
+            case KING:
+                runKingTutorial();
+                break;
+            case CAPTURING:
+                runCaptureTutorial();
+                break;
+            case PROMOTION:
+                runPromotionTutorial();
+                break;
         }
         tutorialPanel.repaint();
     }
@@ -92,7 +130,7 @@ public class TutorialMode implements ActionListener {
         tutorialTitle.setText(tutorials.BISHOP.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
         "Bishop pieces can only move diagonally (in any direction), as long as there are no pieces in between the initial and final positions." +
-        "To move the knight, select it and drag it to the desired position." +
+        "To move the bishop, select it and drag it to the desired position." +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,3));
@@ -103,11 +141,65 @@ public class TutorialMode implements ActionListener {
         tutorialTitle.setText(tutorials.QUEEN.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
         "The Queen piece can move both diagonally, vertically, and horizontally, as long as there are no pieces in between the initial and final positions." +
-        "To move the knight, select it and drag it to the desired position." +
+        "To move the queen, select it and drag it to the desired position." +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,4));
         tutorialBoard.setPiece(3, 3, 4);
+    }
+
+    private void runKingTutorial() {
+        tutorialTitle.setText(tutorials.KING.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "The King piece can only move one space, diagonally, vertically, and horizontally" +
+        "in any direction, as long as the final position does not put the king at risk of being captured." +
+        "If the King is at risk of being captured, the King must move to the next possible position." +
+        "To move the king, select it and drag it to the desired position." +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,5));
+        tutorialBoard.setPiece(3, 3, 5);
+    }
+
+    private void runCaptureTutorial() {
+        tutorialTitle.setText(tutorials.CAPTURING.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "To capture, simply move your piece to a position occupied by an opponents piece" +
+        "If you do capture a piece, the captured piece is removed from the board and the capture count above is updated" +
+        "Capturing pieces allows you to progress through the game and makes it easier the checkmate the opponents king" +
+        "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
+        clearChessBoard();
+        //add white pieces
+        tutorialBoard.pieces.add(new Piece(0*90,7*90,true,1));
+        tutorialBoard.pieces.add(new Piece(1*90, 7*90, true, 2));
+        tutorialBoard.pieces.add(new Piece(2*90, 7*90, true, 4));
+
+        //add black pieces
+        int [] intBlackPieces = {-1,-2,-3,-4,-5,-3,-2,-1};
+        for(int i = 0; i < intBlackPieces.length; i++) {
+            tutorialBoard.pieces.add(new Piece(i*90,0*90,false,intBlackPieces[i]));
+            tutorialBoard.setPiece(i, 0, intBlackPieces[i]);
+        }
+
+        tutorialBoard.setPiece(0, 7, 1);
+        tutorialBoard.setPiece(1, 7, 2);
+        tutorialBoard.setPiece(2, 7, 4);
+    }
+
+    private void runPromotionTutorial() {
+        tutorialTitle.setText(tutorials.PROMOTION.toString());
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
+        "Promotion occurs if a pawn reaches the opposing end of the board." +
+        "A pawn can then be ‘promoted’ or converted to a queen, rook, bishop, or knight." +
+        "When a promotion is occuring, the player needs to choose a piece from the captured display on the right side of the board." +
+        "Move your pawn to the last spot to promote it and try to capture the black knight" + "</div></html>");
+        clearChessBoard();
+        //add white piece
+        tutorialBoard.pieces.add(new Piece(7*90,1*90,true,6));
+        tutorialBoard.setPiece(7,1,6);
+        //add black piece
+        tutorialBoard.pieces.add(new Piece(0*90,7*90,false,2));
+        tutorialBoard.setPiece(0,7,-2);
     }
 
     private void clearChessBoard() {
@@ -124,21 +216,6 @@ public class TutorialMode implements ActionListener {
     //fills up pieces list according to tutorial and inits the board array
     //once they press next, pop from stack and go to next one
     //reset button to reset the tutorial at that point
-
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        Object event = evt.getSource();
-        if(event == backButton) {
-            Utility.changePanel(new Help(intScreenNum).getHelpPanel());
-        } else if(event == nextButton) {
-            if(tutorialsDone.empty()) {
-                //end tutorial
-            } else {
-                tutorialsDone.pop();
-                runTutorial();
-            }
-        }
-    }
 
     public void initComponents() {
         backButton.setLocation(1175, 5);
@@ -182,6 +259,10 @@ public class TutorialMode implements ActionListener {
         tutorialDesc.setHorizontalAlignment(SwingConstants.CENTER);
         tutorialDesc.setVerticalAlignment(SwingConstants.CENTER);
         tutorialPanel.add(tutorialDesc);
+
+        homeButton.addActionListener(this);
+        retryButton.addActionListener(this);
+        helpButton.addActionListener(this);
     }
 
     public static Board getBoard() {
@@ -207,7 +288,7 @@ public class TutorialMode implements ActionListener {
         private Color darkGrey = new Color(79, 76, 69);
         private ArrayList<BufferedImage> whiteCaptureImages = new ArrayList<>();
         private int [] intPieces = {4,1,3,2,6};
-        private boolean pressed = false;
+        private boolean pressed = false, blnFinished = false;
         private Piece temp = null;
 
         TutorialAnimation() {
@@ -217,6 +298,35 @@ public class TutorialMode implements ActionListener {
             initCaptureImages();
             addMouseListener(new TutorialMouse());
             addMouseMotionListener(new TutorialMouse());
+        }
+
+        public void endTutorial() {
+            blnFinished = true;
+            remove(backButton);
+            remove(nextButton);
+            remove(tutorialDesc);
+            remove(tutorialTitle);
+            remove(serverInfoLabel);
+            for(JLabel label : serverCaptureLabels) {
+                remove(label);
+            }
+            repaint();
+
+            homeButton.setSize(235,115);
+            homeButton.setLocation(102,545);
+            Utility.setButtonStyle(homeButton,18);
+
+            helpButton.setSize(235,115);
+            helpButton.setLocation(518,545);
+            Utility.setButtonStyle(helpButton,18);
+
+            retryButton.setSize(235,115);
+            retryButton.setLocation(930,545);
+            Utility.setButtonStyle(retryButton,18);
+
+            add(homeButton);
+            add(helpButton);
+            add(retryButton);
         }
 
         private void initCaptureImages() {
@@ -256,11 +366,15 @@ public class TutorialMode implements ActionListener {
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            drawBoard(g);
-            drawPieces(g);
-            g.setColor(Color.WHITE);
-            g.drawLine(720, 0, 720, 720);
-            drawCapturedPieces(g);
+            if(!blnFinished) {
+                drawBoard(g);
+                drawPieces(g);
+                g.setColor(Color.WHITE);
+                g.drawLine(720, 0, 720, 720);
+                drawCapturedPieces(g);
+            } else {
+                g.drawImage(Utility.loadImage("Assets/Dark_Help/tutorial.png"), 0,0,null);
+            }
         }
 
         private class TutorialMouse extends MouseAdapter {
