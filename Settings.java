@@ -32,26 +32,27 @@ public class Settings extends MouseAdapter implements ActionListener{
 	}
     
     private class SettingsPanel extends JPanel implements ActionListener{
-
-		 private JButton backButton = new JButton("BACK");
-		 private JButton saveButton = new JButton("SAVE");
-		 private JTextField portField = new JTextField();
-		 private JRadioButton boardDarkGreyButt = new JRadioButton("Dark Grey");
-		 private JRadioButton boardRedButt = new JRadioButton("Red");
-		 private JRadioButton boardGreenButt = new JRadioButton("Green");
-		 private JRadioButton boardBrownButt = new JRadioButton("Brown");
-		 private JRadioButton UIDarkButt = new JRadioButton("Dark");
-		 private JRadioButton UILightButt = new JRadioButton("Light");
-		 private JRadioButton ProfanityNoButt = new JRadioButton("Yes");
-		 private JRadioButton ProfanityYesButt = new JRadioButton("No");
-		 private String strfileName = "Assets/AboutPanel.png";
-		 private JLabel portLabel = new JLabel("Change port number(Enter number above 1000): ");
-		 private JLabel boardcolorLabel = new JLabel("Change Board Color: ");
-		 private JLabel UIlabel = new JLabel("Change UI Style:");
-		 private JLabel profLabel = new JLabel("Profanity Filter(for chat)");
-		 private ButtonGroup Boardcolortg = new ButtonGroup();
-		 private ButtonGroup UItg = new ButtonGroup();
-		 private ButtonGroup Proftg = new ButtonGroup();
+		
+		
+		private JButton backButton = new JButton("BACK");
+		private JButton saveButton = new JButton("SAVE");
+		private JTextField portField = new JTextField();
+		private JRadioButton boardDarkGreyButt = new JRadioButton("Dark Grey");
+		private JRadioButton boardRedButt = new JRadioButton("Red");
+		private JRadioButton boardGreenButt = new JRadioButton("Green");
+		private JRadioButton boardBrownButt = new JRadioButton("Brown");
+		private JRadioButton UIDarkButt = new JRadioButton("Dark");
+		private JRadioButton UILightButt = new JRadioButton("Light");
+		private JRadioButton ProfanityNoButt = new JRadioButton("Yes");
+		private JRadioButton ProfanityYesButt = new JRadioButton("No");
+		private String strfileName = "Assets/AboutPanel.png";
+		private JLabel portLabel = new JLabel("Change port number(Enter number above 1000): ");
+		private JLabel boardcolorLabel = new JLabel("Change Board Color: ");
+		private JLabel UIlabel = new JLabel("Change UI Style:");
+		private JLabel profLabel = new JLabel("Profanity Filter(for chat)");
+		private ButtonGroup Boardcolortg = new ButtonGroup();
+		private ButtonGroup UItg = new ButtonGroup();
+		private ButtonGroup Proftg = new ButtonGroup();
 		 
 		 
 		
