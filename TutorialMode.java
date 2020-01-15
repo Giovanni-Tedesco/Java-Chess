@@ -95,9 +95,9 @@ public class TutorialMode implements ActionListener {
 
     private void runPawnTutorial() {
         tutorialTitle.setText(tutorials.PAWN.toString());
-        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" + "Pawn pieces can only move forward." +
-        "For their first move, they can move two spaces forward." + "Afterwards, they can only move forward one space at a time." +
-        "They can only capture pieces by moving diagonally." + "To move the pawn, select it and drag it to the desired position." +
+        tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" + "Pawn pieces can only move forward. " +
+        "For their first move, they can move two spaces forward. " + "Afterwards, they can only move forward one space at a time. " +
+        "They can only capture pieces by moving diagonally. " + "To move the pawn, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,6*90,true,6));
@@ -107,8 +107,8 @@ public class TutorialMode implements ActionListener {
     private void runRookTutorial() {
         tutorialTitle.setText(tutorials.ROOK.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "A Rook piece can move vertically or horizontally, as long as there are no pieces in between the initial and final positions." +
-        "To move the rook, select it and drag it to the desired position." +
+        "A Rook piece can move vertically or horizontally, as long as there are no pieces in between the initial and final positions. " +
+        "To move the rook, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,1));
@@ -118,8 +118,8 @@ public class TutorialMode implements ActionListener {
     private void runKnightTutorial() {
         tutorialTitle.setText(tutorials.KNIGHT.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "Knight pieces can move forward, backward, left or right two squares and must then move one square in either perpendicular direction." +
-        "To move the knight, select it and drag it to the desired position." +
+        "Knight pieces can move forward, backward, left or right two squares and must then move one square in either perpendicular direction. " +
+        "To move the knight, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,2));
@@ -129,8 +129,8 @@ public class TutorialMode implements ActionListener {
     private void runBishopTutorial() {
         tutorialTitle.setText(tutorials.BISHOP.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "Bishop pieces can only move diagonally (in any direction), as long as there are no pieces in between the initial and final positions." +
-        "To move the bishop, select it and drag it to the desired position." +
+        "Bishop pieces can only move diagonally (in any direction), as long as there are no pieces in between the initial and final positions. " +
+        "To move the bishop, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,3));
@@ -140,8 +140,8 @@ public class TutorialMode implements ActionListener {
     private void runQueenTutorial() {
         tutorialTitle.setText(tutorials.QUEEN.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "The Queen piece can move both diagonally, vertically, and horizontally, as long as there are no pieces in between the initial and final positions." +
-        "To move the queen, select it and drag it to the desired position." +
+        "The Queen piece can move both diagonally, vertically, and horizontally, as long as there are no pieces in between the initial and final positions. " +
+        "To move the queen, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,4));
@@ -151,10 +151,10 @@ public class TutorialMode implements ActionListener {
     private void runKingTutorial() {
         tutorialTitle.setText(tutorials.KING.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "The King piece can only move one space, diagonally, vertically, and horizontally" +
-        "in any direction, as long as the final position does not put the king at risk of being captured." +
-        "If the King is at risk of being captured, the King must move to the next possible position." +
-        "To move the king, select it and drag it to the desired position." +
+        "The King piece can only move one space, diagonally, vertically, and horizontally " +
+        "in any direction, as long as the final position does not put the king at risk of being captured. " +
+        "If the King is at risk of being captured, the King must move to the next possible position. " +
+        "To move the king, select it and drag it to the desired position. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         tutorialBoard.pieces.add(new Piece(3*90,3*90,true,5));
@@ -164,9 +164,9 @@ public class TutorialMode implements ActionListener {
     private void runCaptureTutorial() {
         tutorialTitle.setText(tutorials.CAPTURING.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "To capture, simply move your piece to a position occupied by an opponents piece" +
-        "If you do capture a piece, the captured piece is removed from the board and the capture count above is updated" +
-        "Capturing pieces allows you to progress through the game and makes it easier the checkmate the opponents king" +
+        "To capture, simply move your piece to a position occupied by an opponents piece. " +
+        "If you do capture a piece, the captured piece is removed from the board and the capture count above is updated. " +
+        "Capturing pieces allows you to progress through the game and makes it easier the checkmate the opponents king. " +
         "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         //add white pieces
@@ -189,9 +189,9 @@ public class TutorialMode implements ActionListener {
     private void runPromotionTutorial() {
         tutorialTitle.setText(tutorials.PROMOTION.toString());
         tutorialDesc.setText("<html>" + "<div style='text-align: center;'>" +
-        "Promotion occurs if a pawn reaches the opposing end of the board." +
-        "A pawn can then be ‘promoted’ or converted to a queen, rook, bishop, or knight." +
-        "When a promotion is occuring, the player needs to choose a piece from the captured display on the right side of the board." +
+        "Promotion occurs if a pawn reaches the opposing end of the board. " +
+        "A pawn can then be promoted or converted to a queen, rook, bishop, or knight. " +
+        "When a promotion is occuring, the player needs to choose a piece from the captured display on the right side of the board. " +
         "Move your pawn to the last spot to promote it and try to capture the black knight" + "</div></html>");
         clearChessBoard();
         //add white piece
@@ -294,7 +294,7 @@ public class TutorialMode implements ActionListener {
         TutorialAnimation() {
             super(null);
             BoardAnimation.initImages();
-            setBackground(new Color(46, 44, 44));
+            setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
             initCaptureImages();
             addMouseListener(new TutorialMouse());
             addMouseMotionListener(new TutorialMouse());
@@ -343,9 +343,10 @@ public class TutorialMode implements ActionListener {
         }
 
         private void drawBoard(Graphics g) {
+            Color boardColor = Settings.getBoardColor();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : darkGrey);
+                    g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : boardColor);
                     g.fillRect(j * 90, i * 90, 90, 90);
                 }
             }
@@ -373,7 +374,7 @@ public class TutorialMode implements ActionListener {
                 g.drawLine(720, 0, 720, 720);
                 drawCapturedPieces(g);
             } else {
-                g.drawImage(Utility.loadImage("Assets/Dark_Help/tutorial.png"), 0,0,null);
+                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png"), 0,0,null);
             }
         }
 

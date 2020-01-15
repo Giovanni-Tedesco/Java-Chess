@@ -47,11 +47,11 @@ public class MainMenu implements ActionListener {
     public MainMenu() {
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
-        menuPanel.setBackground(Color.BLACK);
+        menuPanel.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
 
         aboutPanel.setPreferredSize(Utility.panelDimensions);
         aboutPanel.setLayout(null);
-        aboutPanel.setBackground(Color.BLACK);
+        aboutPanel.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
 
         titleLabel.setSize(600, 200);
         titleLabel.setLocation(340, 50);

@@ -92,13 +92,22 @@ public class Utility {
     // Sets the font and text color of labels
     public static void setLabelStyle(JLabel label, int intFontSize) {
         label.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
-        label.setForeground(Color.WHITE);
+        if(Settings.isDark()) {
+            label.setForeground(Color.WHITE);
+        } else {
+            label.setForeground(Color.BLACK);
+        }
     }
 
     // Sets the font and color of buttons
     public static void setButtonStyle(JButton button, int intFontSize) {
-        button.setBackground(Color.WHITE);// new Color(53,53,56));
-        button.setForeground(Color.BLACK);
+        if(Settings.isDark()) {
+            button.setBackground(Color.WHITE);// new Color(53,53,56));
+            button.setForeground(Color.BLACK);
+        } else {
+            button.setBackground(Color.BLACK);// new Color(53,53,56));
+            button.setForeground(Color.WHITE);
+        }
         button.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
     }
 

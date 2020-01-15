@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 
-class ConnectPlayer2 implements ActionListener {
+public class ConnectPlayer2 implements ActionListener {
     private String strName = "Enter Name: ", strIp = "Server IP: ", strPort = "Server Port: ", strEnterPort = "Enter Server Port:", strEnterIP = "Enter Server IP:",
                 strServerInfo1 = "Please tell the other player to enter the IP address and the port number displayed here.",
                 strServerInfo2 = "Make sure to start the game here before the other player does.",
@@ -81,15 +81,16 @@ class ConnectPlayer2 implements ActionListener {
         connectPanel2.setBackground(Color.BLACK);
         connectPanel2.setPreferredSize(Utility.panelDimensions);
         blnServer = blnIsServer;
+        int intPort = Settings.getPortNumber();
 
         initializeButtons();
         initializeLabels();
         initializeFields();
 
         if(blnServer) {
-            SuperSocketMaster temp = new SuperSocketMaster(6969, this);
+            SuperSocketMaster temp = new SuperSocketMaster(intPort, this);
             ipLabel.setText(strIp + temp.getMyAddress());
-            portLabel.setText(strPort + 6969);
+            portLabel.setText(strPort + intPort);
             infoLabel1.setText(strServerInfo1);
             infoLabel2.setText(strServerInfo2);
 

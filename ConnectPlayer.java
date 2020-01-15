@@ -25,7 +25,7 @@ public class ConnectPlayer implements ActionListener {
     }
 
     public ConnectPlayer() {
-        connectPanel.setBackground(Color.BLACK);
+        connectPanel.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
         connectPanel.setPreferredSize(Utility.panelDimensions);
 
         //temporary

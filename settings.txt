@@ -1,0 +1,4 @@
+port : 6969
+color : 1
+dark : true
+filter : true
