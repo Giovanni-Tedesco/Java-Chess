@@ -88,6 +88,32 @@ public class Settings {
 	}
 
     private class SettingsPanel extends JPanel implements ActionListener{
+<<<<<<< HEAD
+		
+		
+		private JButton backButton = new JButton("BACK");
+		private JButton saveButton = new JButton("SAVE");
+		private JTextField portField = new JTextField();
+		private JRadioButton boardDarkGreyButt = new JRadioButton("Dark Grey");
+		private JRadioButton boardRedButt = new JRadioButton("Red");
+		private JRadioButton boardGreenButt = new JRadioButton("Green");
+		private JRadioButton boardBrownButt = new JRadioButton("Brown");
+		private JRadioButton UIDarkButt = new JRadioButton("Dark");
+		private JRadioButton UILightButt = new JRadioButton("Light");
+		private JRadioButton ProfanityNoButt = new JRadioButton("Yes");
+		private JRadioButton ProfanityYesButt = new JRadioButton("No");
+		private String strfileName = "Assets/AboutPanel.png";
+		private JLabel portLabel = new JLabel("Change port number(Enter number above 1000): ");
+		private JLabel boardcolorLabel = new JLabel("Change Board Color: ");
+		private JLabel UIlabel = new JLabel("Change UI Style:");
+		private JLabel profLabel = new JLabel("Profanity Filter(for chat)");
+		private ButtonGroup Boardcolortg = new ButtonGroup();
+		private ButtonGroup UItg = new ButtonGroup();
+		private ButtonGroup Proftg = new ButtonGroup();
+		 
+		 
+		
+=======
 		private Timer timer = new Timer(1000/60, this);
 		private JButton backButton = new JButton("BACK");
 	 	private JButton saveButton = new JButton("SAVE");
@@ -106,6 +132,7 @@ public class Settings {
 		private ButtonGroup darkGroup = new ButtonGroup();
 		private ButtonGroup filterGroup = new ButtonGroup();
 
+>>>>>>> abd2a60541f17281feb8bee0a466926a3965a876
 		public void actionPerformed(ActionEvent evt) {
 			if(evt.getSource() == timer) {
 				repaint();
