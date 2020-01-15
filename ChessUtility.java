@@ -24,17 +24,14 @@ public class ChessUtility {
                 tempX += moveRules[0];
                 tempY += moveRules[1];
                 continue;
-            } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX,
-                    blnWhite ? tempY : 7 - tempY) != 0) {
-                if ((blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
-                        blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
-                                blnWhite ? tempY : 7 - tempY))) {
+            } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY) != 0) {
+                if ((blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))
+                        || (!blnWhite
+                                && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
                     break;
-                } else if ((blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
-                        blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX,
-                                blnWhite ? tempY : 7 - tempY))) {
+                } else if ((blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))
+                        || (!blnWhite
+                                && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
                     moves.add(new int[] { tempX, tempY });
                     break;
                 } else {
@@ -252,6 +249,26 @@ public class ChessUtility {
             legalQueenMoves.addAll(checkDiagonal(intXIndex, intYIndex, possibleMoves[i], blnWhite));
         }
         return legalQueenMoves;
+    }
+
+    public static LinkedList<int[]> getLegalCheckMoves() {
+        Board board = BoardAnimation.getBoard();
+        LinkedList<int[]> ret = new LinkedList<>();
+
+        for (Piece p : board.pieces) {
+            if (board.blnServer) {
+                if (!p.blnColor) {
+                    ret.addAll(p.getLegalMoves());
+                }
+            } else if (!board.blnServer) {
+                if (p.blnColor) {
+                    ret.addAll(p.getLegalMoves());
+                }
+            }
+        }
+
+        return ret;
+
     }
 
 }

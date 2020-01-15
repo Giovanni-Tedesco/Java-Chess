@@ -101,7 +101,7 @@ public class ChessGame implements ActionListener {
                 chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
                 // strMessage = Board.hasCheck() ? strMessage + "+" : strMessage;
-                chessBoard.move(strMessage);
+                chessBoard.move(strMessage, false);
                 movesMade.add(strMessage);
                 System.out.println("Moves: " + movesMade);
 
