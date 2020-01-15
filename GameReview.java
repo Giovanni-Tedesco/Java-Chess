@@ -2,15 +2,23 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import javax.swing.filechooser.*;
 import java.util.ArrayList;
+import java.io.*;
 
 public class GameReview implements KeyListener {
 
     JFrame frame = new JFrame("Game Review");
     private BoardAnimation chessPanel = new BoardAnimation(true);
-    ArrayList<String> moveList = new ArrayList<>();
+    private ArrayList<String> moveList = new ArrayList<>();
     // String testMove = "e2,e4";
-    int moveIndex = 0;
+    private int moveIndex = 0;
+
+    private JTextArea movesArea = new JTextArea();
+    private JScrollPane scroll = new JScrollPane(movesArea);
+
+    private JFileChooser chooseFile = new JFileChooser();
+    private BufferedReader reader;
 
     public void keyPressed(KeyEvent evt) {
         int key = evt.getKeyCode();
@@ -19,7 +27,7 @@ public class GameReview implements KeyListener {
         if (key == KeyEvent.VK_RIGHT) {
             String strMove = moveList.get(moveIndex);
             System.out.println("Testing move");
-            chessBoard.move(strMove, false);
+            chessBoard.move(strMove);
             String[] strMoveSplit = strMove.split(",");
             Point initPos = chessBoard.coordToLoc(strMoveSplit[0]);
             Point finalPos = chessBoard.coordToLoc(strMoveSplit[1]);
@@ -70,6 +78,18 @@ public class GameReview implements KeyListener {
         chessPanel.setPreferredSize(new Dimension(1280, 720));
         chessPanel.setLayout(null);
         chessPanel.initializeGame();
+
+        chooseFile.setFileFilter(new FileNameExtensionFilter("txt"));
+
+        int intResult = chooseFile.showDialog(chessPanel, "HELLO THERE");
+
+        if(intResult == JFileChooser.APPROVE_OPTION) {
+            reader = Utility.getReader(chooseFile.getSelectedFile());
+            System.out.println("Succ");
+        } else {
+            System.out.println("not succ");
+            //Utility.changePanel(new MainMenu().getMenuPanel());
+        }
 
         moveList.add("e2,e4");
         moveList.add("e6, e5");
