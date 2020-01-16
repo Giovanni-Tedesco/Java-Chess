@@ -11,38 +11,47 @@ import java.io.*;
 import java.util.HashMap;
 
 public class Settings {
+	//PROPERTIES
 	private SettingsPanel settingsPanel = new SettingsPanel();
-	private static HashMap<String, Object> settingsMap = new HashMap<>();
+
+	//map that holds the settings for easy access
+	private static HashMap<String, String> settingsMap = new HashMap<>();
 	//{gray, red, green, brown}
 	private static Color [] boardColors = {new Color(79, 76, 69), new Color(79,8,17), new Color(3,150,8), new Color(145,84,17)};
 	private static BufferedReader reader;
 	private static PrintWriter writer;
 
+	//METHODS
+	//getter for port number
 	public static int getPortNumber() {
 		loadSettings();
-		return Integer.parseInt((String)settingsMap.get("port"));
+		return Integer.parseInt(settingsMap.get("port"));
 	}
 
+	//getter for color
 	public static Color getBoardColor() {
 		loadSettings();
-		return boardColors[Integer.parseInt((String)settingsMap.get("color"))];
+		return boardColors[Integer.parseInt(settingsMap.get("color"))];
 	}
 
+	//getter for dark mode
 	public static boolean isDark() {
 		loadSettings();
-		return Boolean.parseBoolean((String)settingsMap.get("dark"));
+		return Boolean.parseBoolean(settingsMap.get("dark"));
 	}
 
+	//getter for filter
 	public static boolean filterOn() {
 		loadSettings();
-		return Boolean.parseBoolean((String)settingsMap.get("filter"));
+		return Boolean.parseBoolean(settingsMap.get("filter"));
 	}
 
+	//read the settings from the file and load it onto the map
 	private static void loadSettings() {
 		reader = Utility.getReader("settings.txt");
 		for(int i = 0; i < 4; i++) {
-			String [] line = Utility.readLine(reader).trim().split(" : ");
-			settingsMap.put(line[0], line[1]);
+			String [] strLine = Utility.readLine(reader).trim().split(" : ");
+			settingsMap.put(strLine[0], strLine[1]);
 		}
 
 		try {
@@ -52,6 +61,7 @@ public class Settings {
 		}
 	}
 
+	//write any changed settings to the file
 	private static void saveSettings() {
 		writer = Utility.getWriter("settings.txt");
 		writer.println("port : " + settingsMap.get("port"));
@@ -61,35 +71,35 @@ public class Settings {
 		writer.close();
 	}
 
+	//reset settings by changing map and writing to the file
 	public static void setDefaultSettings() {
 		settingsMap.clear();
-		settingsMap.put("port", 3302);
-		settingsMap.put("color", 0);
-		settingsMap.put("dark", true);
-		settingsMap.put("filter", true);
-		writer = Utility.getWriter("settings.txt");
-		writer.println("port : 3302");
-		writer.println("color : 0");
-		writer.println("dark : true");
-		writer.println("filter : true");
-		writer.close();
+		settingsMap.put("port", "3302");
+		settingsMap.put("color", "0");
+		settingsMap.put("dark", "true");
+		settingsMap.put("filter", "true");
+		saveSettings();
 	}
 
     public JPanel getsettingsPanel() {
         return settingsPanel;
     }
 
+	//CONSTRUCTOR
     public Settings(){
 		loadSettings();
+		//user settings to select buttons on the settings screen
 		settingsPanel.setPreferredSize(Utility.panelDimensions);
-		settingsPanel.portField.setText((String)settingsMap.get("port"));
-		settingsPanel.boardColorButtons[Integer.parseInt((String)settingsMap.get("color"))].setSelected(true);
-		settingsPanel.darkButtons[((String)settingsMap.get("dark")).equals("true") ? 0 : 1].setSelected(true);
-		settingsPanel.filterButtons[((String)settingsMap.get("filter")).equals("true") ? 0 : 1].setSelected(true);
+		settingsPanel.portField.setText(settingsMap.get("port"));
+		settingsPanel.boardColorButtons[Integer.parseInt(settingsMap.get("color"))].setSelected(true);
+		settingsPanel.darkButtons[settingsMap.get("dark").equals("true") ? 0 : 1].setSelected(true);
+		settingsPanel.filterButtons[settingsMap.get("filter").equals("true") ? 0 : 1].setSelected(true);
 	}
 
+	//class that handles the ui for the settings screen
     private class SettingsPanel extends JPanel implements ActionListener{
-		private Timer timer = new Timer(1000/60, this);
+		//PROPERTIES
+		private Timer settingsTimer = new Timer(1000/60, this);
 		private JButton backButton = new JButton("BACK");
 	 	private JButton saveButton = new JButton("SAVE");
 		private JButton defaultButton = new JButton("RESET TO DEFAULT");
@@ -108,11 +118,12 @@ public class Settings {
 		private ButtonGroup filterGroup = new ButtonGroup();
 
 		public void actionPerformed(ActionEvent evt) {
-			if(evt.getSource() == timer) {
+			if(evt.getSource() == settingsTimer) {
 				repaint();
 			} else if(evt.getSource()== backButton){
                 Utility.changePanel(new MainMenu().getMenuPanel());
 			}else if(evt.getSource() == saveButton){
+				//success is based on whether the user entered a number or not
 				boolean blnSuccess = false;
 				String strPort = portField.getText();
 				int intPort = 0;
@@ -124,35 +135,40 @@ public class Settings {
 					blnSuccess = false;
 				}
 
+				//save port to file if successful
 				if(blnSuccess) {
-					settingsMap.put("port", intPort);
+					settingsMap.put("port", intPort + "");
 					saveSettings();
 				}
 			} else if(evt.getSource() == defaultButton) {
 				setDefaultSettings();
+				//relaunch panel to show dark mode change
 				Utility.changePanel(new Settings().settingsPanel);
 			} else {
+				//check if any of the board radio buttons were clicked
 				for(int i = 0; i < boardColorButtons.length; i++) {
 					if(evt.getSource() == boardColorButtons[i]) {
-						settingsMap.put("color", i);
+						settingsMap.put("color", i + "");
 						System.out.println("COLOR");
 						saveSettings();
 						break;
 					}
 				}
 
+				//check if any of the dark mode radio buttons were clicked
 				for(int i = 0; i < 2; i++) {
 					if(evt.getSource() == darkButtons[i]) {
-						settingsMap.put("dark", i == 0);
+						settingsMap.put("dark", (i == 0) + "");
 						saveSettings();
 						Utility.changePanel(new Settings().settingsPanel);
 						break;
 					}
 				}
 
+				//check if any of the filter radio buttons were clicked
 				for(int i = 0; i < 2; i++) {
 					if(evt.getSource() == darkButtons[i]) {
-						settingsMap.put("filter", i == 0);
+						settingsMap.put("filter", (i == 0) + "");
 						saveSettings();
 						break;
 					}
@@ -160,14 +176,7 @@ public class Settings {
 			}
 		}
 
-		public SettingsPanel() {
-			super(null); //transfers constructor from JPanel
-			setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
-			initLabels();
-			initButtons();
-			initRadioButtons();
-		}
-
+		//set properties for labels
 		private void initLabels() {
 			titleLabel.setSize(400, 100);
 			titleLabel.setLocation(440, 10);
@@ -207,6 +216,7 @@ public class Settings {
 			add(darkLabel);
 		}
 
+		//set properties for radio buttons
 		private void initRadioButtons() {
 			String [] strColorOptions = {"Gray", "Red", "Green", "Brown"};
 			boolean isDark = Settings.isDark();
@@ -248,6 +258,7 @@ public class Settings {
 			}
 		}
 
+		//set properties for JButtons
 		private void initButtons() {
 			backButton.setSize(110, 45);
             backButton.setLocation(30, 30);
@@ -267,6 +278,16 @@ public class Settings {
 			add(backButton);
 			add(defaultButton);
 			add(saveButton);
+		}
+
+		//CONSTRUCTOR
+		public SettingsPanel() {
+			super(null); //transfers constructor from JPanel
+			setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
+			initLabels();
+			initButtons();
+			initRadioButtons();
+			settingsTimer.start();
 		}
 	}
 }

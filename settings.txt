@@ -1,4 +1,4 @@
 port : 3302
-color : 2
+color : 0
 dark : true
 filter : true

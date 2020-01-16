@@ -14,6 +14,7 @@ import javax.swing.filechooser.FileFilter;
 public class GameReview extends KeyAdapter implements ActionListener {
 
     //PROPERTIES
+    private Timer reviewTimer = new Timer(1000/60, this);
     private ReviewPanel reviewPanel;
     //list to store all the moves read from the log file
     private ArrayList<String> moveList = new ArrayList<>();
@@ -66,6 +67,9 @@ public class GameReview extends KeyAdapter implements ActionListener {
         if (evt.getSource() == backButton) {
             Utility.changePanel(new MainMenu().getMenuPanel());
             MainMenu.frame.removeKeyListener(this);
+            reviewTimer.stop();
+        } else if(evt.getSource() == reviewTimer) {
+            reviewPanel.repaint();
         }
     }
 
@@ -95,6 +99,8 @@ public class GameReview extends KeyAdapter implements ActionListener {
 
         reviewPanel.add(backButton);
         reviewPanel.add(titleLabel);
+
+        reviewTimer.start();
     }
 
     //return panel for choosing file to be used from the main menu
@@ -166,26 +172,26 @@ public class GameReview extends KeyAdapter implements ActionListener {
 
         //load all the piece images to the image map
         private void initImages() {
-            String path = "Assets/Pieces/";
-            String[] fileNames = {
+            String strPath = "Assets/Pieces/";
+            String[] strFileNames = {
                 "Rook.png", "Knight.png", "Bishop.png", "Queen.png", "King.png", "Pawn.png",
                 "RookBlack.png", "KnightBlack.png", "BishopBlack.png", "QueenBlack.png", "KingBlack.png",
                 "PawnBlack.png"
             };
-            for (int i = 0; i<fileNames.length; i++) {
-                pieceImages.put(i + 1, Utility.loadImage(path + fileNames[i]));
+            for (int i = 0; i<strFileNames.length; i++) {
+                pieceImages.put(i + 1, Utility.loadImage(strPath + strFileNames[i]));
             }
         }
 
         //update the board array using the move sent
         public void move(String strMove, boolean blnBack) {
             strMove = strMove.replace("+", "");
-            String[] moves = strMove.split(",");
+            String[] strMoves = strMove.split(",");
 
             //if going back, the final position in the move should actually be the initial position
-            Point p1 = blnBack ? coordToLoc(moves[1]) : coordToLoc(moves[0]);
+            Point p1 = blnBack ? coordToLoc(strMoves[1]) : coordToLoc(strMoves[0]);
             //if going back, the initial position in the move should actually be the final position
-            Point p2 = blnBack ? coordToLoc(moves[0]) : coordToLoc(moves[1]);
+            Point p2 = blnBack ? coordToLoc(strMoves[0]) : coordToLoc(strMoves[1]);
 
             //get piece at initial position
             int intTemp = intBoard[p1.y][p1.x];
@@ -229,6 +235,7 @@ public class GameReview extends KeyAdapter implements ActionListener {
 
     //this class implements the ui for choosing a log file
     private class ChoosePanel extends JPanel implements ActionListener {
+        private Timer chooseTimer = new Timer(1000/60, this);
         private JLabel reviewLabel = new JLabel("<html>" + "<div style='text-align: center;'>" + "Welcome to game review! " +
             "Here, you can review logs of previous games and perhaps reflect on past mistakes or triumphs. " +
             "To cycle forward through the log of moves, press the right arrow key. To cycle backwards, press the left arrow key." + "</div></html>");
@@ -243,10 +250,13 @@ public class GameReview extends KeyAdapter implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
             if(evt.getSource() == chooseButton) {
+                chooseTimer.stop();
                 loadMoves();
                 reviewPanel = new ReviewPanel(strName);
                 Utility.changePanel(reviewPanel);
                 initPanel();
+            } else if(evt.getSource() == chooseTimer) {
+                repaint();
             }
         }
 
@@ -279,6 +289,8 @@ public class GameReview extends KeyAdapter implements ActionListener {
             chooseButton.addActionListener(this);
             Utility.setButtonStyle(chooseButton, 20);
             add(chooseButton);
+
+            chooseTimer.start();
         }
 
         //starts jfile chooser and reads the file. loads the contents to the moves arraylist
@@ -290,8 +302,8 @@ public class GameReview extends KeyAdapter implements ActionListener {
                     if (f.isDirectory()) {
                         return true;
                     }
-                    final String name = f.getName();
-                    return name.endsWith(".txt");
+                    final String strFileName = f.getName();
+                    return strFileName.endsWith(".txt");
                 }
 
                 @Override
