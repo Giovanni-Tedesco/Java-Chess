@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class Board {
     // Will be used later for networking
@@ -504,8 +505,8 @@ public class Board {
 
         if (blnServer) {
             Piece king = pieceLookup.get(5);
-            int intXPos = 630 - king.intXPos;
-            int intYPos = 630 - king.intYPos;
+            int intXPos = king.intXPos;
+            int intYPos = king.intYPos;
             System.out.println("Blocking intXPos: " + intXPos);
             System.out.println("Blocking intYPos: " + intYPos);
 
@@ -530,9 +531,9 @@ public class Board {
             }
             return false;
         } else if (!blnServer) {
-            Piece king = pieceLookup.get(5);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
+            Piece king = pieceLookup.get(10);
+            int intXPos = 630 - king.intXPos;
+            int intYPos = 630 - king.intYPos;
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 if (arr[p[0]][p[1]] == 2) {
                     return true;
@@ -540,14 +541,14 @@ public class Board {
             }
 
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false)) {
-                if (arr[p[0]][p[1]] == 3 || arr[p[0]][p[1]] == 4 || arr[p[0]][p[1]] == 1) {
+                if (arr[p[0]][p[1]] == 3 || arr[p[0]][p[1]] == 4) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false)) {
-                if (arr[p[0]][p[1]] == 3 || arr[p[0]][p[1]] == 4 || arr[p[0]][p[1]] == 1) {
+                if (arr[p[0]][p[1]] == 4 || arr[p[0]][p[1]] == 1) {
                     System.out.println("Blocks check");
                     return true;
                 }
@@ -557,9 +558,19 @@ public class Board {
         return false;
     }
 
+    public int[][] deepCopy(int[][] arr) {
+        int[][] ret = new int[arr.length][];
+
+        for (int i = 0; i < arr.length; i++) {
+            ret[i] = Arrays.copyOf(arr[i], arr[i].length);
+        }
+
+        return ret;
+    }
+
     // Or walks into check
     public boolean stillInCheck(String strMove) {
-        tempBoard = chessBoard;
+        tempBoard = deepCopy(chessBoard);
         // Set to true because of temp
         move(strMove, true);
 
@@ -570,17 +581,6 @@ public class Board {
         }
 
     }
-
-    // public boolean givesCheck(LinkedList<int[]> legalMoves) {
-    // for (int[] mv : legalMoves) {
-    // if (blnServer && chessBoard[mv[1]][mv[0]] == -5) {
-    // return true;
-    // } else if (!blnServer && chessBoard[mv[1]][mv[0]] == 5) {
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
 
     // TODO: Clean this function up, the if statements have very similar code. Could
     // probably be simplified
@@ -595,7 +595,16 @@ public class Board {
         int intXIndex = blnServer ? intXPos / 90 : 7 - (intXPos / 90);
         int intYIndex = blnServer ? intYPos / 90 : 7 - (intYPos / 90);
 
-        boolean blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0);
+        boolean blnLegalMove = false;
+
+        if (inCheck == true) {
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
+                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
+        } else {
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
+                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
+        }
+
         // if player is white and the spot has a white piece
         boolean blnSamePieceWhite = blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0;
         // if the player is black and the spot has a black piece

@@ -7,29 +7,29 @@ import java.awt.image.*;
 import java.util.HashMap;
 
 public class BoardAnimation extends JPanel {
-    //Properties
+    // Properties
     private boolean blnServer, blnTurn;
     private boolean blnClientStarted = false;
     private static Board chessBoard;
     private boolean blnPressed = false;
-    //temporary piece used to drag and drop
+    // temporary piece used to drag and drop
     private Piece temp = null;
-    private int [] intPieces = {4,1,3,2,6};
-    //jlabels showing what pieces have been captured
-    //{queen, rook, bishop, knight, pawn}
-    //{4,1,3,2,6}
+    private int[] intPieces = { 4, 1, 3, 2, 6 };
+    // jlabels showing what pieces have been captured
+    // {queen, rook, bishop, knight, pawn}
+    // {4,1,3,2,6}
     private JLabel[] serverCaptureLabels = new JLabel[5];
     private JLabel[] clientCaptureLabels = new JLabel[5];
-    //used for labelling captures and whether it is promotion time
+    // used for labelling captures and whether it is promotion time
     public JLabel serverInfoLabel = new JLabel("CAPTURED PIECES");
     public JLabel clientInfoLabel = new JLabel("CAPTURED PIECES");
-    //images representing captured pieces
+    // images representing captured pieces
     private ArrayList<BufferedImage> whiteCaptureImages = new ArrayList<>();
     private ArrayList<BufferedImage> blackCaptureImages = new ArrayList<>();
-    //images for pieces on the board
+    // images for pieces on the board
     public static HashMap<Integer, BufferedImage> pieceImages = new HashMap<>();
 
-    //Methods
+    // Methods
     public static void initImages() {
         String path = "Assets/Pieces/";
         String[] fileNames = { "Rook.png", "Knight.png", "Bishop.png", "Queen.png", "King.png", "Pawn.png",
@@ -41,7 +41,7 @@ public class BoardAnimation extends JPanel {
     }
 
     private void initCaptureImages() {
-        for(int intPiece : intPieces) {
+        for (int intPiece : intPieces) {
             blackCaptureImages.add(Utility.resizeImage(pieceImages.get(intPiece), 60, 120));
             whiteCaptureImages.add(Utility.resizeImage(pieceImages.get(intPiece + 6), 60, 120));
         }
@@ -59,7 +59,8 @@ public class BoardAnimation extends JPanel {
         initializeCaptureLabels();
     }
 
-    //Sets locations and sizes for all the capture labels and adds them to the panel
+    // Sets locations and sizes for all the capture labels and adds them to the
+    // panel
     private void initializeCaptureLabels() {
         serverInfoLabel.setSize(200, 20);
         serverInfoLabel.setLocation(900, 5);
@@ -94,7 +95,7 @@ public class BoardAnimation extends JPanel {
         }
     }
 
-    //recount number of captured pieces
+    // recount number of captured pieces
     public void updateCaptures() {
         int[] intPieces = { 4, 1, 3, 2, 6 };
         for (int i = 0; i < 5; i++) {
@@ -125,8 +126,8 @@ public class BoardAnimation extends JPanel {
 
     private void drawCapturedPieces(Graphics g) {
         for (int i = 0; i < 5; i++) {
-            g.drawImage(whiteCaptureImages.get(i), 800 + (i*80), 50, null);
-            g.drawImage(blackCaptureImages.get(i), 800 + (i*80), 250, null);
+            g.drawImage(whiteCaptureImages.get(i), 800 + (i * 80), 50, null);
+            g.drawImage(blackCaptureImages.get(i), 800 + (i * 80), 250, null);
         }
     }
 
@@ -137,33 +138,33 @@ public class BoardAnimation extends JPanel {
             drawBoard(g);
             drawPieces(g);
             g.setColor(Color.WHITE);
-            //border separating board from other panel elements
+            // border separating board from other panel elements
             g.drawLine(720, 0, 720, 720);
             drawCapturedPieces(g);
         }
     }
 
-    //Constructor
+    // Constructor
     public BoardAnimation(boolean blnIsServer) {
         super();
         setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
         this.blnServer = blnIsServer;
         blnTurn = blnIsServer;
         initImages();
-        if(pieceImages != null) {
+        if (pieceImages != null) {
             initCaptureImages();
         }
     }
 
-    //class the handles mouse input for dragging and dropping pieces
+    // class the handles mouse input for dragging and dropping pieces
     private class MyMouseAdaptor extends MouseAdapter {
-        //flag for whether the user tried to pick up the opponent's pieces
+        // flag for whether the user tried to pick up the opponent's pieces
         private boolean blnWrongColor;
         private boolean blnMouseError;
 
         @Override
         public void mouseClicked(MouseEvent evt) {
-            //get promotion choice and promote the piece
+            // get promotion choice and promote the piece
             if (blnTurn && chessBoard.promotionInProgress()) {
                 ArrayList<Piece> promotionChoices = chessBoard.getPromotionChoices(blnServer);
                 for (Piece piece : promotionChoices) {
@@ -184,16 +185,16 @@ public class BoardAnimation extends JPanel {
         public void mousePressed(MouseEvent evt) {
             blnWrongColor = false;
             blnMouseError = false;
-            //get the position of the piece at the pressed spot
+            // get the position of the piece at the pressed spot
             int intXPos = chessBoard.roundDown(evt.getX(), 90);
             int intYPos = chessBoard.roundDown(evt.getY(), 90);
-            //get the array index corresponding with the coordinates
-            //subtract by 7 if client because the array is read flipped
+            // get the array index corresponding with the coordinates
+            // subtract by 7 if client because the array is read flipped
             int intXIndex = blnServer ? intXPos / 90 : 7 - (intXPos / 90);
             int intYIndex = blnServer ? intYPos / 90 : 7 - (intYPos / 90);
-            //check to see if click was within the board array length
+            // check to see if click was within the board array length
             boolean blnInBounds = intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
-            //check to see if the user picked their piece
+            // check to see if the user picked their piece
             boolean blnCorrectColor = blnInBounds
                     ? (chessBoard.isWhite(intXIndex, intYIndex) && blnServer)
                             || (!chessBoard.isWhite(intXIndex, intYIndex) && !blnServer)
@@ -202,21 +203,21 @@ public class BoardAnimation extends JPanel {
             if (blnTurn && blnInBounds && !chessBoard.promotionInProgress()
                     && chessBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
                 for (Piece piece : chessBoard.pieces) {
-                    //get the piece at the pressed position
+                    // get the piece at the pressed position
                     if ((evt.getX() <= piece.intXPos + 90 && evt.getX() >= piece.intXPos)
                             && (evt.getY() >= piece.intYPos && evt.getY() <= piece.intYPos + 90) && blnPressed == false
                             && piece.blnColor == blnServer) {
                         blnPressed = true;
                         temp = piece;
-                        //record last position to calculate legal moves
+                        // record last position to calculate legal moves
                         temp.setPreviousPosition(temp.intXPos, temp.intYPos);
                         break;
                     }
                 }
             } else if (blnTurn && blnInBounds && !chessBoard.promotionInProgress()
                     && chessBoard.getPiece(intXIndex, intYIndex) != 0 && !blnCorrectColor) {
-                //if user clicks on the other side's piece, let the appropriate user know
-                //reset message after 3 seconds
+                // if user clicks on the other side's piece, let the appropriate user know
+                // reset message after 3 seconds
                 Timer labelTimer = null;
                 if (blnServer) {
                     serverInfoLabel.setText("You can only move your own pieces");
@@ -231,8 +232,9 @@ public class BoardAnimation extends JPanel {
                 labelTimer.start();
             } else if (!blnTurn && blnInBounds && !chessBoard.promotionInProgress()
                     && chessBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
-                //if user clicks on something when it is not thier turn, let the appropriate user know
-                //reset message after 3 seconds
+                // if user clicks on something when it is not thier turn, let the appropriate
+                // user know
+                // reset message after 3 seconds
                 Timer labelTimer = null;
                 if (blnServer) {
                     serverInfoLabel.setText("It is not your turn");
@@ -245,7 +247,7 @@ public class BoardAnimation extends JPanel {
                 labelTimer.setRepeats(false);
                 labelTimer.start();
             } else {
-                //something went wrong
+                // something went wrong
                 System.out.println("mouse error");
                 blnMouseError = true;
             }
@@ -254,7 +256,7 @@ public class BoardAnimation extends JPanel {
         @Override
         public void mouseDragged(MouseEvent evt) {
             if (blnPressed && temp != null && blnTurn && !chessBoard.promotionInProgress() && !blnMouseError) {
-                //keep updating the piece position to the cursor location
+                // keep updating the piece position to the cursor location
                 temp.setPosition(evt.getX(), evt.getY());
                 repaint();
             }
@@ -262,24 +264,24 @@ public class BoardAnimation extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent evt) {
-            //get the position of where the piece will be dropped
+            // get the position of where the piece will be dropped
             int intXPos = chessBoard.roundDown(evt.getX(), 90);
             int intYPos = chessBoard.roundDown(evt.getY(), 90);
             blnPressed = false;
-            //make sure it is within the board array length
+            // make sure it is within the board array length
             boolean blnInBounds = intXPos / 90 >= 0 && intXPos / 90 < 8 && intYPos / 90 >= 0 && intYPos / 90 < 8;
-            //if something went wrong, don't drop anything
+            // if something went wrong, don't drop anything
             if (!blnTurn || blnWrongColor || blnMouseError) {
                 return;
             } else if (temp != null && blnTurn && !blnInBounds && !chessBoard.promotionInProgress()) {
-                //if user is placing outside the board
+                // if user is placing outside the board
                 temp.goBack();
             } else if (temp != null && blnTurn && blnInBounds && !chessBoard.promotionInProgress()) {
                 if (chessBoard.executeMove(temp, intXPos, intYPos)) {
-                    //when the move is succesful, update any possible captures
+                    // when the move is succesful, update any possible captures
                     updateCaptures();
                     if (chessBoard.promotionInProgress()) {
-                        //a promotion is occuring so let the appropriate user know
+                        // a promotion is occuring so let the appropriate user know
                         if (chessBoard.getPieceToPromote().blnColor) {
                             serverInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
                         } else {

@@ -1,4 +1,4 @@
 port : 6969
-color : 1
+color : 2
 dark : true
 filter : true
