@@ -31,7 +31,7 @@ public class Board {
     // This will likely be used when checking for checks impeding castling
     // To check impeding pieces that'll be done using a seperate function
     // private boolean canCastle = false;
-    private boolean inCheck = false;
+    public boolean inCheck = false;
 
     private int[][] chessBoard = { { -1, -2, -3, -4, -5, -3, -2, -1 }, { -6, -6, -6, -6, -6, -6, -6, -6 },
             { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -164,8 +164,8 @@ public class Board {
         int[][] arr = blnTemp ? tempBoard : chessBoard;
 
         String[] moves = move.split(",");
-        boolean impedingKnightWhite = (blnServer && arr[7][6] != 0) ? true : false;
-        boolean impedingKnightBlack = (blnServer && arr[0][1] != 0) ? true : false;
+        boolean impedingKnightWhite = (blnServer && arr[7][6] != Piece.EMPTY) ? true : false;
+        boolean impedingKnightBlack = (blnServer && arr[0][1] != Piece.EMPTY) ? true : false;
         System.out.println("Impeding white knight: " + impedingKnightWhite);
         System.out.println("Impeding black knight: " + impedingKnightBlack);
 
@@ -221,7 +221,7 @@ public class Board {
 
         int intTemp = arr[p1.y][p1.x];
         System.out.println("intTemp = " + intTemp);
-        arr[(int) (p1.y)][(int) (p1.x)] = 0;
+        arr[(int) (p1.y)][(int) (p1.x)] = Piece.EMPTY;
         System.out.println(arr[(int) (p1.y)][(int) (p1.x)] = 0);
         arr[(int) (p2.y)][(int) (p2.x)] = intTemp;
         System.out.println("Position 2: " + arr[(int) (p2.y)][(int) (p2.x)]);
@@ -246,8 +246,8 @@ public class Board {
                 int intTempX = intXPos / 90;
                 int intTempY = intYPos / 90;
                 piece.setPosition(intXPos - 90, intYPos);
-                chessBoard[intTempY][intTempX + 1] = 0;
-                chessBoard[intTempY][intTempX - 1] = 1;
+                chessBoard[intTempY][intTempX + 1] = Piece.EMPTY;
+                chessBoard[intTempY][intTempX - 1] = Piece.ROOK;
 
             } else if (!blnServer && piece.intXPos == intXPos - 90 && piece.intYPos == intYPos) {
                 System.out.println("Got here if server == false");
@@ -258,8 +258,8 @@ public class Board {
                 int intTempY = intYPos / 90;
                 System.out.println("intTempX" + intTempX);
                 System.out.println("intTempY" + intTempY);
-                chessBoard[7 - intTempY][7 - intTempX + 1] = 0;
-                chessBoard[7 - intTempY][7 - intTempX - 1] = 1;
+                chessBoard[7 - intTempY][7 - intTempX + 1] = Piece.EMPTY;
+                chessBoard[7 - intTempY][7 - intTempX - 1] = Piece.ROOK;
             }
         }
     }
@@ -283,8 +283,8 @@ public class Board {
                 int intTempY = intYPos / 90;
                 System.out.println("tempX: " + intTempX);
                 System.out.println("tempY: " + intTempY);
-                chessBoard[7 - intTempY][7 - intTempX + 1] = 0;
-                chessBoard[7 - intTempY][7 - intTempX - 1] = -1;
+                chessBoard[7 - intTempY][7 - intTempX + 1] = Piece.EMPTY;
+                chessBoard[7 - intTempY][7 - intTempX - 1] = -Piece.ROOK;
             } else if (blnServer && piece.intXPos == intXPos + 90 && piece.intYPos == intYPos) {
                 System.out.println(intXPos);
                 System.out.println(intYPos);
@@ -295,8 +295,8 @@ public class Board {
                 System.out.println("intTempX: " + intTempX);
                 System.out.println("intTempY: " + intTempY);
 
-                chessBoard[intTempY][intTempX + 1] = 0;
-                chessBoard[intTempY][intTempX - 1] = -1;
+                chessBoard[intTempY][intTempX + 1] = Piece.EMPTY;
+                chessBoard[intTempY][intTempX - 1] = -Piece.ROOK;
 
             }
 
@@ -316,8 +316,8 @@ public class Board {
                 System.out.println("tempX: " + intTempX);
                 System.out.println("tempY: " + intTempY);
 
-                chessBoard[intTempY][intTempX - 2] = 0;
-                chessBoard[intTempY][intTempX + 1] = 1;
+                chessBoard[intTempY][intTempX - 2] = Piece.EMPTY;
+                chessBoard[intTempY][intTempX + 1] = Piece.ROOK;
             } else if (!blnServer && piece.intXPos == intXPos + 180 && piece.intYPos == intYPos) {
                 System.out.println("Get's here if found piece and server == false");
                 piece.setPosition(intXPos - 90, intYPos);
@@ -326,8 +326,8 @@ public class Board {
                 System.out.println("tempX: " + intTempX);
                 System.out.println("tempY: " + intTempY);
 
-                chessBoard[7 - intTempY][7 - intTempX - 2] = 0;
-                chessBoard[7 - intTempY][7 - intTempX + 1] = 1;
+                chessBoard[7 - intTempY][7 - intTempX - 2] = Piece.EMPTY;
+                chessBoard[7 - intTempY][7 - intTempX + 1] = Piece.ROOK;
             }
         }
     }
@@ -347,8 +347,8 @@ public class Board {
                 System.out.println("tempX" + intTempX);
                 System.out.println("tempY" + intTempY);
 
-                chessBoard[intTempY][intTempX - 2] = 0;
-                chessBoard[intTempY][intTempX + 1] = -1;
+                chessBoard[intTempY][intTempX - 2] = Piece.EMPTY;
+                chessBoard[intTempY][intTempX + 1] = -Piece.ROOK;
             } else if (!blnServer && piece.intXPos == intXPos + 180 && piece.intYPos == intYPos) {
                 System.out.println("Get's here if found piece and server == false");
                 piece.setPosition(intXPos - 90, intYPos);
@@ -356,8 +356,8 @@ public class Board {
                 int intTempY = intYPos / 90;
                 System.out.println("tempX" + intTempX);
                 System.out.println("tempY" + intTempY);
-                chessBoard[7 - intTempY][7 - intTempX - 2] = 0;
-                chessBoard[7 - intTempY][7 - intTempX + 1] = -1;
+                chessBoard[7 - intTempY][7 - intTempX - 2] = Piece.EMPTY;
+                chessBoard[7 - intTempY][7 - intTempX + 1] = -Piece.ROOK;
             }
         }
 
@@ -437,21 +437,21 @@ public class Board {
             System.out.println("intYPos: " + intYPos);
 
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (chessBoard[p[1]][p[0]] == 2) {
+                if (chessBoard[p[1]][p[0]] == Piece.KNIGHT) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == 3 || chessBoard[p[1]][p[0]] == 4) {
+                if (chessBoard[p[1]][p[0]] == Piece.BISHOP || chessBoard[p[1]][p[0]] == Piece.QUEEN) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == 4 || chessBoard[p[1]][p[0]] == 1) {
+                if (chessBoard[p[1]][p[0]] == Piece.QUEEN || chessBoard[p[1]][p[0]] == Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -468,14 +468,14 @@ public class Board {
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
                 System.out.println(p[1] + " " + p[0]);
-                if (chessBoard[7-p[1]][7-p[0]] == -2) {
+                if (chessBoard[7-p[1]][7-p[0]] == -Piece.KNIGHT) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7-p[1]][7-p[0]]== -3 || chessBoard[7-p[1]][7-p[0]] == -4) {
+                if (chessBoard[7-p[1]][7-p[0]]== -Piece.BISHOP || chessBoard[7-p[1]][7-p[0]] == -Piece.QUEEN) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -483,7 +483,7 @@ public class Board {
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7-p[1]][7-p[0]] == -4 || chessBoard[7-p[1]][7-p[0]] == -1) {
+                if (chessBoard[7-p[1]][7-p[0]] == -Piece.QUEEN || chessBoard[7-p[1]][7-p[0]] == -Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -511,20 +511,20 @@ public class Board {
             System.out.println("Blocking intYPos: " + intYPos);
 
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (arr[p[1]][p[0]] == -2) {
+                if (arr[p[1]][p[0]] == -Piece.KNIGHT) {
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true, arr)) {
-                if (arr[p[1]][p[0]] == -3 || arr[p[1]][p[0]] == -4) {
+                if (arr[p[1]][p[0]] == -Piece.BISHOP || arr[p[1]][p[0]] == -Piece.QUEEN) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true, arr)) {
-                if (arr[p[1]][p[0]] == -4 || arr[p[1]][p[0]] == -1) {
+                if (arr[p[1]][p[0]] == -Piece.QUEEN || arr[p[1]][p[0]] == -Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -535,20 +535,20 @@ public class Board {
             int intXPos = king.intXPos;
             int intYPos = king.intYPos;
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (arr[7-p[1]][7-p[0]] == 2) {
+                if (arr[7-p[1]][7-p[0]] == Piece.KNIGHT) {
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false, arr)) {
-                if (arr[7-p[1]][7-p[0]] == 3 || arr[7-p[1]][7-p[0]] == 4) {
+                if (arr[7-p[1]][7-p[0]] == Piece.BISHOP || arr[7-p[1]][7-p[0]] == Piece.QUEEN) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false, arr)) {
-                if (arr[7-p[1]][7-p[0]] == 4 || arr[7-p[1]][7-p[0]] == 1) {
+                if (arr[7-p[1]][7-p[0]] == Piece.QUEEN || arr[7-p[1]][7-p[0]] == Piece.ROOK) {
                     System.out.println("Blocks check");
                     return true;
                 }
@@ -726,8 +726,8 @@ public class Board {
         int intXIndex = blnServer ? piece.intXPos / 90 : 7 - (piece.intXPos / 90);
         int intYIndex = blnServer ? piece.intYPos / 90 : 7 - (piece.intYPos / 90);
 
-        return blnServer ? piece.intPiece == 6 && intYIndex == 0 && (intXIndex >= 0 && intXIndex <= 7)
-                : piece.intPiece == 6 && intYIndex == 7 && (intXIndex >= 0 && intXIndex <= 7);
+        return blnServer ? piece.intPiece == Piece.PAWN && intYIndex == 0 && (intXIndex >= 0 && intXIndex <= 7)
+                : piece.intPiece == Piece.PAWN && intYIndex == 7 && (intXIndex >= 0 && intXIndex <= 7);
     }
 
     public boolean promotionInProgress() {
@@ -740,7 +740,7 @@ public class Board {
         Iterator<Piece> pieceIterator = pieces.iterator();
         while (pieceIterator.hasNext()) {
             Piece temp = pieceIterator.next();
-            if (temp.intXPos == newPiece.intXPos && temp.intYPos == newPiece.intYPos && temp.intPiece == 6) {
+            if (temp.intXPos == newPiece.intXPos && temp.intYPos == newPiece.intYPos && temp.intPiece == Piece.PAWN) {
                 System.out.println("GOT HERE");
                 pieceIterator.remove();
                 pieces.add(newPiece);

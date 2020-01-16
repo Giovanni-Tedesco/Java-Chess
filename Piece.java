@@ -6,6 +6,13 @@ import javax.swing.event.*;
 import java.util.LinkedList;
 
 public class Piece {
+    public static final int EMPTY = 0;
+    public static final int ROOK = 1;
+    public static final int KNIGHT = 2;
+    public static final int BISHOP = 3;
+    public static final int QUEEN = 4;
+    public static final int KING = 5;
+    public static final int PAWN = 6;
 
     // Properties
     // True means white, false means black
@@ -57,7 +64,7 @@ public class Piece {
         }
 
         for (int[] mv : moves) {
-            if (BoardAnimation.getBoard().getPiece(mv[0], mv[1]) == 5) {
+            if (BoardAnimation.getBoard().getPiece(mv[0], mv[1]) == KING) {
                 return true;
             }
         }
@@ -65,19 +72,19 @@ public class Piece {
     }
 
     public LinkedList<int[]> getLegalMoves() {
-        if (intPiece == 2) {
+        if (intPiece == KNIGHT) {
             LinkedList<int[]> legalKnightMoves = ChessUtility.getLegalKnightMoves(intLastX, intLastY);
             this.legalMoves = legalKnightMoves;
-        } else if (intPiece == 5) {
+        } else if (intPiece == KING) {
             LinkedList<int[]> legalKingMoves = ChessUtility.getLegalKingMoves(blnFirst, intLastX, intLastY);
             this.legalMoves = legalKingMoves;
-        } else if (intPiece == 1) {
+        } else if (intPiece == ROOK) {
             LinkedList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY, blnColor);
             this.legalMoves = legalRookMoves;
-        } else if (intPiece == 3) {
+        } else if (intPiece == BISHOP) {
             LinkedList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY, blnColor);
             this.legalMoves = legalBishopMoves;
-        } else if (intPiece == 4) {
+        } else if (intPiece == QUEEN) {
             LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intLastX, intLastY, blnColor);
             this.legalMoves = legalQueenMoves;
         }
@@ -89,23 +96,23 @@ public class Piece {
         // int intXIndex = blnColor?intXPos/90:7-(intXPos/90);
         // int intYIndex = blnColor?intYPos/90:7-(intYPos/90);
         int[] position = { (intXPos / 90), (intYPos / 90) };
-        if (intPiece == 6) {
+        if (intPiece == PAWN) {
             LinkedList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(blnFirst, blnHasPiece, blnColor, intLastX,
                     intLastY);
             return ChessUtility.isInList(legalPawnMoves, position);
-        } else if (intPiece == 2) {
+        } else if (intPiece == KNIGHT) {
             LinkedList<int[]> legalKnightMoves = ChessUtility.getLegalKnightMoves(intLastX, intLastY);
             return ChessUtility.isInList(legalKnightMoves, position);
-        } else if (intPiece == 5) {
+        } else if (intPiece == KING) {
             LinkedList<int[]> legalKingMoves = ChessUtility.getLegalKingMoves(blnFirst, intLastX, intLastY);
             return ChessUtility.isInList(legalKingMoves, position);
-        } else if (intPiece == 1) {
+        } else if (intPiece == ROOK) {
             LinkedList<int[]> legalRookMoves = ChessUtility.getLegalRookMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalRookMoves, position);
-        } else if (intPiece == 3) {
+        } else if (intPiece == BISHOP) {
             LinkedList<int[]> legalBishopMoves = ChessUtility.getLegalBishopMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalBishopMoves, position);
-        } else if (intPiece == 4) {
+        } else if (intPiece == QUEEN) {
             LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalQueenMoves, position);
         }

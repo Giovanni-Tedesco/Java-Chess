@@ -39,6 +39,8 @@ public class ChessGame implements ActionListener {
     private JLabel waitingLabel = new JLabel("Waiting for the other player");
     public ArrayList<String> movesMade = new ArrayList<String>();
 
+    private String [] strPieceNames = {"rook", "knight", "bishop", "queen", "king", "pawn"};
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         Object event = evt.getSource();
@@ -67,6 +69,8 @@ public class ChessGame implements ActionListener {
                 strServerName = strServerStart[1];
                 serverName.setText("White: " + strServerName);
             } else if (strMessage.contains("promotion over")) {
+                chessPanel.serverInfoLabel.setText("CAPTURED PIECES");
+                chessPanel.clientInfoLabel.setText("CAPTURED PIECES");
                 chessPanel.changeTurn();
                 String[] strPromote = strMessage.split(",");
                 Board chessBoard = BoardAnimation.getBoard();
@@ -78,6 +82,12 @@ public class ChessGame implements ActionListener {
                 Piece piece = new Piece(intXPos, intYPos, !blnServer, Integer.parseInt(strPromote[3]));
                 chessBoard.setPiece(intXIndex, intYIndex,
                         piece.blnColor ? Integer.parseInt(strPromote[3]) : -Integer.parseInt(strPromote[3]));
+
+                if(blnServer) {
+                    chessPanel.serverInfoLabel.setText("Promotion over, BLACK chose " + strPieceNames[piece.intPiece - 1]);
+                } else {
+                    chessPanel.clientInfoLabel.setText("Promotion over, WHITE chose " + strPieceNames[piece.intPiece - 1]);
+                }
 
                 Iterator<Piece> pieceIterator = chessBoard.pieces.iterator();
 
@@ -95,9 +105,9 @@ public class ChessGame implements ActionListener {
                 chessBoard.printCharboard();
 
                 chessPanel.repaint();
+            } else if (strMessage.contains(",")) {
                 chessPanel.serverInfoLabel.setText("CAPTURED PIECES");
                 chessPanel.clientInfoLabel.setText("CAPTURED PIECES");
-            } else if (strMessage.contains(",")) {
                 chessPanel.changeTurn();
                 Board chessBoard = BoardAnimation.getBoard();
                 // strMessage = Board.hasCheck() ? strMessage + "+" : strMessage;
@@ -114,6 +124,12 @@ public class ChessGame implements ActionListener {
                 if (strMessage.contains("+")) {
                     System.out.println("This gives a check");
                     chessBoard.setCheck(true);
+
+                    if(blnServer) {
+                        chessPanel.serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                    } else {
+                        chessPanel.clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                    }
 
                 }
 

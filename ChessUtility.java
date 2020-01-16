@@ -24,7 +24,7 @@ public class ChessUtility {
                 tempX += moveRules[0];
                 tempY += moveRules[1];
                 continue;
-            } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY) != 0) {
+            } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY) != Piece.EMPTY) {
                 //if there is a piece at that spot
 
                 //if piece is same color as piece on the spot
@@ -60,7 +60,7 @@ public class ChessUtility {
                 tempX += moveRules[0];
                 tempY += moveRules[1];
                 continue;
-            } else if (board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] != 0) {
+            } else if (board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] != Piece.EMPTY) {
                 //if there is a piece at that spot
 
                 //if piece is same color as piece on the spot
@@ -96,7 +96,7 @@ public class ChessUtility {
         for (int i = intX; i < 8; i++) {
             if (i == intX)
                 continue;
-            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
+            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != Piece.EMPTY) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))) {
                     break;
@@ -115,7 +115,7 @@ public class ChessUtility {
         for (int i = intX; i >= 0; i--) {
             if (i == intX)
                 continue;
-            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != 0) {
+            if (chessBoard.getPiece(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY) != Piece.EMPTY) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? i : 7 - i, blnWhite ? intY : 7 - intY))) {
                     break;
@@ -134,7 +134,7 @@ public class ChessUtility {
         for (int i = intY; i < 8; i++) {
             if (i == intY)
                 continue;
-            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
+            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != Piece.EMPTY) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))) {
                     break;
@@ -153,7 +153,7 @@ public class ChessUtility {
         for (int i = intY; i >= 0; i--) {
             if (i == intY)
                 continue;
-            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != 0) {
+            if (chessBoard.getPiece(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i) != Piece.EMPTY) {
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))
                         || (!blnWhite && !chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))) {
                     break;
@@ -180,7 +180,7 @@ public class ChessUtility {
         for (int i = intX; i < 8; i++) {
             if (i == intX)
                 continue;
-            if (board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != 0) {
+            if (board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != Piece.EMPTY) {
                 if ((blnWhite && board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)
                         || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)) {
                     break;
@@ -199,7 +199,7 @@ public class ChessUtility {
         for (int i = intX; i >= 0; i--) {
             if (i == intX)
                 continue;
-            if ( board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != 0) {
+            if ( board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != Piece.EMPTY) {
                 if ((blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)
                         || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)) {
                     break;
@@ -218,7 +218,7 @@ public class ChessUtility {
         for (int i = intY; i < 8; i++) {
             if (i == intY)
                 continue;
-            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != 0) {
+            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != Piece.EMPTY) {
                 if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)
                         || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)) {
                     break;
@@ -237,7 +237,7 @@ public class ChessUtility {
         for (int i = intY; i >= 0; i--) {
             if (i == intY)
                 continue;
-            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != 0) {
+            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != Piece.EMPTY) {
                 if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)
                         || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)) {
                     break;
@@ -415,7 +415,6 @@ public class ChessUtility {
         }
 
         return ret;
-
     }
 
 }
