@@ -109,6 +109,7 @@ public class ConnectPlayer2 implements ActionListener {
         }
 
         if(blnError) {
+            errorLabel.setForeground(Color.RED);
             errorLabel.setVisible(true);
             errorLabel.setText("Failed to connect");
             System.out.println("THE ERROR");

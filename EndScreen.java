@@ -72,8 +72,7 @@ public class EndScreen extends JPanel {
             case RESIGN:
                 endLabel.setText("<html>" + "<div style='text-align: center;'>" + "You cheated not only the game, but yourself. You didn't grow. " +
                     "You didn't improve. You took a shortcut and gained nothing. You experienced a hollow victory. Nothing was risked and nothing was gained. " +
-                    "You experienced a hollow victory. Nothing was risked and nothing was gained." +
-                    "Also, a log of the game has been saved and you can review it later for fun I guess" + "</div></html>");
+                    "Also, a log of the game has been saved and you can review it later for fun I guess." + "</div></html>");
         }
     }
 }

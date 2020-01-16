@@ -34,7 +34,7 @@ public class MainMenu implements ActionListener {
         } else if(e.getSource() == aboutButton) {
             Utility.changePanel(aboutPanel);
         } else if(e.getSource() == quitButton) {
-            Utility.changePanel(menuPanel);
+            Utility.changePanel(new GameReview().getChoosePanel());
         }
     }
 
