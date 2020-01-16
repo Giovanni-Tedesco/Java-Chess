@@ -1,0 +1,17 @@
+Clint BartonvsBruh
+h2,h4
+a7,a5
+h1,h3
+a8,a6
+h3,e3
+e7,e6
+h4,h5
+e6,e5
+e3,e4
+d8,h4
+e4,e5
+f8,e7
+c2,c3
+b8,c6
+d1,b3
+end

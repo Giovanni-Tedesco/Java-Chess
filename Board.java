@@ -615,6 +615,9 @@ public class Board {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndexLast);
                         System.out.println("intYIndexLast: " + intYIndexLast);
+                        if(!inBounds(intXIndexLast, intYIndexLast) || !inBounds(7-moves[0], 7-moves[1])) {
+                            continue;
+                        }
                         if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, 7 - moves[0], 7 - moves[1]))) {
                             return false;
                         }
@@ -631,6 +634,9 @@ public class Board {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndexLast);
                         System.out.println("intYIndexLast: " + intYIndexLast);
+                        if(!inBounds(intXIndexLast, intYIndexLast) || !inBounds(moves[0], moves[1])) {
+                            continue;
+                        }
                         if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, moves[0], moves[1]))) {
                             return false;
                         }

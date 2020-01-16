@@ -52,7 +52,9 @@ public class ChessGame implements ActionListener {
                 // chat message
                 chatArea.append(strMessage + "\n");
             } else if(strMessage.contains("resigned")) {
-                Utility.changePanel(new EndScreen(movesMade, EndScreen.RESIGN, strServerName, strClientName, blnServer));
+                Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
+            } else if(strMessage.contains("GAMEOVER")) {
+                Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
             } else if (strMessage.contains("ping")) {
                 String[] strClientStart = strMessage.split(",");
                 strClientName = strClientStart[1];
@@ -124,18 +126,6 @@ public class ChessGame implements ActionListener {
                 Piece temp = null;
                 int intX, intY, intFinalX, intFinalY;
 
-                if (strMessage.contains("+")) {
-                    System.out.println("This gives a check");
-                    chessBoard.setCheck(true);
-
-                    if(blnServer) {
-                        chessPanel.serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
-                    } else {
-                        chessPanel.clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
-                    }
-
-                }
-
                 chessBoard.displayInformation();
 
                 if (strMove.length == 3) {
@@ -175,9 +165,28 @@ public class ChessGame implements ActionListener {
                     }
                 }
 
+
+
                 chessPanel.updateCaptures();
                 if (temp != null) {
                     temp.setPosition(intFinalX * 90, intFinalY * 90);
+                }
+
+                if (strMessage.contains("+")) {
+                    System.out.println("This gives a check");
+                    chessBoard.setCheck(true);
+
+                    if(chessBoard.checkmate()) {
+                        Utility.changePanel(new EndScreen(movesMade, EndScreen.LOST, strServerName, strClientName, blnServer));
+                        ssm.sendText("GAMEOVER");
+                    }
+
+                    if(blnServer) {
+                        chessPanel.serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                    } else {
+                        chessPanel.clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                    }
+
                 }
                 chessPanel.repaint();
             }

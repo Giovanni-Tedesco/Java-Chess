@@ -288,8 +288,16 @@ public class BoardAnimation extends JPanel {
                             clientInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
                         }
                     } else {
-                        serverInfoLabel.setText("CAPTURED PIECES");
-                        clientInfoLabel.setText("CAPTURED PIECES");
+                        if(chessBoard.inCheck) {
+                            if(blnServer) {
+                                serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                            } else {
+                                clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
+                            }
+                        } else {
+                            serverInfoLabel.setText("CAPTURED PIECES");
+                            clientInfoLabel.setText("CAPTURED PIECES");
+                        }
                         changeTurn();
                     }
                 }
