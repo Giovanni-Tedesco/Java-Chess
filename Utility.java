@@ -123,6 +123,18 @@ public class Utility {
         button.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
     }
 
+    public static ArrayList<String> getBadWords() {
+        ArrayList<String> badList = new ArrayList<>();
+        BufferedReader reader = getReader("bad_words.txt");
+        String strBadWord = readLine(reader);
+        while(strBadWord != null) {
+            badList.add(strBadWord);
+            strBadWord = readLine(reader);
+        }
+
+        return badList;
+    }
+
     // Return random name in case user does not enter name
     public static String getRandomName() {
         ArrayList<String> randomNameList = new ArrayList<>();

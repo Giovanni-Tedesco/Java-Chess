@@ -41,6 +41,7 @@ public class ChessGame implements ActionListener {
     private static ArrayList<String> movesMade = new ArrayList<String>();
 
     private String [] strPieceNames = {"rook", "knight", "bishop", "queen", "king", "pawn"};
+    private ArrayList<String> badList = Utility.getBadWords();
 
     @Override
     public void actionPerformed(ActionEvent evt) {
@@ -192,10 +193,19 @@ public class ChessGame implements ActionListener {
             }
         } else if (event == sendButton) {
             String strChatName = blnServer ? strServerName : strClientName;
-            if (ssm != null) {
-                ssm.sendText("<" + strChatName + ">" + " " + chatField.getText());
+            String strChatMessage = chatField.getText();
+            if(Settings.filterOn()) {
+                for(String strBadWord : badList) {
+                    if(strChatMessage.contains(strBadWord)) {
+                        strChatMessage = "I tried to send a bad word.";
+                        break;
+                    }
+                }
             }
-            chatArea.append("<" + strChatName + ">" + " " + chatField.getText() + "\n");
+            if (ssm != null) {
+                ssm.sendText("<" + strChatName + ">" + " " + strChatMessage);
+            }
+            chatArea.append("<" + strChatName + ">" + " " + strChatMessage + "\n");
             chatField.setText("");
         } else if (event == cancelButton || event == backButton) {
             if (ssm != null) {
@@ -305,7 +315,7 @@ public class ChessGame implements ActionListener {
         backButton.addActionListener(this);
         Utility.setButtonStyle(backButton, 12);
 
-        resignButton.setLocation(1060, 5);
+        resignButton.setLocation(1175, 30);
         resignButton.setSize(100, 20);
         resignButton.addActionListener(this);
         Utility.setButtonStyle(resignButton, 12);
