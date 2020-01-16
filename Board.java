@@ -394,38 +394,6 @@ public class Board {
         this.inCheck = inCheck;
     }
 
-    public boolean isCheckMate() {
-        if (blnServer && inCheck) {
-            Piece king = pieceLookup.get(5);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
-            LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intXPos, intYPos, true);
-            LinkedList<int[]> legalKnightMoves = ChessUtility.getLegalKnightMoves(intXPos, intYPos);
-
-            legalQueenMoves.addAll(legalKnightMoves);
-            if (legalQueenMoves.size() == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } else if (!blnServer && inCheck) {
-            Piece king = pieceLookup.get(10);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
-            LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intXPos, intYPos, false);
-            LinkedList<int[]> legalKnightMoves = ChessUtility.getLegalKnightMoves(intXPos, intYPos);
-
-            legalQueenMoves.addAll(legalKnightMoves);
-            if (legalQueenMoves.size() == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
     /**
      * Checks to see if a move gives a check to the opponent
      *
@@ -463,9 +431,13 @@ public class Board {
                 }
             }
 
-            //if white, then the pawn could be down left or down right
-            if((inBounds((intXPos/90)-1, (intYPos/90)+1) ? chessBoard[(intYPos/90)+1][(intXPos/90)-1] == Piece.PAWN : false)
-                    || (inBounds((intXPos/90)+1, (intYPos/90)+1) ? chessBoard[(intYPos/90)+1][(intXPos/90)+1] == Piece.PAWN : false)) {
+            // if white, then the pawn could be down left or down right
+            if ((inBounds((intXPos / 90) - 1, (intYPos / 90) + 1)
+                    ? chessBoard[(intYPos / 90) + 1][(intXPos / 90) - 1] == Piece.PAWN
+                    : false)
+                    || (inBounds((intXPos / 90) + 1, (intYPos / 90) + 1)
+                            ? chessBoard[(intYPos / 90) + 1][(intXPos / 90) + 1] == Piece.PAWN
+                            : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
@@ -481,14 +453,14 @@ public class Board {
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
                 System.out.println(p[1] + " " + p[0]);
-                if (chessBoard[7-p[1]][7-p[0]] == -Piece.KNIGHT) {
+                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.KNIGHT) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7-p[1]][7-p[0]]== -Piece.BISHOP || chessBoard[7-p[1]][7-p[0]] == -Piece.QUEEN) {
+                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.BISHOP || chessBoard[7 - p[1]][7 - p[0]] == -Piece.QUEEN) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -496,14 +468,18 @@ public class Board {
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7-p[1]][7-p[0]] == -Piece.QUEEN || chessBoard[7-p[1]][7-p[0]] == -Piece.ROOK) {
+                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.QUEEN || chessBoard[7 - p[1]][7 - p[0]] == -Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
-            if((inBounds(7-((intXPos/90)-1), 7-((intYPos/90)+1)) ? chessBoard[7-((intYPos/90)+1)][7-((intXPos/90)-1)] == -Piece.PAWN : false)
-                    || (inBounds(7-((intXPos/90)+1), 7-((intYPos/90)+1)) ? chessBoard[7-((intYPos/90)+1)][7-((intXPos/90)+1)] == -Piece.PAWN : false)) {
+            if ((inBounds(7 - ((intXPos / 90) - 1), 7 - ((intYPos / 90) + 1))
+                    ? chessBoard[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) - 1)] == -Piece.PAWN
+                    : false)
+                    || (inBounds(7 - ((intXPos / 90) + 1), 7 - ((intYPos / 90) + 1))
+                            ? chessBoard[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) + 1)] == -Piece.PAWN
+                            : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
@@ -513,14 +489,17 @@ public class Board {
         return false;
     }
 
-    /*
+    /**
      * This will check if after making a move the king is still in check. If the
      * function returns true than then king is still in check and that causes the
      * move to be illegal
+     *
+     * @param blnTemp if you are using the temporary board or not.
+     * @return boolean true if the piece is in check false if it is not
      */
-    public boolean inCheck(boolean temp) {
+    public boolean inCheck(boolean blnTemp) {
 
-        int[][] arr = temp ? tempBoard : chessBoard;
+        int[][] arr = blnTemp ? tempBoard : chessBoard;
 
         if (blnServer) {
             Piece king = pieceLookup.get(5);
@@ -549,8 +528,12 @@ public class Board {
                 }
             }
 
-            if((inBounds((intXPos/90)-1, (intYPos/90)+1) ? arr[(intYPos/90)+1][(intXPos/90)-1] == -Piece.PAWN : false)
-                    || (inBounds((intXPos/90)+1, (intYPos/90)+1) ? arr[(intYPos/90)+1][(intXPos/90)+1] == -Piece.PAWN : false)) {
+            if ((inBounds((intXPos / 90) - 1, (intYPos / 90) + 1)
+                    ? arr[(intYPos / 90) + 1][(intXPos / 90) - 1] == -Piece.PAWN
+                    : false)
+                    || (inBounds((intXPos / 90) + 1, (intYPos / 90) + 1)
+                            ? arr[(intYPos / 90) + 1][(intXPos / 90) + 1] == -Piece.PAWN
+                            : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
@@ -560,27 +543,31 @@ public class Board {
             int intXPos = king.intXPos;
             int intYPos = king.intYPos;
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (arr[7-p[1]][7-p[0]] == Piece.KNIGHT) {
+                if (arr[7 - p[1]][7 - p[0]] == Piece.KNIGHT) {
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false, arr)) {
-                if (arr[7-p[1]][7-p[0]] == Piece.BISHOP || arr[7-p[1]][7-p[0]] == Piece.QUEEN) {
+                if (arr[7 - p[1]][7 - p[0]] == Piece.BISHOP || arr[7 - p[1]][7 - p[0]] == Piece.QUEEN) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false, arr)) {
-                if (arr[7-p[1]][7-p[0]] == Piece.QUEEN || arr[7-p[1]][7-p[0]] == Piece.ROOK) {
+                if (arr[7 - p[1]][7 - p[0]] == Piece.QUEEN || arr[7 - p[1]][7 - p[0]] == Piece.ROOK) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
-            if((inBounds(7-((intXPos/90)-1), 7-((intYPos/90)+1)) ? arr[7-((intYPos/90)+1)][7-((intXPos/90)-1)] == Piece.PAWN : false)
-                    || (inBounds(7-((intXPos/90)+1), 7-((intYPos/90)+1)) ? arr[7-((intYPos/90)+1)][7-((intXPos/90)+1)] == Piece.PAWN : false)) {
+            if ((inBounds(7 - ((intXPos / 90) - 1), 7 - ((intYPos / 90) + 1))
+                    ? arr[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) - 1)] == Piece.PAWN
+                    : false)
+                    || (inBounds(7 - ((intXPos / 90) + 1), 7 - ((intYPos / 90) + 1))
+                            ? arr[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) + 1)] == Piece.PAWN
+                            : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
@@ -613,11 +600,54 @@ public class Board {
 
     }
 
+    public boolean checkmate() {
+        System.out.println("In check: " + inCheck);
+
+        if (!inCheck) {
+            return false;
+        } else if (inCheck && blnServer) {
+            for (Piece p : pieces) {
+                int intXIndexLast = 7 - p.intLastX / 90;
+                int intYIndexLast = 7 - p.intLastY / 90;
+
+                if (p.blnColor) {
+                    for (int[] moves : p.getLegalMoves()) {
+                        System.out.println("Piece: " + p.intPiece);
+                        System.out.println("intXIndexLast: " + intXIndexLast);
+                        System.out.println("intYIndexLast: " + intYIndexLast);
+                        if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, 7 - moves[0], 7 - moves[1]))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        } else if (inCheck && !blnServer) {
+            for (Piece p : pieces) {
+                int intXIndexLast = p.intLastX / 90;
+                int intYIndexLast = p.intLastY / 90;
+
+                if (!p.blnColor) {
+                    for (int[] moves : p.getLegalMoves()) {
+                        System.out.println("Piece: " + p.intPiece);
+                        System.out.println("intXIndexLast: " + intXIndexLast);
+                        System.out.println("intYIndexLast: " + intYIndexLast);
+                        if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, moves[0], moves[1]))) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     // TODO: Clean this function up, the if statements have very similar code. Could
     // probably be simplified
     // return true if move was succesful
     public boolean executeMove(Piece piece, int intXPos, int intYPos) {
         SuperSocketMaster ssm = ChessGame.getNetwork();
+
         piece.setPosition(intXPos, intYPos);
 
         int intXIndexLast = blnServer ? piece.intLastX / 90 : 7 - (piece.intLastX / 90);
@@ -632,7 +662,8 @@ public class Board {
             blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
                     && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
         } else {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
+                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
         }
 
         // if player is white and the spot has a white piece
@@ -641,10 +672,7 @@ public class Board {
         boolean blnSamePieceBlack = !blnServer && !isWhite(intXIndex, intYIndex)
                 && chessBoard[intYIndex][intXIndex] != 0;
 
-        if (isCheckMate()) {
-            System.out.println("I've been mated feels bad man");
-            return false;
-        } else if (!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
+        if (!blnLegalMove || blnSamePieceWhite || blnSamePieceBlack) {
             piece.goBack();
             return false;
         } else if (blnServer && !isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0) {
