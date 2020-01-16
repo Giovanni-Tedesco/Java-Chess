@@ -11,12 +11,11 @@ import java.io.*;
 import java.awt.image.*;
 import javax.swing.filechooser.FileFilter;
 
-public class GameReview extends KeyAdapter {
+public class GameReview extends KeyAdapter implements ActionListener {
 
   private ReviewPanel reviewPanel;
   private ArrayList<String> moveList = new ArrayList<>();
   private Stack<Integer> pieceStack = new Stack<>();
-  // String testMove = "e2,e4";
   private int intMoveIndex = 0;
 
   private JTextArea movesArea = new JTextArea();
@@ -56,6 +55,14 @@ public class GameReview extends KeyAdapter {
       }
   }
 
+  @Override
+  public void actionPerformed(ActionEvent evt) {
+      if(evt.getSource() == backButton) {
+          Utility.changePanel(new MainMenu().getMenuPanel());
+          MainMenu.frame.removeKeyListener(this);
+      }
+  }
+
   private void initPanel() {
 
       movesArea.setEditable(false);
@@ -71,12 +78,7 @@ public class GameReview extends KeyAdapter {
 
       backButton.setLocation(1175, 5);
       backButton.setSize(100, 20);
-      backButton.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent evt) {
-              Utility.changePanel(new MainMenu().getMenuPanel());
-          }
-      });
+      backButton.addActionListener(this);
       Utility.setButtonStyle(backButton, 12);
 
       titleLabel.setLocation(725, 25);
@@ -287,10 +289,7 @@ public class GameReview extends KeyAdapter {
           } else {
               System.out.println("not succ");
               errorLabel.setVisible(true);
-              //Utility.changePanel(new MainMenu().getMenuPanel());
           }
       }
-
-
   }
 }
