@@ -5,6 +5,7 @@ import javax.swing.event.*;
 import javax.swing.filechooser.*;
 import java.util.ArrayList;
 import java.io.*;
+import javax.swing.filechooser.FileFilter;
 
 public class GameReview implements KeyListener {
 
@@ -17,10 +18,15 @@ public class GameReview implements KeyListener {
     private JTextArea movesArea = new JTextArea();
     private JScrollPane scroll = new JScrollPane(movesArea);
 
-    private JFileChooser chooseFile = new JFileChooser();
+    private JFileChooser chooseFile = new JFileChooser(new File("review"));
     private BufferedReader reader;
+    private String strName;
 
+    @Override
     public void keyPressed(KeyEvent evt) {
+        if(moveIndex >= moveList.size()) {
+            return;
+        }
         int key = evt.getKeyCode();
         System.out.println("I pressed a key");
         Board chessBoard = BoardAnimation.getBoard();
@@ -79,21 +85,48 @@ public class GameReview implements KeyListener {
         chessPanel.setLayout(null);
         chessPanel.initializeGame();
 
-        //chooseFile.setFileFilter(new FileNameExtensionFilter("txt"));
+        chooseFile.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                final String name = f.getName();
+                return name.endsWith(".txt");
+            }
+
+            @Override
+            public String getDescription() {
+                return ".txt";
+            }
+        });
 
         int intResult = chooseFile.showDialog(chessPanel, "HELLO THERE");
 
         if(intResult == JFileChooser.APPROVE_OPTION) {
             reader = Utility.getReader(chooseFile.getSelectedFile());
             System.out.println("Succ");
+            String strContent = Utility.readLine(reader);
+            strName = strContent;
+            strContent = Utility.readLine(reader);
+            while(!strContent.equals("end")) {
+                moveList.add(strContent.trim());
+                strContent = Utility.readLine(reader);
+            }
+
+            try {
+                reader.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println("not succ");
             //Utility.changePanel(new MainMenu().getMenuPanel());
         }
 
-        moveList.add("e2,e4");
-        moveList.add("e6, e5");
-        moveList.add("g1,f3");
+        //moveList.add("e2,e4");
+        //moveList.add("e6, e5");
+        //moveList.add("g1,f3");
         // moveList.add("b8, c6");
 
         frame.addKeyListener(this);

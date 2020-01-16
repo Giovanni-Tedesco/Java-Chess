@@ -18,6 +18,7 @@ public class ChessGame implements ActionListener {
     private JButton backButton = new JButton("<- BACK");
     private JButton sendButton = new JButton("SEND");
     private JButton cancelButton = new JButton("CANCEL");
+    private JButton resignButton = new JButton("RESIGN");
     private String strServerName = "", strClientName = "";
     private boolean blnServer, blnConnectionFailed = false;
     private BoardAnimation chessPanel;// = new BoardAnimation();
@@ -37,7 +38,7 @@ public class ChessGame implements ActionListener {
     private JLabel clientQueen = new JLabel();
 
     private JLabel waitingLabel = new JLabel("Waiting for the other player");
-    public ArrayList<String> movesMade = new ArrayList<String>();
+    private static ArrayList<String> movesMade = new ArrayList<String>();
 
     private String [] strPieceNames = {"rook", "knight", "bishop", "queen", "king", "pawn"};
 
@@ -50,6 +51,8 @@ public class ChessGame implements ActionListener {
             if (strMessage.contains("<") || strMessage.contains(">")) {
                 // chat message
                 chatArea.append(strMessage + "\n");
+            } else if(strMessage.contains("resigned")) {
+                Utility.changePanel(new EndScreen(movesMade, EndScreen.RESIGN, strServerName, strClientName, blnServer));
             } else if (strMessage.contains("ping")) {
                 String[] strClientStart = strMessage.split(",");
                 strClientName = strClientStart[1];
@@ -191,7 +194,18 @@ public class ChessGame implements ActionListener {
             }
 
             Utility.changePanel(new MainMenu().getMenuPanel());
+        } else if(event == resignButton) {
+            if (ssm != null) {
+                ssm.sendText("resigned");
+                ssm.disconnect();
+            }
+
+            Utility.changePanel(new EndScreen(movesMade, EndScreen.RESIGN, strServerName, strClientName, blnServer));
         }
+    }
+
+    public static void addMove(String strMove) {
+        movesMade.add(strMove);
     }
 
     public boolean connectionFailed() {
@@ -282,10 +296,16 @@ public class ChessGame implements ActionListener {
         backButton.addActionListener(this);
         Utility.setButtonStyle(backButton, 12);
 
+        resignButton.setLocation(1060, 5);
+        resignButton.setSize(100, 20);
+        resignButton.addActionListener(this);
+        Utility.setButtonStyle(resignButton, 12);
+
         chessPanel.add(chatScroll);
         chessPanel.add(chatField);
         chessPanel.add(sendButton);
         chessPanel.add(backButton);
+        chessPanel.add(resignButton);
     }
 
     private void initializeNameLabels() {

@@ -1,0 +1,8 @@
+BruhvsStephen Strange
+h2,h4
+a7,a5
+e2,e4
+b8,c6
+f1,c4
+d7,d5
+end

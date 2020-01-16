@@ -1,7 +1,0 @@
-me vs otherguy
-e2,e4
-e6,e5
-g1,f3
-b8,c6
-d2,d3
-end

@@ -652,6 +652,7 @@ public class Board {
             System.out.println("White -> Black");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             // movesMade.add(result);
+            ChessGame.addMove(result);
             move(result, false);
             printCharboard();
             // Utility.displayArray(movesMade);
@@ -686,7 +687,7 @@ public class Board {
             System.out.println("Black -> White");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result, false);
-            // movesMade.add(result);
+            ChessGame.addMove(result);
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
@@ -719,7 +720,7 @@ public class Board {
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             System.out.println(result);
             move(result, false);
-            // movesMade.add(result);
+            ChessGame.addMove(result);
             // Utility.displayArray(movesMade);
             printCharboard();
 
