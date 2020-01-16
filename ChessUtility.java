@@ -25,13 +25,51 @@ public class ChessUtility {
                 tempY += moveRules[1];
                 continue;
             } else if (chessBoard.getPiece(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY) != 0) {
+                //if there is a piece at that spot
+
+                //if piece is same color as piece on the spot
                 if ((blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite
-                                && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
+                        || (!blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
                     break;
                 } else if ((blnWhite && !chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))
-                        || (!blnWhite
-                                && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
+                        || (!blnWhite && chessBoard.isWhite(blnWhite ? tempX : 7 - tempX, blnWhite ? tempY : 7 - tempY))) {
+                    //if there is an opposite color piece on the spot
+                    moves.add(new int[] { tempX, tempY });
+                    break;
+                } else {
+                    moves.add(new int[] { tempX, tempY });
+                }
+            } else {
+                moves.add(new int[] { tempX, tempY });
+            }
+
+            tempX += moveRules[0];
+            tempY += moveRules[1];
+        }
+
+        return moves;
+    }
+
+    private static LinkedList<int[]> checkDiagonal(int intX, int intY, int[] moveRules, boolean blnWhite, int [][] board) {
+        LinkedList<int[]> moves = new LinkedList<int[]>();
+        int tempX = intX;
+        int tempY = intY;
+
+        while (tempX >= 0 && tempX < 8 && tempY >= 0 && tempY < 8) {
+            if (tempX == intX && tempY == intY) {
+                tempX += moveRules[0];
+                tempY += moveRules[1];
+                continue;
+            } else if (board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] != 0) {
+                //if there is a piece at that spot
+
+                //if piece is same color as piece on the spot
+                if ((blnWhite && board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] > 0)
+                        || (!blnWhite && board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] < 0)) {
+                    break;
+                } else if ((blnWhite && board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] < 0)
+                        || (!blnWhite && board[blnWhite ? tempY : 7 - tempY][blnWhite ? tempX : 7 - tempX] > 0)) {
+                    //if there is an opposite color piece on the spot
                     moves.add(new int[] { tempX, tempY });
                     break;
                 } else {
@@ -121,6 +159,90 @@ public class ChessUtility {
                     break;
                 } else if ((blnWhite && !chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))
                         || (!blnWhite && chessBoard.isWhite(blnWhite ? intX : 7 - intX, blnWhite ? i : 7 - i))) {
+                    fileMoves.add(new int[] { intX, i });
+                    break;
+                } else {
+                    fileMoves.add(new int[] { intX, i });
+                }
+            } else {
+                fileMoves.add(new int[] { intX, i });
+            }
+        }
+
+        return fileMoves;
+    }
+
+    private static LinkedList<int[]> checkFiles(int intX, int intY, boolean blnWhite, int [][] board) {
+        System.out.println("GOT HE");
+        LinkedList<int[]> fileMoves = new LinkedList<>();
+
+        // Check in x+ direction
+        for (int i = intX; i < 8; i++) {
+            if (i == intX)
+                continue;
+            if (board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != 0) {
+                if ((blnWhite && board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)
+                        || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)) {
+                    break;
+                } else if ((blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)
+                        || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)) {
+                    fileMoves.add(new int[] { i, intY });
+                    break;
+                } else {
+                    fileMoves.add(new int[] { i, intY });
+                }
+            } else {
+                fileMoves.add(new int[] { i, intY });
+            }
+        }
+        // Check in x- direction
+        for (int i = intX; i >= 0; i--) {
+            if (i == intX)
+                continue;
+            if ( board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] != 0) {
+                if ((blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)
+                        || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)) {
+                    break;
+                } else if ((blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] < 0)
+                        || (!blnWhite &&  board[blnWhite ? intY : 7 - intY][blnWhite ? i : 7 - i] > 0)) {
+                    fileMoves.add(new int[] { i, intY });
+                    break;
+                } else {
+                    fileMoves.add(new int[] { i, intY });
+                }
+            } else {
+                fileMoves.add(new int[] { i, intY });
+            }
+        }
+        // Check in y+ direction
+        for (int i = intY; i < 8; i++) {
+            if (i == intY)
+                continue;
+            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != 0) {
+                if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)
+                        || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)) {
+                    break;
+                } else if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)
+                        || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)) {
+                    fileMoves.add(new int[] { intX, i });
+                    break;
+                } else {
+                    fileMoves.add(new int[] { intX, i });
+                }
+            } else {
+                fileMoves.add(new int[] { intX, i });
+            }
+        }
+        // Check in y- direction
+        for (int i = intY; i >= 0; i--) {
+            if (i == intY)
+                continue;
+            if (board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] != 0) {
+                if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)
+                        || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)) {
+                    break;
+                } else if ((blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] < 0)
+                        || (!blnWhite && board[blnWhite ? i : 7 - i][blnWhite ? intX : 7 - intX] > 0)) {
                     fileMoves.add(new int[] { intX, i });
                     break;
                 } else {
@@ -226,12 +348,37 @@ public class ChessUtility {
         return legalBishopMoves;
     }
 
+    public static LinkedList<int[]> getLegalBishopMoves(int intLastX, int intLastY, boolean blnWhite, int [][] board) {
+        int intXIndex = intLastX / 90;// blnWhite?intLastX/90:7-(intLastX/90);
+        int intYIndex = intLastY / 90;// blnWhite?intLastY/90:7-(intLastY/90);
+
+        int[][] possibleMoves = { { -1, 1 }, // Upper left
+                { 1, 1 }, // Upper right
+                { 1, -1 }, // Botton right
+                { -1, -1 } // Bottom left
+        };
+
+        LinkedList<int[]> legalBishopMoves = new LinkedList<int[]>();
+        for (int i = 0; i < possibleMoves.length; i++) {
+            legalBishopMoves.addAll(checkDiagonal(intXIndex, intYIndex, possibleMoves[i], blnWhite, board));
+        }
+
+        return legalBishopMoves;
+    }
+
     public static LinkedList<int[]> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite) {
-        System.out.println(BoardAnimation.getBoard() + " t " + TutorialMode.getBoard());
         int intXIndex = intLastX / 90;// blnWhite?intLastX/90:7-(intLastX/90);
         int intYIndex = intLastY / 90;// blnWhite?intLastY/90:7-(intLastY/90);
         LinkedList<int[]> legalRookMoves = new LinkedList<>();
         legalRookMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite));
+        return legalRookMoves;
+    }
+
+    public static LinkedList<int[]> getLegalRookMoves(int intLastX, int intLastY, boolean blnWhite, int [][] board) {
+        int intXIndex = intLastX / 90;// blnWhite?intLastX/90:7-(intLastX/90);
+        int intYIndex = intLastY / 90;// blnWhite?intLastY/90:7-(intLastY/90);
+        LinkedList<int[]> legalRookMoves = new LinkedList<>();
+        legalRookMoves.addAll(checkFiles(intXIndex, intYIndex, blnWhite, board));
         return legalRookMoves;
     }
 

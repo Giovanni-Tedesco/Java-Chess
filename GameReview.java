@@ -27,7 +27,7 @@ public class GameReview implements KeyListener {
         if (key == KeyEvent.VK_RIGHT) {
             String strMove = moveList.get(moveIndex);
             System.out.println("Testing move");
-            chessBoard.move(strMove);
+            chessBoard.move(strMove,false);
             String[] strMoveSplit = strMove.split(",");
             Point initPos = chessBoard.coordToLoc(strMoveSplit[0]);
             Point finalPos = chessBoard.coordToLoc(strMoveSplit[1]);

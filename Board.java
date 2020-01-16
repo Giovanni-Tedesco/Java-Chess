@@ -459,8 +459,8 @@ public class Board {
             return false;
         } else if (!blnServer) {
             Piece king = pieceLookup.get(5);
-            int intXPos = 630 - king.intXPos;
-            int intYPos = 630 - king.intYPos;
+            int intXPos = king.intXPos;
+            int intYPos = king.intYPos;
             System.out.println("intXPos: " + intXPos);
             System.out.println("intYPos: " + intYPos);
             System.out.println("white queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, true));
@@ -468,14 +468,14 @@ public class Board {
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
                 System.out.println(p[1] + " " + p[0]);
-                if (chessBoard[p[1]][p[0]] == -2) {
+                if (chessBoard[7-p[1]][7-p[0]] == -2) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == -3 || chessBoard[p[1]][p[0]] == -4) {
+                if (chessBoard[7-p[1]][7-p[0]]== -3 || chessBoard[7-p[1]][7-p[0]] == -4) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -483,7 +483,7 @@ public class Board {
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == -4 || chessBoard[p[1]][p[0]] == -1) {
+                if (chessBoard[7-p[1]][7-p[0]] == -4 || chessBoard[7-p[1]][7-p[0]] == -1) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -516,15 +516,15 @@ public class Board {
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true)) {
-                if (arr[p[1]][p[0]] == -3 || arr[p[1]][p[0]] == -4 || arr[p[1]][p[0]] == -1) {
+            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true, arr)) {
+                if (arr[p[1]][p[0]] == -3 || arr[p[1]][p[0]] == -4) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true)) {
-                if (arr[p[1]][p[0]] == -3 || arr[p[1]][p[0]] == -4 || arr[p[1]][p[0]] == -1) {
+            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true, arr)) {
+                if (arr[p[1]][p[0]] == -4 || arr[p[1]][p[0]] == -1) {
                     System.out.println("Rook check");
                     return true;
                 }
@@ -532,23 +532,23 @@ public class Board {
             return false;
         } else if (!blnServer) {
             Piece king = pieceLookup.get(10);
-            int intXPos = 630 - king.intXPos;
-            int intYPos = 630 - king.intYPos;
+            int intXPos = king.intXPos;
+            int intYPos = king.intYPos;
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (arr[p[0]][p[1]] == 2) {
+                if (arr[7-p[1]][7-p[0]] == 2) {
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false)) {
-                if (arr[p[0]][p[1]] == 3 || arr[p[0]][p[1]] == 4) {
+            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false, arr)) {
+                if (arr[7-p[1]][7-p[0]] == 3 || arr[7-p[1]][7-p[0]] == 4) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false)) {
-                if (arr[p[0]][p[1]] == 4 || arr[p[0]][p[1]] == 1) {
+            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false, arr)) {
+                if (arr[7-p[1]][7-p[0]] == 4 || arr[7-p[1]][7-p[0]] == 1) {
                     System.out.println("Blocks check");
                     return true;
                 }
@@ -601,8 +601,7 @@ public class Board {
             blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
                     && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
         } else {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
-                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
         }
 
         // if player is white and the spot has a white piece

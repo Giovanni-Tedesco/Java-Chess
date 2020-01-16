@@ -55,6 +55,17 @@ public class Utility {
         return null;
     }
 
+    // Wraps the instantiation of a BufferedReader
+    public static BufferedReader getReader(File file) {
+        try {
+            return new BufferedReader(new FileReader(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static BufferedImage resizeImage(BufferedImage oldImage, int intWidth, int intHeight) {
         Image newImage = (Image)oldImage.getScaledInstance(intWidth, intHeight, Image.SCALE_DEFAULT);
 
