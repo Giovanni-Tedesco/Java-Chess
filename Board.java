@@ -70,6 +70,10 @@ public class Board {
         return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
     }
 
+    private boolean inBounds(int intXIndex, int intYIndex) {
+        return intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
+    }
+
     public void printCharboard() {
         for (int i = 0; i < chessBoard.length; i++) {
             for (int j = 0; j < chessBoard[0].length; j++) {
@@ -442,6 +446,7 @@ public class Board {
                     return true;
                 }
             }
+
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
                 if (chessBoard[p[1]][p[0]] == Piece.BISHOP || chessBoard[p[1]][p[0]] == Piece.QUEEN) {
@@ -449,12 +454,20 @@ public class Board {
                     return true;
                 }
             }
+
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
                 if (chessBoard[p[1]][p[0]] == Piece.QUEEN || chessBoard[p[1]][p[0]] == Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
+            }
+
+            //if white, then the pawn could be down left or down right
+            if((inBounds((intXPos/90)-1, (intYPos/90)+1) ? chessBoard[(intYPos/90)+1][(intXPos/90)-1] == Piece.PAWN : false)
+                    || (inBounds((intXPos/90)+1, (intYPos/90)+1) ? chessBoard[(intYPos/90)+1][(intXPos/90)+1] == Piece.PAWN : false)) {
+                System.out.println("GET PWNED");
+                return true;
             }
             return false;
         } else if (!blnServer) {
@@ -487,6 +500,12 @@ public class Board {
                     System.out.println("Rook check");
                     return true;
                 }
+            }
+
+            if((inBounds(7-((intXPos/90)-1), 7-((intYPos/90)+1)) ? chessBoard[7-((intYPos/90)+1)][7-((intXPos/90)-1)] == -Piece.PAWN : false)
+                    || (inBounds(7-((intXPos/90)+1), 7-((intYPos/90)+1)) ? chessBoard[7-((intYPos/90)+1)][7-((intXPos/90)+1)] == -Piece.PAWN : false)) {
+                System.out.println("GET PWNED");
+                return true;
             }
             return false;
         }
@@ -529,6 +548,12 @@ public class Board {
                     return true;
                 }
             }
+
+            if((inBounds((intXPos/90)-1, (intYPos/90)+1) ? arr[(intYPos/90)+1][(intXPos/90)-1] == -Piece.PAWN : false)
+                    || (inBounds((intXPos/90)+1, (intYPos/90)+1) ? arr[(intYPos/90)+1][(intXPos/90)+1] == -Piece.PAWN : false)) {
+                System.out.println("GET PWNED");
+                return true;
+            }
             return false;
         } else if (!blnServer) {
             Piece king = pieceLookup.get(10);
@@ -552,6 +577,12 @@ public class Board {
                     System.out.println("Blocks check");
                     return true;
                 }
+            }
+
+            if((inBounds(7-((intXPos/90)-1), 7-((intYPos/90)+1)) ? arr[7-((intYPos/90)+1)][7-((intXPos/90)-1)] == Piece.PAWN : false)
+                    || (inBounds(7-((intXPos/90)+1), 7-((intYPos/90)+1)) ? arr[7-((intYPos/90)+1)][7-((intXPos/90)+1)] == Piece.PAWN : false)) {
+                System.out.println("GET PWNED");
+                return true;
             }
             return false;
         }
