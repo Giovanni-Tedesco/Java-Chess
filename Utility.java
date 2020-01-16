@@ -119,6 +119,7 @@ public class Utility {
             button.setBackground(Color.BLACK);// new Color(53,53,56));
             button.setForeground(Color.WHITE);
         }
+        button.setOpaque(true);
         button.setFont(getFont().deriveFont(Font.PLAIN, intFontSize));
     }
 
