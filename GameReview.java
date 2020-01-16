@@ -79,7 +79,7 @@ public class GameReview implements KeyListener {
         chessPanel.setLayout(null);
         chessPanel.initializeGame();
 
-        chooseFile.setFileFilter(new FileNameExtensionFilter("txt"));
+        //chooseFile.setFileFilter(new FileNameExtensionFilter("txt"));
 
         int intResult = chooseFile.showDialog(chessPanel, "HELLO THERE");
 

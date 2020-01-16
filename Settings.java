@@ -63,12 +63,12 @@ public class Settings {
 
 	public static void setDefaultSettings() {
 		settingsMap.clear();
-		settingsMap.put("port", 7777);
+		settingsMap.put("port", 3302);
 		settingsMap.put("color", 0);
 		settingsMap.put("dark", true);
 		settingsMap.put("filter", true);
 		writer = Utility.getWriter("settings.txt");
-		writer.print("port : 7777");
+		writer.println("port : 3302");
 		writer.println("color : 0");
 		writer.println("dark : true");
 		writer.println("filter : true");

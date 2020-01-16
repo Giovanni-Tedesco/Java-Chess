@@ -216,7 +216,7 @@ public class ChessGame implements ActionListener {
         chessPanel.setLayout(null);
         chessPanel.setPreferredSize(new Dimension(1280, 720));
         // TODO: get port from settings later
-        ssm = new SuperSocketMaster(6969, this);
+        ssm = new SuperSocketMaster(Settings.getPortNumber(), this);
         ssm.connect();
 
         waitingLabel.setHorizontalAlignment(SwingConstants.CENTER);

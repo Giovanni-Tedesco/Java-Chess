@@ -78,7 +78,7 @@ public class ConnectPlayer2 implements ActionListener {
     }
 
     public ConnectPlayer2(boolean blnIsServer, boolean blnError) {
-        connectPanel2.setBackground(Color.BLACK);
+        connectPanel2.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
         connectPanel2.setPreferredSize(Utility.panelDimensions);
         blnServer = blnIsServer;
         int intPort = Settings.getPortNumber();
