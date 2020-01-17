@@ -53,6 +53,9 @@ public class ChessGame implements ActionListener {
                 // chat message
                 chatArea.append(strMessage + "\n");
             } else if (strMessage.contains("resigned")) {
+                if(ssm != null) {
+                    ssm.disconnect();
+                }
                 Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
             } else if (strMessage.contains("GAMEOVER")) {
                 Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
