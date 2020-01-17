@@ -5,14 +5,15 @@ import javax.swing.event.*;
 
 //This class implements the Main Menu screen and takes user to all other screens
 public class MainMenu implements ActionListener {
-    //Properties
+    // Properties
     public static JFrame frame;
 
-    //JButton dimensions
+    // JButton dimensions
     private final int intButtWidth = 400, intButtHeight = 75;
 
     private JPanel menuPanel = new JPanel();
     private AboutPanel aboutPanel = new AboutPanel();
+    private SplashScreen splashScreen = new SplashScreen();
     private JLabel titleLabel = new JLabel("CHESS");
     private JButton playButton = new JButton("PLAY");
     private JButton helpButton = new JButton("HELP");
@@ -20,30 +21,33 @@ public class MainMenu implements ActionListener {
     private JButton aboutButton = new JButton("ABOUT");
     private JButton quitButton = new JButton("QUIT");
 
-
-    //Methods
+    // Methods
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Set JFrame content depending on the button chosen
-        if(e.getSource() == playButton) {
+        // Set JFrame content depending on the button chosen
+        if (e.getSource() == playButton) {
             Utility.changePanel(new ConnectPlayer().getConnectPanel());
-        } else if(e.getSource() == helpButton) {
+        } else if (e.getSource() == helpButton) {
             Utility.changePanel(new Help().getHelpPanel());
-        } else if(e.getSource() == settingButton) {
+        } else if (e.getSource() == settingButton) {
             Utility.changePanel(new Settings().getsettingsPanel());
-        } else if(e.getSource() == aboutButton) {
+        } else if (e.getSource() == aboutButton) {
             Utility.changePanel(aboutPanel);
-        } else if(e.getSource() == quitButton) {
+        } else if (e.getSource() == quitButton) {
             Utility.changePanel(new GameReview().getChoosePanel());
         }
+    }
+
+    public void displaySplash() {
+        Utility.changePanel(splashScreen);
     }
 
     public JPanel getMenuPanel() {
         return menuPanel;
     }
 
-    //Constructor
-    //Initialize the panel and all the JComponents
+    // Constructor
+    // Initialize the panel and all the JComponents
     public MainMenu() {
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
