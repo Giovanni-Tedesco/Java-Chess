@@ -489,6 +489,19 @@ public class Board {
         return false;
     }
 
+
+    private Point getKingPosition(boolean blnColor, int [][] intBoard) {
+        int intTarget = blnColor?Piece.KING:-Piece.KING;
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(intTarget == intBoard[i][j]) {
+                    return new Point(j, i);
+                }
+            }
+        }
+
+        return null;
+    }
     /**
      * This will check if after making a move the king is still in check. If the
      * function returns true than then king is still in check and that causes the
@@ -502,72 +515,83 @@ public class Board {
         int[][] arr = blnTemp ? tempBoard : chessBoard;
 
         if (blnServer) {
-            Piece king = pieceLookup.get(5);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
+            Point kingPoint = getKingPosition(true, arr);
+            int intXPos = 0;
+            int intYPos = 0;
+            if(kingPoint == null) {
+                Piece king = pieceLookup.get(5);
+                intXPos = king.intXPos/90;
+                intYPos = king.intYPos/90;
+            } else {
+                intXPos = kingPoint.x;
+                intYPos = kingPoint.y;
+            }
+
             System.out.println("Blocking intXPos: " + intXPos);
             System.out.println("Blocking intYPos: " + intYPos);
 
-            for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
+            for (int[] p : ChessUtility.getLegalKnightMoves(intXPos*90, intYPos*90)) {
                 if (arr[p[1]][p[0]] == -Piece.KNIGHT) {
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true, arr)) {
+            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos*90, intYPos*90, true, arr)) {
                 if (arr[p[1]][p[0]] == -Piece.BISHOP || arr[p[1]][p[0]] == -Piece.QUEEN) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true, arr)) {
+            for (int[] p : ChessUtility.getLegalRookMoves(intXPos*90, intYPos*90, true, arr)) {
                 if (arr[p[1]][p[0]] == -Piece.QUEEN || arr[p[1]][p[0]] == -Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
-            if ((inBounds((intXPos / 90) - 1, (intYPos / 90) + 1)
-                    ? arr[(intYPos / 90) + 1][(intXPos / 90) - 1] == -Piece.PAWN
-                    : false)
-                    || (inBounds((intXPos / 90) + 1, (intYPos / 90) + 1)
-                            ? arr[(intYPos / 90) + 1][(intXPos / 90) + 1] == -Piece.PAWN
-                            : false)) {
+            if ((inBounds(intXPos - 1, intYPos + 1) ? arr[intYPos + 1][intXPos - 1] == -Piece.PAWN : false)
+                    || (inBounds(intXPos + 1, intYPos + 1) ? arr[intYPos + 1][intXPos + 1] == -Piece.PAWN : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
             return false;
         } else if (!blnServer) {
-            Piece king = pieceLookup.get(10);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
-            for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
+            //Piece king = pieceLookup.get(10);
+            Point kingPoint = getKingPosition(false, arr);
+            int intXPos = 0;
+            int intYPos = 0;
+            if(kingPoint == null) {
+                Piece king = pieceLookup.get(10);
+                intXPos = 7-(king.intXPos/90);
+                intYPos = 7-(king.intYPos/90);
+            } else {
+                intXPos = kingPoint.x;
+                intYPos = kingPoint.y;
+            }
+
+            for (int[] p : ChessUtility.getLegalKnightMoves((7-intXPos)*90, (7-intYPos)*90)) {
                 if (arr[7 - p[1]][7 - p[0]] == Piece.KNIGHT) {
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false, arr)) {
+            for (int[] p : ChessUtility.getLegalBishopMoves((7-intXPos)*90, (7-intYPos)*90, false, arr)) {
                 if (arr[7 - p[1]][7 - p[0]] == Piece.BISHOP || arr[7 - p[1]][7 - p[0]] == Piece.QUEEN) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
-            for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false, arr)) {
+            for (int[] p : ChessUtility.getLegalRookMoves((7-intXPos)*90, (7-intYPos)*90, false, arr)) {
                 if (arr[7 - p[1]][7 - p[0]] == Piece.QUEEN || arr[7 - p[1]][7 - p[0]] == Piece.ROOK) {
                     System.out.println("Blocks check");
                     return true;
                 }
             }
 
-            if ((inBounds(7 - ((intXPos / 90) - 1), 7 - ((intYPos / 90) + 1))
-                    ? arr[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) - 1)] == Piece.PAWN
-                    : false)
-                    || (inBounds(7 - ((intXPos / 90) + 1), 7 - ((intYPos / 90) + 1))
-                            ? arr[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) + 1)] == Piece.PAWN
-                            : false)) {
+            if ((inBounds(intXPos-1, intYPos + 1) ? arr[intYPos + 1][intXPos- 1] == Piece.PAWN : false)
+                    || (inBounds(intXPos + 1, intYPos + 1) ? arr[intYPos + 1][intXPos + 1] == Piece.PAWN : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }

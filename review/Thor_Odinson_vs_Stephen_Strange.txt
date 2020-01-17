@@ -1,0 +1,11 @@
+Thor OdinsonvsStephen Strange
+g1,f3
+d7,d6
+f3,g5
+e8,d7
+g5,e4
+d7,e6
+e4,g5+
+e6,e5
+g5,f3+
+end
