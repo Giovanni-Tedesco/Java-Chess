@@ -10,8 +10,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+//this class handles the ui for the chess game
 public class BoardAnimation extends JPanel {
     // Properties
+    private Timer chessTimer = new Timer(1000/60, event -> repaint());
     private boolean blnServer, blnTurn;
     private boolean blnClientStarted = false;
     private static Board chessBoard;
@@ -73,6 +75,7 @@ public class BoardAnimation extends JPanel {
 
     }
 
+    //store references to capture display images
     private void initCaptureImages() {
         for (int intPiece : intPieces) {
             blackCaptureImages.add(Utility.resizeImage(pieceImages.get(intPiece), 60, 120));
@@ -84,16 +87,17 @@ public class BoardAnimation extends JPanel {
         blnTurn = !blnTurn;
     }
 
+    //starts the game, needed because the game can't start until a client has joined
     public void initializeGame() {
         blnClientStarted = true;
         chessBoard = new Board(blnServer);
         addMouseListener(new MyMouseAdaptor());
         addMouseMotionListener(new MyMouseAdaptor());
         initializeCaptureLabels();
+        chessTimer.start();
     }
 
-    // Sets locations and sizes for all the capture labels and adds them to the
-    // panel
+    // Sets locations and sizes for all the capture labels and adds them to the panel
     private void initializeCaptureLabels() {
         serverInfoLabel.setSize(200, 20);
         serverInfoLabel.setLocation(900, 5);
@@ -141,7 +145,9 @@ public class BoardAnimation extends JPanel {
         return chessBoard;
     }
 
+    //draw alternating colors for the chess board display
     private void drawBoard(Graphics g) {
+        //get the board color from settings
         Color boardColor = Settings.getBoardColor();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -151,12 +157,14 @@ public class BoardAnimation extends JPanel {
         }
     }
 
+    //draw each piece at its current position
     private void drawPieces(Graphics g) {
         for (Piece p : chessBoard.pieces) {
             p.update(g);
         }
     }
 
+    //draw images for the capture count display
     private void drawCapturedPieces(Graphics g) {
         for (int i = 0; i < 5; i++) {
             g.drawImage(whiteCaptureImages.get(i), 800 + (i * 80), 50, null);
@@ -189,7 +197,7 @@ public class BoardAnimation extends JPanel {
         }
     }
 
-    // class the handles mouse input for dragging and dropping pieces
+    // class that handles mouse input for dragging and dropping pieces
     private class MyMouseAdaptor extends MouseAdapter {
         // flag for whether the user tried to pick up the opponent's pieces
         private boolean blnWrongColor;

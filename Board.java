@@ -918,7 +918,6 @@ public class Board {
 
     /**
      * Allows player to capture piece
-     *
      * @param intXPos the x posiion
      * @param intYPos the y position
      * @return void
@@ -932,13 +931,6 @@ public class Board {
                 pieceIterator.remove();
             }
         }
-    }
-
-    // testing
-    public Board() {
-        blnServer = true;
-        initBoard();
-
     }
 
     public Board(boolean blnServer) {
