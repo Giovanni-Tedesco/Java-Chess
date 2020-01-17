@@ -6,6 +6,11 @@
   - Mehul Pillai
   - *Special Mention to Mr. Cadawas*
 
+## Build Requirements
+  - Latest JDK
+  - If on mac you must run ```java -jar JavaChess.jar ```
+  - If on windows simply double click and run
+
 ## Required Features
  - 1280x720 Size
  - One Window program
@@ -31,5 +36,8 @@
  - Splash Screen
  - Tutorial Level
  - Sound
- - Animations for captures
  - Replay Game / Game Upload
+
+## Additional Notes
+ - Game files will be saved after every game, this keeps a log of the game played on your computer.
+ 
