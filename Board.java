@@ -452,28 +452,43 @@ public class Board {
 		return retCoord;
 	}
 
+	/** Checks specified index for a white piece
+	 * @param intXIndex column index
+	 * @param intYIndex row index
+	 * @return true if there was a white piece
+	 */
 	public boolean isWhite(int intXIndex, int intYIndex) {
 		return chessBoard[intYIndex][intXIndex] > 0;
 	}
 
+	/** Getter method for the piece type at a specified index
+	 * @param intXIndex column index
+	 * @param intYIndex row index
+	 * @return return the integer piece at the index
+	 */
 	public int getPiece(int intXIndex, int intYIndex) {
 		return chessBoard[intYIndex][intXIndex];
 	}
 
+	/** Setter method for setting a piece type at a specified index
+	 * @param intXIndex column index
+	 * @param intYIndex row index
+	 * @param intPiece the piece type
+	 */
 	public void setPiece(int intXIndex, int intYIndex, int intPiece) {
 		chessBoard[intYIndex][intXIndex] = intPiece;
 	}
 
+	/** Setter method for changing the value of blnInCheck
+	 * @param blnInCheck value to be set
+	 */
 	public void setCheck(boolean blnInCheck) {
 		this.blnInCheck = blnInCheck;
 	}
 
-	/**
-	 * Checks to see if a move gives a check to the opponent
-	 *
-	 * @param none
-	 * @return boolean true if the move gives a check and false if it does not
-	 */
+	 /** Checks to see if a move gives  check to the opponent
+	  * @return return true if there was a check
+	  */
 	public boolean givesCheck() {
 		if (blnServer) {
 			Piece king = pieceLookup.get(10);
