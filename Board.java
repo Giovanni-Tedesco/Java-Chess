@@ -41,10 +41,10 @@ public class Board {
 	 * Boolean used to check if a player can commence a castling move
 	 */
 	private boolean canCastle = true;
-    /**
+	/**
 	 * Boolean used to check if a player is in tutorial mode
 	 */
-    private boolean blnTutorial = false;
+	private boolean blnTutorial = false;
 
 	/**
 	 * Integer array representing a snapshot of the actual chessboard.
@@ -116,11 +116,11 @@ public class Board {
 		return pieceToPromote;
 	}
 
-    /** Setter method to make the board a tutorial instance
+	/** Setter method to make the board a tutorial instance
 	 */
-    public void isTutorialMode() {
-        blnTutorial = true;
-    }
+	public void isTutorialMode() {
+		blnTutorial = true;
+	}
 
 	/** Getter method for the list of promotion choice
 	 * @param blnServer boolean variable representing what instance of the game is running
@@ -486,9 +486,9 @@ public class Board {
 		this.blnInCheck = blnInCheck;
 	}
 
-	 /** Checks to see if a move gives  check to the opponent
-	  * @return return true if there was a check
-	  */
+	/** Checks to see if a move gives  check to the opponent
+	 * @return return true if there was a check
+	 */
 	public boolean givesCheck() {
 		if (blnServer) {
 			Piece king = pieceLookup.get(10);
@@ -847,12 +847,12 @@ public class Board {
 		boolean blnStillInCheck = stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
 		blnInCheck = blnStillInCheck;
 
-        if(!blnTutorial) {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) &&
-                !blnStillInCheck;
-        } else {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0);
-        }
+		if (!blnTutorial) {
+			blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) &&
+				!blnStillInCheck;
+		} else {
+			blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0);
+		}
 
 		// if player is white and the spot has a white piece
 		boolean blnSamePieceWhite = blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0;
