@@ -293,6 +293,7 @@ public class TutorialMode implements ActionListener {
     //CONSTRUCTOR
     public TutorialMode(int intHelpScreen) {
         tutorialPanel.setPreferredSize(Utility.panelDimensions);
+        tutorialBoard.isTutorialMode();
         intScreenNum = intHelpScreen;
         initTutorials();
         initComponents();

@@ -41,6 +41,10 @@ public class Board {
 	 * Boolean used to check if a player can commence a castling move
 	 */
 	private boolean canCastle = true;
+    /**
+	 * Boolean used to check if a player is in tutorial mode
+	 */
+    private boolean blnTutorial = false;
 
 	/**
 	 * Integer array representing a snapshot of the actual chessboard.
@@ -112,6 +116,12 @@ public class Board {
 		return pieceToPromote;
 	}
 
+    /** Setter method to make the board a tutorial instance
+	 */
+    public void isTutorialMode() {
+        blnTutorial = true;
+    }
+
 	/** Getter method for the list of promotion choice
 	 * @param blnServer boolean variable representing what instance of the game is running
 	 * @return the list of promotion choice
@@ -155,7 +165,7 @@ public class Board {
 		return intXIndex >= 0 && intXIndex<8 && intYIndex >= 0 && intYIndex<8;
 	}
 
-    /** Utility function that prints out the chess board
+	/** Utility function that prints out the chess board
 	 */
 	public void printCharboard() {
 		for (int i = 0; i<chessBoard.length; i++) {
@@ -166,7 +176,7 @@ public class Board {
 		}
 	}
 
-    /** Utility function that prints game status
+	/** Utility function that prints game status
 	 */
 	public void displayInformation() {
 		System.out.println("Incheck: " + blnInCheck);
@@ -174,10 +184,10 @@ public class Board {
 		System.out.println("The white king is at: " + pieceLookup.get(5).intXPos + ", " + pieceLookup.get(5).intYPos);
 	}
 
-    /** Initalize piece arraylist
+	/** Initalize piece arraylist
 	 */
 	private void initBoard() {
-        //the array is read flipped for the client so that their pieces appear at the bottom
+		//the array is read flipped for the client so that their pieces appear at the bottom
 		for (int i = 0, i2 = 7; i<8; i++, i2--) {
 			for (int j = 0, j2 = 7; j<8; j++, j2--) {
 				Piece p;
@@ -192,12 +202,12 @@ public class Board {
 		}
 	}
 
-    /** Initalize piece lookup HashMap
-     */
+	/** Initalize piece lookup HashMap
+	 */
 	public void initMap() {
 		Iterator<Piece> pieceIter = pieces.iterator();
-        // 0 - 5 will be white
-    	// 6 - 10 will be black
+		// 0 - 5 will be white
+		// 6 - 10 will be black
 		while (pieceIter.hasNext()) {
 			Piece piece = pieceIter.next();
 			if (piece.intPiece != 6) {
@@ -225,26 +235,30 @@ public class Board {
 		return pos;
 	}
 
-	public void move(String move, boolean blnTemp) {
+	/** Updates the chessboard array
+	 * @param strMove coordinates holding initial and final positons
+	 * @param blnTemp boolean dictating whether to use the tempBoard or not
+	 */
+	public void move(String strMove, boolean blnTemp) {
 		System.out.println("****************************");
 		System.out.println(intTempBoard);
 
-		int[][] arr = blnTemp ? intTempBoard : chessBoard;
+		int[][] intCurrentBoard = blnTemp ? intTempBoard : chessBoard;
 
-		String[] moves = move.split(",");
-		boolean impedingKnightWhite = (blnServer && arr[7][6] != Piece.EMPTY) ? true : false;
-		boolean impedingKnightBlack = (blnServer && arr[0][1] != Piece.EMPTY) ? true : false;
+		String[] strMoves = strMove.split(",");
+		boolean impedingKnightWhite = (blnServer && intCurrentBoard[7][6] != Piece.EMPTY) ? true : false;
+		boolean impedingKnightBlack = (blnServer && intCurrentBoard[0][1] != Piece.EMPTY) ? true : false;
 		System.out.println("Impeding white knight: " + impedingKnightWhite);
 		System.out.println("Impeding black knight: " + impedingKnightBlack);
 
-		Point p1 = coordToLoc(moves[0]);
+		Point p1 = coordToLoc(strMoves[0]);
 		System.out.println(p1.x + " " + p1.y);
-		Point p2 = coordToLoc(moves[1]);
+		Point p2 = coordToLoc(strMoves[1]);
 		System.out.println(p2.x + " " + p2.y);
 
 		// This is simply to prevent someone from castling twice.
 		if (!hasCastled && !blnInCheck) {
-			if (moves[0].equals("e1") && moves[1].equals("g1")) {
+			if (strMoves[0].equals("e1") && strMoves[1].equals("g1")) {
 				System.out.println("Gets here: found move");
 				if (blnServer) {
 					castlesShort(p2.x * 90, p2.y * 90);
@@ -255,7 +269,7 @@ public class Board {
 					// System.out.println("Looking for: y" + (7 - p2.y) * 90);
 					castlesShort((7 - p2.x) * 90, (7 - p2.y) * 90);
 				}
-			} else if (moves[0].equals("e1") && moves[1].equals("c1") && impedingKnightWhite == false) {
+			} else if (strMoves[0].equals("e1") && strMoves[1].equals("c1") && impedingKnightWhite == false) {
 				System.out.println("Gets here");
 				if (blnServer) {
 					castlesLong(p2.x * 90, p2.y * 90);
@@ -263,7 +277,7 @@ public class Board {
 				} else {
 					castlesLong((7 - p2.x) * 90, (7 - p2.y) * 90);
 				}
-			} else if (moves[0].equals("e8") && moves[1].equals("g8")) {
+			} else if (strMoves[0].equals("e8") && strMoves[1].equals("g8")) {
 				System.out.println("Get's here");
 				if (!blnServer) {
 					castlesShortBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
@@ -272,7 +286,7 @@ public class Board {
 					castlesShortBlack(p2.x * 90, p2.y * 90);
 				}
 
-			} else if (moves[0].equals("e8") && moves[1].equals("c8") && impedingKnightBlack == false) {
+			} else if (strMoves[0].equals("e8") && strMoves[1].equals("c8") && impedingKnightBlack == false) {
 				System.out.println("Gets here");
 				if (!blnServer) {
 					castlesLongBlack((7 - p2.x) * 90, (7 - p2.y) * 90);
@@ -283,12 +297,12 @@ public class Board {
 			}
 		}
 
-		int intTemp = arr[p1.y][p1.x];
+		int intTemp = intCurrentBoard[p1.y][p1.x];
 		System.out.println("intTemp = " + intTemp);
-		arr[(int)(p1.y)][(int)(p1.x)] = Piece.EMPTY;
-		System.out.println(arr[(int)(p1.y)][(int)(p1.x)] = 0);
-		arr[(int)(p2.y)][(int)(p2.x)] = intTemp;
-		System.out.println("Position 2: " + arr[(int)(p2.y)][(int)(p2.x)]);
+		intCurrentBoard[(int)(p1.y)][(int)(p1.x)] = Piece.EMPTY;
+		System.out.println(intCurrentBoard[(int)(p1.y)][(int)(p1.x)] = 0);
+		intCurrentBoard[(int)(p2.y)][(int)(p2.x)] = intTemp;
+		System.out.println("Position 2: " + intCurrentBoard[(int)(p2.y)][(int)(p2.x)]);
 
 		System.out.println("****************************");
 	}
@@ -573,10 +587,10 @@ public class Board {
 	 */
 	public boolean inCheck(boolean blnTemp) {
 
-		int[][] arr = blnTemp ? intTempBoard : chessBoard;
+		int[][] intCurrentBoard = blnTemp ? intTempBoard : chessBoard;
 
 		if (blnServer) {
-			Point kingPoint = getKingPosition(true, arr);
+			Point kingPoint = getKingPosition(true, intCurrentBoard);
 			int intXPos = 0;
 			int intYPos = 0;
 			if (kingPoint == null) {
@@ -593,34 +607,34 @@ public class Board {
 			System.out.println("Blocking intYPos: " + intYPos);
 
 			for (int[] p: ChessUtility.getLegalKnightMoves(intXPos * 90, intYPos * 90)) {
-				if (arr[p[1]][p[0]] == -Piece.KNIGHT) {
+				if (intCurrentBoard[p[1]][p[0]] == -Piece.KNIGHT) {
 					return true;
 				}
 			}
 
-			for (int[] p: ChessUtility.getLegalBishopMoves(intXPos * 90, intYPos * 90, true, arr)) {
-				if (arr[p[1]][p[0]] == -Piece.BISHOP || arr[p[1]][p[0]] == -Piece.QUEEN) {
+			for (int[] p: ChessUtility.getLegalBishopMoves(intXPos * 90, intYPos * 90, true, intCurrentBoard)) {
+				if (intCurrentBoard[p[1]][p[0]] == -Piece.BISHOP || intCurrentBoard[p[1]][p[0]] == -Piece.QUEEN) {
 					System.out.println("Rook check");
 					return true;
 				}
 			}
 
-			for (int[] p: ChessUtility.getLegalRookMoves(intXPos * 90, intYPos * 90, true, arr)) {
-				if (arr[p[1]][p[0]] == -Piece.QUEEN || arr[p[1]][p[0]] == -Piece.ROOK) {
+			for (int[] p: ChessUtility.getLegalRookMoves(intXPos * 90, intYPos * 90, true, intCurrentBoard)) {
+				if (intCurrentBoard[p[1]][p[0]] == -Piece.QUEEN || intCurrentBoard[p[1]][p[0]] == -Piece.ROOK) {
 					System.out.println("Rook check");
 					return true;
 				}
 			}
 
-			if ((inBounds(intXPos - 1, intYPos + 1) ? arr[intYPos + 1][intXPos - 1] == -Piece.PAWN : false) ||
-				(inBounds(intXPos + 1, intYPos + 1) ? arr[intYPos + 1][intXPos + 1] == -Piece.PAWN : false)) {
+			if ((inBounds(intXPos - 1, intYPos + 1) ? intCurrentBoard[intYPos + 1][intXPos - 1] == -Piece.PAWN : false) ||
+				(inBounds(intXPos + 1, intYPos + 1) ? intCurrentBoard[intYPos + 1][intXPos + 1] == -Piece.PAWN : false)) {
 				System.out.println("GET PWNED");
 				return true;
 			}
 			return false;
 		} else if (!blnServer) {
 			//Piece king = pieceLookup.get(10);
-			Point kingPoint = getKingPosition(false, arr);
+			Point kingPoint = getKingPosition(false, intCurrentBoard);
 			int intXPos = 0;
 			int intYPos = 0;
 			if (kingPoint == null) {
@@ -634,20 +648,20 @@ public class Board {
 			}
 
 			for (int[] p: ChessUtility.getLegalKnightMoves((7 - intXPos) * 90, (7 - intYPos) * 90)) {
-				if (arr[7 - p[1]][7 - p[0]] == Piece.KNIGHT) {
+				if (intCurrentBoard[7 - p[1]][7 - p[0]] == Piece.KNIGHT) {
 					return true;
 				}
 			}
 
-			for (int[] p: ChessUtility.getLegalBishopMoves((7 - intXPos) * 90, (7 - intYPos) * 90, false, arr)) {
-				if (arr[7 - p[1]][7 - p[0]] == Piece.BISHOP || arr[7 - p[1]][7 - p[0]] == Piece.QUEEN) {
+			for (int[] p: ChessUtility.getLegalBishopMoves((7 - intXPos) * 90, (7 - intYPos) * 90, false, intCurrentBoard)) {
+				if (intCurrentBoard[7 - p[1]][7 - p[0]] == Piece.BISHOP || intCurrentBoard[7 - p[1]][7 - p[0]] == Piece.QUEEN) {
 					System.out.println("Blocks check");
 					return true;
 				}
 			}
 
-			for (int[] p: ChessUtility.getLegalRookMoves((7 - intXPos) * 90, (7 - intYPos) * 90, false, arr)) {
-				if (arr[7 - p[1]][7 - p[0]] == Piece.QUEEN || arr[7 - p[1]][7 - p[0]] == Piece.ROOK) {
+			for (int[] p: ChessUtility.getLegalRookMoves((7 - intXPos) * 90, (7 - intYPos) * 90, false, intCurrentBoard)) {
+				if (intCurrentBoard[7 - p[1]][7 - p[0]] == Piece.QUEEN || intCurrentBoard[7 - p[1]][7 - p[0]] == Piece.ROOK) {
 					System.out.println("Blocks check");
 					return true;
 				}
@@ -656,8 +670,8 @@ public class Board {
 			intXPos = 7 - intXPos;
 			intYPos = 7 - intYPos;
 
-			if ((inBounds(7 - intXPos - 1, 7 - intYPos + 1) ? arr[7 - intYPos + 1][7 - intXPos - 1] == Piece.PAWN : false) ||
-				(inBounds(7 - intXPos + 1, 7 - intYPos + 1) ? arr[7 - intYPos + 1][7 - intXPos + 1] == Piece.PAWN : false)) {
+			if ((inBounds(7 - intXPos - 1, 7 - intYPos + 1) ? intCurrentBoard[7 - intYPos + 1][7 - intXPos - 1] == Piece.PAWN : false) ||
+				(inBounds(7 - intXPos + 1, 7 - intYPos + 1) ? intCurrentBoard[7 - intYPos + 1][7 - intXPos + 1] == Piece.PAWN : false)) {
 				System.out.println("GET PWNED");
 				return true;
 			}
@@ -666,14 +680,14 @@ public class Board {
 		return false;
 	}
 
-	public int[][] deepCopy(int[][] arr) {
-		int[][] ret = new int[arr.length][];
+	public int[][] deepCopy(int[][] intBoard) {
+		int[][] intCopy = new int[intBoard.length][];
 
-		for (int i = 0; i<arr.length; i++) {
-			ret[i] = Arrays.copyOf(arr[i], arr[i].length);
+		for (int i = 0; i<intBoard.length; i++) {
+			intCopy[i] = Arrays.copyOf(intBoard[i], intBoard[i].length);
 		}
 
-		return ret;
+		return intCopy;
 	}
 
 	// Or walks into check
@@ -817,8 +831,13 @@ public class Board {
 		boolean blnLegalMove = false;
 		boolean blnStillInCheck = stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
 		blnInCheck = blnStillInCheck;
-		blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) &&
-			!blnStillInCheck;
+
+        if(!blnTutorial) {
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) &&
+                !blnStillInCheck;
+        } else {
+            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0);
+        }
 
 		// if player is white and the spot has a white piece
 		boolean blnSamePieceWhite = blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0;
@@ -849,7 +868,7 @@ public class Board {
 
 			System.out.println("Get's here: " + blnInCheck);
 
-			if (givesCheck()) {
+			if (givesCheck() && !blnTutorial) {
 				System.out.println("Gives a check");
 				result += "+";
 			}
@@ -884,7 +903,7 @@ public class Board {
 
 			System.out.println("Get's here: " + blnInCheck);
 
-			if (givesCheck()) {
+			if (givesCheck() && !blnTutorial) {
 				System.out.println("Gives a check");
 				result += "+";
 			}
@@ -919,7 +938,7 @@ public class Board {
 
 			System.out.println("Get's here: " + blnInCheck);
 
-			if (givesCheck()) {
+			if (givesCheck() && !blnTutorial) {
 				System.out.println("Gives a check");
 				result += "+";
 			}

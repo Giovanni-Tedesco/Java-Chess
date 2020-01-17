@@ -1,0 +1,21 @@
+Pietro MaximoffvsJames Rhodes
+e2,e4
+e7,e5
+h2,h3
+e8,e7
+h3,h4
+e7,e8
+h1,h3
+e8,e7
+h3,d3
+d7,d5
+d3,d4
+e5,d4
+e2,e4
+e7,e5
+d1,h5
+b8,c6
+f1,c4
+g8,f6
+h5,f7+
+end
