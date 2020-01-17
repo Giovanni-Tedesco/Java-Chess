@@ -40,7 +40,7 @@ public class ChessGame implements ActionListener {
     private JLabel waitingLabel = new JLabel("Waiting for the other player");
     private static ArrayList<String> movesMade = new ArrayList<String>();
 
-    private String [] strPieceNames = {"rook", "knight", "bishop", "queen", "king", "pawn"};
+    private String[] strPieceNames = { "rook", "knight", "bishop", "queen", "king", "pawn" };
     private ArrayList<String> badList = Utility.getBadWords();
 
     @Override
@@ -52,9 +52,9 @@ public class ChessGame implements ActionListener {
             if (strMessage.contains("<") || strMessage.contains(">")) {
                 // chat message
                 chatArea.append(strMessage + "\n");
-            } else if(strMessage.contains("resigned")) {
+            } else if (strMessage.contains("resigned")) {
                 Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
-            } else if(strMessage.contains("GAMEOVER")) {
+            } else if (strMessage.contains("GAMEOVER")) {
                 Utility.changePanel(new EndScreen(movesMade, EndScreen.WON, strServerName, strClientName, blnServer));
             } else if (strMessage.contains("ping")) {
                 String[] strClientStart = strMessage.split(",");
@@ -89,10 +89,12 @@ public class ChessGame implements ActionListener {
                 chessBoard.setPiece(intXIndex, intYIndex,
                         piece.blnColor ? Integer.parseInt(strPromote[3]) : -Integer.parseInt(strPromote[3]));
 
-                if(blnServer) {
-                    chessPanel.serverInfoLabel.setText("Promotion over, BLACK chose " + strPieceNames[piece.intPiece - 1]);
+                if (blnServer) {
+                    chessPanel.serverInfoLabel
+                            .setText("Promotion over, BLACK chose " + strPieceNames[piece.intPiece - 1]);
                 } else {
-                    chessPanel.clientInfoLabel.setText("Promotion over, WHITE chose " + strPieceNames[piece.intPiece - 1]);
+                    chessPanel.clientInfoLabel
+                            .setText("Promotion over, WHITE chose " + strPieceNames[piece.intPiece - 1]);
                 }
 
                 Iterator<Piece> pieceIterator = chessBoard.pieces.iterator();
@@ -118,6 +120,7 @@ public class ChessGame implements ActionListener {
                 Board chessBoard = BoardAnimation.getBoard();
                 // strMessage = Board.hasCheck() ? strMessage + "+" : strMessage;
                 chessBoard.move(strMessage, false);
+                // BoardAnimation.playSound("check");
                 movesMade.add(strMessage);
                 System.out.println("Moves: " + movesMade);
 
@@ -166,8 +169,6 @@ public class ChessGame implements ActionListener {
                     }
                 }
 
-
-
                 chessPanel.updateCaptures();
                 if (temp != null) {
                     temp.setPosition(intFinalX * 90, intFinalY * 90);
@@ -176,13 +177,15 @@ public class ChessGame implements ActionListener {
                 if (strMessage.contains("+")) {
                     System.out.println("This gives a check");
                     chessBoard.setCheck(true);
+                    BoardAnimation.playSound("check");
 
-                    if(chessBoard.checkmate()) {
-                        Utility.changePanel(new EndScreen(movesMade, EndScreen.LOST, strServerName, strClientName, blnServer));
+                    if (chessBoard.checkmate()) {
+                        Utility.changePanel(
+                                new EndScreen(movesMade, EndScreen.LOST, strServerName, strClientName, blnServer));
                         ssm.sendText("GAMEOVER");
                     }
 
-                    if(blnServer) {
+                    if (blnServer) {
                         chessPanel.serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
                     } else {
                         chessPanel.clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
@@ -194,9 +197,9 @@ public class ChessGame implements ActionListener {
         } else if (event == sendButton) {
             String strChatName = blnServer ? strServerName : strClientName;
             String strChatMessage = chatField.getText();
-            if(Settings.filterOn()) {
-                for(String strBadWord : badList) {
-                    if(strChatMessage.contains(strBadWord)) {
+            if (Settings.filterOn()) {
+                for (String strBadWord : badList) {
+                    if (strChatMessage.contains(strBadWord)) {
                         strChatMessage = "I tried to send a bad word.";
                         break;
                     }
@@ -213,7 +216,7 @@ public class ChessGame implements ActionListener {
             }
 
             Utility.changePanel(new MainMenu().getMenuPanel());
-        } else if(event == resignButton) {
+        } else if (event == resignButton) {
             if (ssm != null) {
                 ssm.sendText("resigned");
                 ssm.disconnect();

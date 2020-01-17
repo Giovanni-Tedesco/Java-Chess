@@ -5,6 +5,10 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 import java.awt.image.*;
 import java.util.HashMap;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class BoardAnimation extends JPanel {
     // Properties
@@ -38,6 +42,35 @@ public class BoardAnimation extends JPanel {
         for (int i = 0; i < fileNames.length; i++) {
             pieceImages.put(i + 1, Utility.loadImage(path + fileNames[i]));
         }
+    }
+
+    // Probably don't need this unless we are trying to save some memory, so
+    // I'm just going to leave this here.
+    // public void initializeSounds() {
+    //
+    // }
+
+    public static void playSound(String sound) {
+        try {
+            if (sound.equalsIgnoreCase("move")) {
+                String soundName1 = "Assets/Sounds/Move.wav";
+                AudioInputStream audioInputStream1 = AudioSystem
+                        .getAudioInputStream(new File(soundName1).getAbsoluteFile());
+                Clip clip1 = AudioSystem.getClip();
+                clip1.open(audioInputStream1);
+                clip1.start();
+            } else if (sound.equalsIgnoreCase("check")) {
+                String soundName2 = "Assets/Sounds/Check.wav";
+                AudioInputStream audioInputStream2 = AudioSystem
+                        .getAudioInputStream(new File(soundName2).getAbsoluteFile());
+                Clip clip2 = AudioSystem.getClip();
+                clip2.open(audioInputStream2);
+                clip2.start();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     private void initCaptureImages() {
@@ -288,8 +321,8 @@ public class BoardAnimation extends JPanel {
                             clientInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
                         }
                     } else {
-                        if(chessBoard.inCheck) {
-                            if(blnServer) {
+                        if (chessBoard.inCheck) {
+                            if (blnServer) {
                                 serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
                             } else {
                                 clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");

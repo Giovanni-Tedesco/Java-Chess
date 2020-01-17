@@ -615,7 +615,7 @@ public class Board {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndexLast);
                         System.out.println("intYIndexLast: " + intYIndexLast);
-                        if(!inBounds(intXIndexLast, intYIndexLast) || !inBounds(7-moves[0], 7-moves[1])) {
+                        if (!inBounds(intXIndexLast, intYIndexLast) || !inBounds(7 - moves[0], 7 - moves[1])) {
                             continue;
                         }
                         if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, 7 - moves[0], 7 - moves[1]))) {
@@ -634,7 +634,7 @@ public class Board {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndexLast);
                         System.out.println("intYIndexLast: " + intYIndexLast);
-                        if(!inBounds(intXIndexLast, intYIndexLast) || !inBounds(moves[0], moves[1])) {
+                        if (!inBounds(intXIndexLast, intYIndexLast) || !inBounds(moves[0], moves[1])) {
                             continue;
                         }
                         if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, moves[0], moves[1]))) {
@@ -688,6 +688,7 @@ public class Board {
             // movesMade.add(result);
             ChessGame.addMove(result);
             move(result, false);
+            BoardAnimation.playSound("move");
             printCharboard();
             // Utility.displayArray(movesMade);
             piece.setPosition(intXPos, intYPos);
@@ -721,6 +722,7 @@ public class Board {
             System.out.println("Black -> White");
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             move(result, false);
+            BoardAnimation.playSound("move");
             ChessGame.addMove(result);
             printCharboard();
             // Utility.displayArray(movesMade);
@@ -754,6 +756,7 @@ public class Board {
             String result = toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex);
             System.out.println(result);
             move(result, false);
+            BoardAnimation.playSound("move");
             ChessGame.addMove(result);
             // Utility.displayArray(movesMade);
             printCharboard();
