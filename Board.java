@@ -403,13 +403,13 @@ public class Board {
     public boolean givesCheck() {
         if (blnServer) {
             Piece king = pieceLookup.get(10);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
+            int intXPos = (7*90) - king.intXPos;
+            int intYPos = (7*90) - king.intYPos;
             System.out.println("intXPos: " + intXPos);
             System.out.println("intYPos: " + intYPos);
 
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
-                if (chessBoard[p[1]][p[0]] == Piece.KNIGHT) {
+                if (chessBoard[7-p[1]][7-p[0]] == Piece.KNIGHT) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
@@ -417,20 +417,22 @@ public class Board {
 
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == Piece.BISHOP || chessBoard[p[1]][p[0]] == Piece.QUEEN) {
-                    System.out.println("Rook check");
+                if (chessBoard[7-p[1]][7-p[0]] == Piece.BISHOP || chessBoard[7-p[1]][7-p[0]] == Piece.QUEEN) {
+                    System.out.println("diag check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, false)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[p[1]][p[0]] == Piece.QUEEN || chessBoard[p[1]][p[0]] == Piece.ROOK) {
-                    System.out.println("Rook check");
+                if (chessBoard[7-p[1]][7-p[0]] == Piece.QUEEN || chessBoard[7-p[1]][7-p[0]] == Piece.ROOK) {
+                    System.out.println("file check");
                     return true;
                 }
             }
 
+            intXPos = (7*90) - king.intXPos;
+            intYPos = (7*90) - king.intYPos;
             // if white, then the pawn could be down left or down right
             if ((inBounds((intXPos / 90) - 1, (intYPos / 90) + 1)
                     ? chessBoard[(intYPos / 90) + 1][(intXPos / 90) - 1] == Piece.PAWN
@@ -444,41 +446,41 @@ public class Board {
             return false;
         } else if (!blnServer) {
             Piece king = pieceLookup.get(5);
-            int intXPos = king.intXPos;
-            int intYPos = king.intYPos;
+            int intXPos = (7*90) - king.intXPos;
+            int intYPos = (7*90) - king.intYPos;
             System.out.println("intXPos: " + intXPos);
             System.out.println("intYPos: " + intYPos);
-            System.out.println("white queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, true));
-            System.out.println("black queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, false));
+            //System.out.println("white queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, true));
+            //System.out.println("black queen moves: " + ChessUtility.getLegalQueenMoves(intXPos, intYPos, false));
             for (int[] p : ChessUtility.getLegalKnightMoves(intXPos, intYPos)) {
                 System.out.println("Get's here: In knight check");
                 System.out.println(p[1] + " " + p[0]);
-                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.KNIGHT) {
+                if (chessBoard[p[1]][p[0]] == -Piece.KNIGHT) {
                     System.out.println("Knight Check weee");
                     return true;
                 }
             }
             for (int[] p : ChessUtility.getLegalBishopMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.BISHOP || chessBoard[7 - p[1]][7 - p[0]] == -Piece.QUEEN) {
-                    System.out.println("Rook check");
+                if (chessBoard[p[1]][p[0]] == -Piece.BISHOP || chessBoard[p[1]][p[0]] == -Piece.QUEEN) {
+                    System.out.println("diag check");
                     return true;
                 }
             }
 
             for (int[] p : ChessUtility.getLegalRookMoves(intXPos, intYPos, true)) {
                 System.out.println(p[0] + " " + p[1]);
-                if (chessBoard[7 - p[1]][7 - p[0]] == -Piece.QUEEN || chessBoard[7 - p[1]][7 - p[0]] == -Piece.ROOK) {
+                if (chessBoard[p[1]][p[0]] == -Piece.QUEEN || chessBoard[p[1]][p[0]] == -Piece.ROOK) {
                     System.out.println("Rook check");
                     return true;
                 }
             }
 
-            if ((inBounds(7 - ((intXPos / 90) - 1), 7 - ((intYPos / 90) + 1))
-                    ? chessBoard[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) - 1)] == -Piece.PAWN
+            if ((inBounds((intXPos / 90) - 1, (intYPos / 90) + 1)
+                    ? chessBoard[(intYPos / 90) + 1][(intXPos / 90) - 1] == -Piece.PAWN
                     : false)
-                    || (inBounds(7 - ((intXPos / 90) + 1), 7 - ((intYPos / 90) + 1))
-                            ? chessBoard[7 - ((intYPos / 90) + 1)][7 - ((intXPos / 90) + 1)] == -Piece.PAWN
+                    || (inBounds((intXPos / 90), (intYPos / 90) + 1)
+                            ? chessBoard[(intYPos / 90) + 1][(intXPos / 90)] == -Piece.PAWN
                             : false)) {
                 System.out.println("GET PWNED");
                 return true;
@@ -519,9 +521,10 @@ public class Board {
             int intXPos = 0;
             int intYPos = 0;
             if(kingPoint == null) {
-                Piece king = pieceLookup.get(5);
-                intXPos = king.intXPos/90;
-                intYPos = king.intYPos/90;
+                return true;
+                //Piece king = pieceLookup.get(5);
+                //intXPos = king.intXPos/90;
+                //intYPos = king.intYPos/90;
             } else {
                 intXPos = kingPoint.x;
                 intYPos = kingPoint.y;
@@ -562,9 +565,10 @@ public class Board {
             int intXPos = 0;
             int intYPos = 0;
             if(kingPoint == null) {
-                Piece king = pieceLookup.get(10);
-                intXPos = 7-(king.intXPos/90);
-                intYPos = 7-(king.intYPos/90);
+                return true;
+                //Piece king = pieceLookup.get(10);
+                //intXPos = 7-(king.intXPos/90);
+                //intYPos = 7-(king.intYPos/90);
             } else {
                 intXPos = kingPoint.x;
                 intYPos = kingPoint.y;
@@ -590,8 +594,11 @@ public class Board {
                 }
             }
 
-            if ((inBounds(intXPos-1, intYPos + 1) ? arr[intYPos + 1][intXPos- 1] == Piece.PAWN : false)
-                    || (inBounds(intXPos + 1, intYPos + 1) ? arr[intYPos + 1][intXPos + 1] == Piece.PAWN : false)) {
+            intXPos = 7-intXPos;
+            intYPos = 7-intYPos;
+
+            if ((inBounds(7-intXPos-1, 7-intYPos + 1) ? arr[7-intYPos + 1][7-intXPos- 1] == Piece.PAWN : false)
+                    || (inBounds(7-intXPos + 1, 7-intYPos + 1) ? arr[7-intYPos + 1][7-intXPos + 1] == Piece.PAWN : false)) {
                 System.out.println("GET PWNED");
                 return true;
             }
@@ -625,7 +632,7 @@ public class Board {
     }
 
     public boolean checkmate() {
-        //tembBoard = deepCopy(chessBoard);
+        //tempBoard = deepCopy(chessBoard);
         System.out.println("In check: " + inCheck);
 
         if (!inCheck) {
@@ -636,11 +643,32 @@ public class Board {
                 int intYIndex = p.intYPos / 90;
 
                 if (p.blnColor) {
-                    for (int[] moves : getLegalMovesCheck(p)) {
+                    LinkedList<int[]> legalList = new LinkedList<>();
+                    if(p.intPiece == 5) {
+                        int[] intTranlateX = { 1, -1, 0, 0, 1, -1, 1, -1 }; // Just for regular moves
+                        int[] intTranlateY = { 0, 0, 1, -1, 1, -1, -1, 1 }; // Just for regular moves
+
+                        // Regular moves
+                        for (int i = 0; i < intTranlateX.length; i++) {
+                            if (intYIndex + intTranlateY[i] >= 0 && intYIndex + intTranlateY[i] < 8 && intXIndex + intTranlateX[i] >= 0
+                                && intXIndex + intTranlateX[i] < 8) {
+                                if(chessBoard[(intYIndex + intTranlateY[i])][(intXIndex + intTranlateX[i])] > 0) {
+                                    continue;
+                                }
+                                if(chessBoard[intYIndex + intTranlateY[i]][intXIndex + intTranlateX[i]] <= 0) {
+                                    legalList.add(new int[] { intXIndex + intTranlateX[i], intYIndex + intTranlateY[i] });
+                                }
+                            }
+                        }
+                    } else {
+                        legalList = getLegalMovesCheck(p);
+                    }
+                    for (int[] moves : legalList) {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndex);
                         System.out.println("intYIndexLast: " + intYIndex);
                         if (!stillInCheck(toCoord(intXIndex, intYIndex, moves[0], moves[1]))) {
+                            System.out.println("BRUH MOMENT");
                             return false;
                         }
                     }
@@ -648,15 +676,36 @@ public class Board {
             }
         } else if (inCheck && !blnServer) {
             for (Piece p : pieces) {
-                int intXIndex = 7-(p.intXPos / 90);
-                int intYIndex = 7-(p.intYPos / 90);
+                int intXIndex = (p.intXPos / 90);
+                int intYIndex = (p.intYPos / 90);
 
                 if (!p.blnColor) {
-                    for (int[] moves : getLegalMovesCheck(p)) {
+                    LinkedList<int[]> legalList = new LinkedList<>();
+                    if(p.intPiece == 5) {
+                        int[] intTranlateX = { 1, -1, 0, 0, 1, -1, 1, -1 }; // Just for regular moves
+                        int[] intTranlateY = { 0, 0, 1, -1, 1, -1, -1, 1 }; // Just for regular moves
+
+                        // Regular moves
+                        for (int i = 0; i < intTranlateX.length; i++) {
+                            if (intYIndex + intTranlateY[i] >= 0 && intYIndex + intTranlateY[i] < 8 && intXIndex + intTranlateX[i] >= 0
+                                && intXIndex + intTranlateX[i] < 8) {
+                                if(chessBoard[7-(intYIndex + intTranlateY[i])][7-(intXIndex + intTranlateX[i])] < 0) {
+                                    continue;
+                                }
+                                if(chessBoard[7-(intYIndex + intTranlateY[i])][7-(intXIndex + intTranlateX[i])] >= 0) {
+                                    legalList.add(new int[] { intXIndex + intTranlateX[i], intYIndex + intTranlateY[i] });
+                                }
+                            }
+                        }
+                    } else {
+                        legalList = getLegalMovesCheck(p);
+                    }
+                    for (int[] moves : legalList) {
                         System.out.println("Piece: " + p.intPiece);
                         System.out.println("intXIndexLast: " + intXIndex);
                         System.out.println("intYIndexLast: " + intYIndex);
-                        if (!stillInCheck(toCoord(intXIndex, intYIndex, 7-moves[0], 7-moves[1]))) {
+                        if (!stillInCheck(toCoord(7-intXIndex, 7-intYIndex, 7-moves[0], 7-moves[1]))) {
+                            System.out.println("BRUH MOMENT");
                             return false;
                         }
                     }
@@ -680,8 +729,6 @@ public class Board {
                 LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
                 legalQueenMoves.addAll(ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard));
                 return legalQueenMoves;
-            case Piece.KING:
-                return ChessUtility.getLegalKingMoves(p.blnFirst, p.intXPos, p.intYPos);
             case Piece.PAWN:
                 LinkedList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(p.blnFirst, true, p.blnColor, p.intXPos, p.intYPos);
                 legalPawnMoves.addAll(ChessUtility.getLegalPawnMoves(p.blnFirst, false, p.blnColor, p.intXPos, p.intYPos));
@@ -705,14 +752,11 @@ public class Board {
         int intYIndex = blnServer ? intYPos / 90 : 7 - (intYPos / 90);
 
         boolean blnLegalMove = false;
+        boolean blnStillInCheck = stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
+        inCheck = blnStillInCheck;
+        blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
+                    && !blnStillInCheck;
 
-        if (inCheck == true) {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
-                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
-        } else {
-            blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0)
-                    && !stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
-        }
 
         // if player is white and the spot has a white piece
         boolean blnSamePieceWhite = blnServer && isWhite(intXIndex, intYIndex) && chessBoard[intYIndex][intXIndex] != 0;

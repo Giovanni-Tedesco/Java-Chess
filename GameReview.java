@@ -257,6 +257,9 @@ public class GameReview extends KeyAdapter implements ActionListener {
                 initPanel();
             } else if(evt.getSource() == chooseTimer) {
                 repaint();
+            } else if(evt.getSource() == backButton) {
+                chooseTimer.stop();
+                Utility.changePanel(new MainMenu().getMenuPanel());
             }
         }
 
@@ -269,8 +272,8 @@ public class GameReview extends KeyAdapter implements ActionListener {
             errorLabel.setHorizontalAlignment(SwingConstants.CENTER);
             errorLabel.setVerticalAlignment(SwingConstants.CENTER);
             errorLabel.setForeground(Color.RED);
-            errorLabel.setSize(100, 50);
-            errorLabel.setLocation(590, 50);
+            errorLabel.setSize(300, 50);
+            errorLabel.setLocation(490, 50);
             Utility.setLabelStyle(errorLabel, 14);
             errorLabel.setVisible(false);
             add(errorLabel);
@@ -289,6 +292,13 @@ public class GameReview extends KeyAdapter implements ActionListener {
             chooseButton.addActionListener(this);
             Utility.setButtonStyle(chooseButton, 20);
             add(chooseButton);
+
+            //set properties for the back button
+            backButton.setLocation(1175, 5);
+            backButton.setSize(100, 20);
+            backButton.addActionListener(this);
+            Utility.setButtonStyle(backButton, 12);
+            add(backButton);
 
             chooseTimer.start();
         }

@@ -16,6 +16,7 @@ public class MainMenu implements ActionListener {
     private SplashScreen splashScreen = new SplashScreen();
     private JLabel titleLabel = new JLabel("CHESS");
     private JButton playButton = new JButton("PLAY");
+    private JButton reviewButton = new JButton("REVIEW");
     private JButton helpButton = new JButton("HELP");
     private JButton settingButton = new JButton("SETTINGS");
     private JButton aboutButton = new JButton("ABOUT");
@@ -34,6 +35,8 @@ public class MainMenu implements ActionListener {
         } else if (e.getSource() == aboutButton) {
             Utility.changePanel(aboutPanel);
         } else if (e.getSource() == quitButton) {
+            frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+        } else if(e.getSource() == reviewButton) {
             Utility.changePanel(new GameReview().getChoosePanel());
         }
     }
@@ -58,34 +61,40 @@ public class MainMenu implements ActionListener {
         aboutPanel.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);
 
         titleLabel.setSize(600, 200);
-        titleLabel.setLocation(340, 50);
+        titleLabel.setLocation(340, 0);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         playButton.setSize(intButtWidth, intButtHeight);
-        playButton.setLocation(440, 220);
+        playButton.setLocation(440, 170);
         playButton.addActionListener(this);
 
+        reviewButton.setSize(intButtWidth, intButtHeight);
+        reviewButton.setLocation(440, 255);
+        reviewButton.addActionListener(this);
+
         helpButton.setSize(intButtWidth, intButtHeight);
-        helpButton.setLocation(440, 305);
+        helpButton.setLocation(440, 340);
         helpButton.addActionListener(this);
 
         settingButton.setSize(intButtWidth, intButtHeight);
-        settingButton.setLocation(440, 390);
+        settingButton.setLocation(440, 425);
         settingButton.addActionListener(this);
 
         aboutButton.setSize(intButtWidth, intButtHeight);
-        aboutButton.setLocation(440, 475);
+        aboutButton.setLocation(440, 510);
         aboutButton.addActionListener(this);
 
         quitButton.setSize(intButtWidth, intButtHeight);
-        quitButton.setLocation(440, 560);
+        quitButton.setLocation(440, 595);
         quitButton.addActionListener(this);
 
         menuPanel.add(titleLabel);
         Utility.setLabelStyle(titleLabel, 52);
         menuPanel.add(playButton);
         Utility.setButtonStyle(playButton, 16);
+        menuPanel.add(reviewButton);
+        Utility.setButtonStyle(reviewButton, 16);
         menuPanel.add(helpButton);
         Utility.setButtonStyle(helpButton, 16);
         menuPanel.add(settingButton);

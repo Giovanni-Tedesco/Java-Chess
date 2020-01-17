@@ -191,6 +191,8 @@ public class ChessGame implements ActionListener {
                         chessPanel.clientInfoLabel.setText("OH NO, YOU'RE IN CHECK");
                     }
 
+                } else {
+                    chessBoard.setCheck(false);
                 }
                 chessPanel.repaint();
             }
