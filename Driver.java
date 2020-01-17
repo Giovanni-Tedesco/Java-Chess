@@ -13,7 +13,6 @@ import javax.swing.event.*;
 public class Driver {
     public static void main(String[] args) {
         MainMenu.frame = new JFrame("Chess");
-        new MainMenu();
         Utility.changePanel(new SplashScreen());
     }
 }

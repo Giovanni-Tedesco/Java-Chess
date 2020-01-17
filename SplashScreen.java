@@ -22,6 +22,7 @@ public class SplashScreen extends JPanel implements ActionListener {
             if (!blnSwitch) {
                 repaint();
             } else {
+                timer.stop();
                 Utility.changePanel(new MainMenu().getMenuPanel());
             }
         }
