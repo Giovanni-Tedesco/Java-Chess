@@ -12,13 +12,24 @@ public class Utility {
 
 	// Returns a font object of the Google Sans font
 	public static Font getFont() {
-		Font font = null;
+		Font theFont = null;
+		// Try to load the font from the jar file
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("google_regular.ttf"));
+			theFont = Font.createFont(Font.TRUETYPE_FONT, Utility.class.getResourceAsStream("google_regular.ttf"));
+			return theFont;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return font;
+
+		// Then try to load the font from the local filesystem
+		try {
+			theFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("google_regular.ttf"));
+			return theFont;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return theFont;
 	}
 
 	// Returns a specified image
