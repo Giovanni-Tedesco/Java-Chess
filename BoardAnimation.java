@@ -329,7 +329,7 @@ public class BoardAnimation extends JPanel {
                             clientInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
                         }
                     } else {
-                        if (chessBoard.inCheck) {
+                        if (chessBoard.blnInCheck) {
                             if (blnServer) {
                                 serverInfoLabel.setText("OH NO, YOU'RE IN CHECK");
                             } else {

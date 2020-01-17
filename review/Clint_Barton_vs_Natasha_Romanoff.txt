@@ -1,0 +1,15 @@
+Clint BartonvsNatasha Romanoff
+f2,f4
+c7,c5
+e2,e4
+a7,a5
+f4,f5
+a8,a6
+e4,e5
+a6,f6
+e5,e6
+f6,e6
+d1,e2
+e6,e2
+f1,e2
+end

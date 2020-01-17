@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 
 public class Board {
-    //Properties
+	//Properties
 	/**
 	 * Boolean describing which colour the player is. True is white and false is
 	 * black
@@ -58,66 +58,73 @@ public class Board {
 	 * Negative pieces are black while positive pieces are white
 	 */
 	private int[][] chessBoard = {
-		{-1, -2, -3, -4, -5, -3, -2, -1},
-        {-6, -6, -6, -6, -6, -6, -6, -6},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {6, 6, 6, 6, 6, 6, 6, 6},
-        {1, 2, 3, 4, 5, 3, 2, 1}
+		{
+			-1, -2, -3, -4, -5, -3, -2, -1
+		}, {-6, -6, -6, -6, -6, -6, -6, -6
+		}, {
+			0, 0, 0, 0, 0, 0, 0, 0
+		}, {
+			0, 0, 0, 0, 0, 0, 0, 0
+		}, {
+			0, 0, 0, 0, 0, 0, 0, 0
+		}, {
+			0, 0, 0, 0, 0, 0, 0, 0
+		}, {
+			6, 6, 6, 6, 6, 6, 6, 6
+		}, {
+			1, 2, 3, 4, 5, 3, 2, 1
+		}
 	};
 
 	/**
 	 * ArrayList of piece objects used in the game
 	 */
 	public ArrayList<Piece> pieces = new ArrayList<>();
-    /**
-     * HashMap holding key piece references to make accessing easier
-     */
+	/**
+	 * HashMap holding key piece references to make accessing easier
+	 */
 	public HashMap<Integer, Piece> pieceLookup = new HashMap<>();
 
-    /**
-     * ArrayList of piece objects that have been captured
-     */
+	/**
+	 * ArrayList of piece objects that have been captured
+	 */
 	public ArrayList<Piece> captured = new ArrayList<>();
-    /**
-     * ArrayList of piece objects representing white promotion choices
-     */
+	/**
+	 * ArrayList of piece objects representing white promotion choices
+	 */
 	private ArrayList<Piece> whitePromotion = new ArrayList<>();
 
-    /**
-     * ArrayList of piece objects representing black promotion choices
-     */
+	/**
+	 * ArrayList of piece objects representing black promotion choices
+	 */
 	private ArrayList<Piece> blackPromotion = new ArrayList<>();
 
-    /**
-     * Piece that is used to hold a reference to the pawn that will be promoted
-     */
+	/**
+	 * Piece that is used to hold a reference to the pawn that will be promoted
+	 */
 	private Piece pieceToPromote = null;
 
-
-    //METHODS
-    /** Getter method for the pawn to be promoted
-      * @return a reference to the pawn to be promoted
-      */
+	//METHODS
+	/** Getter method for the pawn to be promoted
+	 * @return a reference to the pawn to be promoted
+	 */
 	public Piece getPieceToPromote() {
 		return pieceToPromote;
 	}
 
-    /** Getter method for the list of promotion choice
-      * @param blnServer boolean variable representing what instance of the game is running
-      * @return the list of promotion choice
-      */
+	/** Getter method for the list of promotion choice
+	 * @param blnServer boolean variable representing what instance of the game is running
+	 * @return the list of promotion choice
+	 */
 	public ArrayList<Piece> getPromotionChoices(boolean blnServer) {
 		return blnServer ? whitePromotion : blackPromotion;
 	}
 
-    /** Getter method for the list of promotion choice
-      * @param blnServer boolean variable representing what instance of the game is running
-      * @param intPiece integer representing the piece type
-      * @return the number of specified captured pieces
-      */
+	/** Getter method for the list of promotion choice
+	 * @param blnServer boolean variable representing what instance of the game is running
+	 * @param intPiece integer representing the piece type
+	 * @return the number of specified captured pieces
+	 */
 	public int capturedPieceCount(boolean blnColor, int intPiece) {
 		int intPieceCount = 0;
 
@@ -130,24 +137,26 @@ public class Board {
 		return intPieceCount;
 	}
 
-    /** Rounds down number to the specified place
-      * @param intNum the number to be rounded
-      * @param intRoundNum the place to round number to
-      * @return the list of promotion choice
-      */
+	/** Rounds down number to the specified place
+	 * @param intNum the number to be rounded
+	 * @param intRoundNum the place to round number to
+	 * @return the list of promotion choice
+	 */
 	public int roundDown(int intNum, int intRoundNum) {
 		return intNum >= 0 ? (intNum / intRoundNum) * intRoundNum : ((intNum - intRoundNum + 1) / intRoundNum) * intRoundNum;
 	}
 
-    /** Checks to see if the specified index is within chess board bounds
-      * @param intXIndex the column index
-      * @param intYIndex the row index
-      * @return true if in bounds and false if not
-      */
+	/** Checks to see if the specified index is within chess board bounds
+	 * @param intXIndex the column index
+	 * @param intYIndex the row index
+	 * @return true if in bounds and false if not
+	 */
 	private boolean inBounds(int intXIndex, int intYIndex) {
 		return intXIndex >= 0 && intXIndex<8 && intYIndex >= 0 && intYIndex<8;
 	}
 
+    /** Utility function that prints out the chess board
+	 */
 	public void printCharboard() {
 		for (int i = 0; i<chessBoard.length; i++) {
 			for (int j = 0; j<chessBoard[0].length; j++) {
@@ -157,13 +166,18 @@ public class Board {
 		}
 	}
 
+    /** Utility function that prints game status
+	 */
 	public void displayInformation() {
-		System.out.println("Incheck: " + inCheck);
+		System.out.println("Incheck: " + blnInCheck);
 		System.out.println("Castled: " + hasCastled);
 		System.out.println("The white king is at: " + pieceLookup.get(5).intXPos + ", " + pieceLookup.get(5).intYPos);
 	}
 
+    /** Initalize piece arraylist
+	 */
 	private void initBoard() {
+        //the array is read flipped for the client so that their pieces appear at the bottom
 		for (int i = 0, i2 = 7; i<8; i++, i2--) {
 			for (int j = 0, j2 = 7; j<8; j++, j2--) {
 				Piece p;
@@ -178,11 +192,12 @@ public class Board {
 		}
 	}
 
-	// 0 - 5 will be white
-	// 6 - 10 will be black
+    /** Initalize piece lookup HashMap
+     */
 	public void initMap() {
 		Iterator<Piece> pieceIter = pieces.iterator();
-
+        // 0 - 5 will be white
+    	// 6 - 10 will be black
 		while (pieceIter.hasNext()) {
 			Piece piece = pieceIter.next();
 			if (piece.intPiece != 6) {
@@ -210,36 +225,11 @@ public class Board {
 		return pos;
 	}
 
-	// TODO: Implement castline
-	// This may or may not work I have no idea.
-	public boolean legalCastling() {
-		Iterator<Piece> pieceIterator = pieces.iterator();
-
-		while (pieceIterator.hasNext()) {
-			Piece piece = pieceIterator.next();
-
-			if (blnServer = !piece.blnColor) {
-				for (int[] mv: piece.legalMoves) {
-					int i = mv[0];
-					int j = mv[1];
-					if (blnServer && i == 7 && j<4) {
-						return false;
-					}
-					if (blnServer & i == 7 && j > 5) {
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
 	public void move(String move, boolean blnTemp) {
 		System.out.println("****************************");
-		System.out.println(inCheck);
+		System.out.println(intTempBoard);
 
-		int[][] arr = blnTemp ? tempBoard : chessBoard;
+		int[][] arr = blnTemp ? intTempBoard : chessBoard;
 
 		String[] moves = move.split(",");
 		boolean impedingKnightWhite = (blnServer && arr[7][6] != Piece.EMPTY) ? true : false;
@@ -253,7 +243,7 @@ public class Board {
 		System.out.println(p2.x + " " + p2.y);
 
 		// This is simply to prevent someone from castling twice.
-		if (!hasCastled && !inCheck) {
+		if (!hasCastled && !blnInCheck) {
 			if (moves[0].equals("e1") && moves[1].equals("g1")) {
 				System.out.println("Gets here: found move");
 				if (blnServer) {
@@ -460,8 +450,8 @@ public class Board {
 		chessBoard[intYIndex][intXIndex] = intPiece;
 	}
 
-	public void setCheck(boolean inCheck) {
-		this.inCheck = inCheck;
+	public void setCheck(boolean blnInCheck) {
+		this.blnInCheck = blnInCheck;
 	}
 
 	/**
@@ -583,7 +573,7 @@ public class Board {
 	 */
 	public boolean inCheck(boolean blnTemp) {
 
-		int[][] arr = blnTemp ? tempBoard : chessBoard;
+		int[][] arr = blnTemp ? intTempBoard : chessBoard;
 
 		if (blnServer) {
 			Point kingPoint = getKingPosition(true, arr);
@@ -688,7 +678,7 @@ public class Board {
 
 	// Or walks into check
 	public boolean stillInCheck(String strMove) {
-		tempBoard = deepCopy(chessBoard);
+		intTempBoard = deepCopy(chessBoard);
 		// Set to true because of temp
 		move(strMove, true);
 
@@ -701,12 +691,12 @@ public class Board {
 	}
 
 	public boolean checkmate() {
-		//tempBoard = deepCopy(chessBoard);
-		System.out.println("In check: " + inCheck);
+		//intTempBoard = deepCopy(chessBoard);
+		System.out.println("In check: " + blnInCheck);
 
-		if (!inCheck) {
+		if (!blnInCheck) {
 			return false;
-		} else if (inCheck && blnServer) {
+		} else if (blnInCheck && blnServer) {
 			for (Piece p: pieces) {
 				int intXIndex = p.intXPos / 90;
 				int intYIndex = p.intYPos / 90;
@@ -745,7 +735,7 @@ public class Board {
 					}
 				}
 			}
-		} else if (inCheck && !blnServer) {
+		} else if (blnInCheck && !blnServer) {
 			for (Piece p: pieces) {
 				int intXIndex = (p.intXPos / 90);
 				int intYIndex = (p.intYPos / 90);
@@ -790,17 +780,17 @@ public class Board {
 	}
 
 	private LinkedList<int[] > getLegalMovesCheck(Piece p) {
-		tempBoard = deepCopy(chessBoard);
+		intTempBoard = deepCopy(chessBoard);
 		switch (p.intPiece) {
 			case Piece.ROOK:
-				return ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
+				return ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, intTempBoard);
 			case Piece.KNIGHT:
 				return ChessUtility.getLegalKnightMoves(p.intXPos, p.intYPos);
 			case Piece.BISHOP:
-				return ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
+				return ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, intTempBoard);
 			case Piece.QUEEN:
-				LinkedList<int[] > legalQueenMoves = ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
-				legalQueenMoves.addAll(ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard));
+				LinkedList<int[] > legalQueenMoves = ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, intTempBoard);
+				legalQueenMoves.addAll(ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, intTempBoard));
 				return legalQueenMoves;
 			case Piece.PAWN:
 				LinkedList<int[] > legalPawnMoves = ChessUtility.getLegalPawnMoves(p.blnFirst, true, p.blnColor, p.intXPos, p.intYPos);
@@ -826,7 +816,7 @@ public class Board {
 
 		boolean blnLegalMove = false;
 		boolean blnStillInCheck = stillInCheck(toCoord(intXIndexLast, intYIndexLast, intXIndex, intYIndex));
-		inCheck = blnStillInCheck;
+		blnInCheck = blnStillInCheck;
 		blnLegalMove = piece.isLegalMove(chessBoard[intYIndex][intXIndex] != 0) &&
 			!blnStillInCheck;
 
@@ -857,7 +847,7 @@ public class Board {
 			// inCheck = false;
 			// }
 
-			System.out.println("Get's here: " + inCheck);
+			System.out.println("Get's here: " + blnInCheck);
 
 			if (givesCheck()) {
 				System.out.println("Gives a check");
@@ -892,7 +882,7 @@ public class Board {
 			// inCheck = false;
 			// }
 
-			System.out.println("Get's here: " + inCheck);
+			System.out.println("Get's here: " + blnInCheck);
 
 			if (givesCheck()) {
 				System.out.println("Gives a check");
@@ -927,7 +917,7 @@ public class Board {
 			// inCheck = false;
 			// }
 
-			System.out.println("Get's here: " + inCheck);
+			System.out.println("Get's here: " + blnInCheck);
 
 			if (givesCheck()) {
 				System.out.println("Gives a check");
