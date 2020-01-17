@@ -8,6 +8,7 @@
 
 ## Build Requirements
   - Latest JDK
+  - Github URL ```https://github.com/Giovanni-Tedesco/Java-Chess```
   - If on mac you must run ```java -jar JavaChess.jar ```
   - If on windows simply double click and run
 
