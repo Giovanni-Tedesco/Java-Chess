@@ -262,13 +262,21 @@ public class ChessUtility {
         int intXIndex = intLastX / 90;
         int intYIndex = intLastY / 90;
         if (blnHasPiece) {
-            legalPawnMoves.add(new int[] { intXIndex - 1, intYIndex - 1 });
-            legalPawnMoves.add(new int[] { intXIndex + 1, intYIndex - 1 });
+            if(intYIndex-1 >= 0 && intYIndex-1 < 8 && intXIndex-1 >= 0 && intXIndex-1 < 8) {
+                legalPawnMoves.add(new int[] { intXIndex - 1, intYIndex - 1 });
+            }
+
+            if(intYIndex-1 >= 0 && intYIndex-1 < 8 && intXIndex+1 >= 0 && intXIndex+1 < 8) {
+                legalPawnMoves.add(new int[] { intXIndex + 1, intYIndex - 1 });
+            }
         } else {
-            if (blnFirstMove) {
+            if (blnFirstMove && (intYIndex-2 >= 0 && intYIndex-2 < 8 && intXIndex >= 0 && intXIndex < 8)) {
                 legalPawnMoves.add(new int[] { intXIndex, intYIndex - 2 });
             }
-            legalPawnMoves.add(new int[] { intXIndex, intYIndex - 1 });
+
+            if(intYIndex-1 >= 0 && intYIndex-1 < 8 && intXIndex >= 0 && intXIndex < 8) {
+                legalPawnMoves.add(new int[] { intXIndex, intYIndex - 1 });
+            }
         }
 
         return legalPawnMoves;
@@ -313,8 +321,8 @@ public class ChessUtility {
 
         // Regular moves
         for (int i = 0; i < translateX.length; i++) {
-            if (intXIndex + translateX[i] >= 0 && intXIndex + translateX[i] < 8 && intYIndex + translateY[i] >= 0
-                    && intYIndex + translateY[i] < 8) {
+            if (intYIndex + translateY[i] >= 0 && intYIndex + translateY[i] < 8 && intXIndex + translateX[i] >= 0
+                    && intXIndex + translateX[i] < 8) {
                 legalKingMoves.add(new int[] { intXIndex + translateX[i], intYIndex + translateY[i] });
 
             }

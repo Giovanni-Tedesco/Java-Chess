@@ -601,24 +601,22 @@ public class Board {
     }
 
     public boolean checkmate() {
+        //tembBoard = deepCopy(chessBoard);
         System.out.println("In check: " + inCheck);
 
         if (!inCheck) {
             return false;
         } else if (inCheck && blnServer) {
             for (Piece p : pieces) {
-                int intXIndexLast = 7 - p.intLastX / 90;
-                int intYIndexLast = 7 - p.intLastY / 90;
+                int intXIndex = p.intXPos / 90;
+                int intYIndex = p.intYPos / 90;
 
                 if (p.blnColor) {
-                    for (int[] moves : p.getLegalMoves()) {
+                    for (int[] moves : getLegalMovesCheck(p)) {
                         System.out.println("Piece: " + p.intPiece);
-                        System.out.println("intXIndexLast: " + intXIndexLast);
-                        System.out.println("intYIndexLast: " + intYIndexLast);
-                        if (!inBounds(intXIndexLast, intYIndexLast) || !inBounds(7 - moves[0], 7 - moves[1])) {
-                            continue;
-                        }
-                        if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, 7 - moves[0], 7 - moves[1]))) {
+                        System.out.println("intXIndexLast: " + intXIndex);
+                        System.out.println("intYIndexLast: " + intYIndex);
+                        if (!stillInCheck(toCoord(intXIndex, intYIndex, moves[0], moves[1]))) {
                             return false;
                         }
                     }
@@ -626,18 +624,15 @@ public class Board {
             }
         } else if (inCheck && !blnServer) {
             for (Piece p : pieces) {
-                int intXIndexLast = p.intLastX / 90;
-                int intYIndexLast = p.intLastY / 90;
+                int intXIndex = 7-(p.intXPos / 90);
+                int intYIndex = 7-(p.intYPos / 90);
 
                 if (!p.blnColor) {
-                    for (int[] moves : p.getLegalMoves()) {
+                    for (int[] moves : getLegalMovesCheck(p)) {
                         System.out.println("Piece: " + p.intPiece);
-                        System.out.println("intXIndexLast: " + intXIndexLast);
-                        System.out.println("intYIndexLast: " + intYIndexLast);
-                        if (!inBounds(intXIndexLast, intYIndexLast) || !inBounds(moves[0], moves[1])) {
-                            continue;
-                        }
-                        if (!stillInCheck(toCoord(intXIndexLast, intYIndexLast, moves[0], moves[1]))) {
+                        System.out.println("intXIndexLast: " + intXIndex);
+                        System.out.println("intYIndexLast: " + intYIndex);
+                        if (!stillInCheck(toCoord(intXIndex, intYIndex, 7-moves[0], 7-moves[1]))) {
                             return false;
                         }
                     }
@@ -646,6 +641,29 @@ public class Board {
         }
 
         return true;
+    }
+
+    private LinkedList<int[]> getLegalMovesCheck(Piece p) {
+        tempBoard = deepCopy(chessBoard);
+        switch(p.intPiece) {
+            case Piece.ROOK:
+                return ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
+            case Piece.KNIGHT:
+                return ChessUtility.getLegalKnightMoves(p.intXPos, p.intYPos);
+            case Piece.BISHOP:
+                return ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
+            case Piece.QUEEN:
+                LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalRookMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard);
+                legalQueenMoves.addAll(ChessUtility.getLegalBishopMoves(p.intXPos, p.intYPos, p.blnColor, tempBoard));
+                return legalQueenMoves;
+            case Piece.KING:
+                return ChessUtility.getLegalKingMoves(p.blnFirst, p.intXPos, p.intYPos);
+            case Piece.PAWN:
+                LinkedList<int[]> legalPawnMoves = ChessUtility.getLegalPawnMoves(p.blnFirst, true, p.blnColor, p.intXPos, p.intYPos);
+                legalPawnMoves.addAll(ChessUtility.getLegalPawnMoves(p.blnFirst, false, p.blnColor, p.intXPos, p.intYPos));
+                return legalPawnMoves;
+        }
+        return null;
     }
 
     // TODO: Clean this function up, the if statements have very similar code. Could
