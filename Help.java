@@ -44,7 +44,7 @@ public class Help extends MouseAdapter {
     private void initImages() {
         for(int i = 0; i < 9; i++) {
             //load the dark or white version depending on settings
-            helpImageList.add(Utility.loadImage("Assets/" + (Settings.isDark()?"Dark":"White") + "_Help/help_" + (i+1) + ".png"));
+            helpImageList.add(Utility.loadImage("Assets/" + (Settings.isDark()?"Dark":"White") + "_Help/help_" + (i+1) + ".png", this.getClass()));
         }
 
         currentHelpImage = helpImageList.get(0);

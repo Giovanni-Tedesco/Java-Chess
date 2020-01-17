@@ -42,7 +42,7 @@ public class BoardAnimation extends JPanel {
                 "RookBlack.png", "KnightBlack.png", "BishopBlack.png", "QueenBlack.png", "KingBlack.png",
                 "PawnBlack.png" };
         for (int i = 0; i < fileNames.length; i++) {
-            pieceImages.put(i + 1, Utility.loadImage(path + fileNames[i]));
+            pieceImages.put(i + 1, Utility.loadImage(path + fileNames[i], BoardAnimation.class));
         }
     }
 

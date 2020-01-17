@@ -15,7 +15,7 @@ public class SplashScreen extends JPanel implements ActionListener {
     boolean blnSwitch = false;
     private String strPath = "Assets/Pieces/KnightBlack.png";
 
-    BufferedImage image = Utility.loadImage(strPath);
+    BufferedImage image = Utility.loadImage(strPath, this.getClass());
 
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == timer) {

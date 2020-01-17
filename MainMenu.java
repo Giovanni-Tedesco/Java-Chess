@@ -10,8 +10,8 @@ public class MainMenu implements ActionListener {
 
     // JButton dimensions
     private final int intButtWidth = 400, intButtHeight = 75;
-
     private JPanel menuPanel = new JPanel();
+    private Timer menutimer = new Timer(1000/60, event -> menuPanel.repaint());
     private AboutPanel aboutPanel = new AboutPanel();
     private SplashScreen splashScreen = new SplashScreen();
     private JLabel titleLabel = new JLabel("CHESS");
@@ -27,16 +27,22 @@ public class MainMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Set JFrame content depending on the button chosen
         if (e.getSource() == playButton) {
+            menutimer.stop();
             Utility.changePanel(new ConnectPlayer().getConnectPanel());
         } else if (e.getSource() == helpButton) {
+            menutimer.stop();
             Utility.changePanel(new Help().getHelpPanel());
         } else if (e.getSource() == settingButton) {
+            menutimer.stop();
             Utility.changePanel(new Settings().getsettingsPanel());
         } else if (e.getSource() == aboutButton) {
+            menutimer.stop();
             Utility.changePanel(aboutPanel);
         } else if (e.getSource() == quitButton) {
+            menutimer.stop();
             frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
         } else if(e.getSource() == reviewButton) {
+            menutimer.stop();
             Utility.changePanel(new GameReview().getChoosePanel());
         }
     }
@@ -52,6 +58,7 @@ public class MainMenu implements ActionListener {
     // Constructor
     // Initialize the panel and all the JComponents
     public MainMenu() {
+        menutimer.start();
         menuPanel.setPreferredSize(Utility.panelDimensions);
         menuPanel.setLayout(null);
         menuPanel.setBackground(Settings.isDark() ? Color.BLACK : Color.WHITE);

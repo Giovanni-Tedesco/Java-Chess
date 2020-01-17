@@ -179,7 +179,7 @@ public class GameReview extends KeyAdapter implements ActionListener {
                 "PawnBlack.png"
             };
             for (int i = 0; i<strFileNames.length; i++) {
-                pieceImages.put(i + 1, Utility.loadImage(strPath + strFileNames[i]));
+                pieceImages.put(i + 1, Utility.loadImage(strPath + strFileNames[i], this.getClass()));
             }
         }
 

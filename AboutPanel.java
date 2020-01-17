@@ -24,7 +24,7 @@ public class AboutPanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         BufferedImage image = null;
         //draw help screen image
-        g.drawImage(Utility.loadImage(strfileName), 0, 0, null);
+        g.drawImage(Utility.loadImage(strfileName, this.getClass()), 0, 0, null);
     }
 
     //constructor

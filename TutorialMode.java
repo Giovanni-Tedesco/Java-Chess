@@ -396,7 +396,7 @@ public class TutorialMode implements ActionListener {
                 drawCapturedPieces(g);
             } else {
                 //load tutorial end
-                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png"), 0, 0, null);
+                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png", this.getClass()), 0, 0, null);
             }
         }
 
