@@ -53,17 +53,18 @@ public class Piece {
 
         }
     }
-
+	//set current position to previous position
     public void setPreviousPosition(int intXPos, int intYPos) {
         intLastX = intXPos;
         intLastY = intYPos;
     }
-
+	//set current position
     public void setPosition(int intXPos, int intYPos) {
         this.intXPos = intXPos;
         this.intYPos = intYPos;
     }
-
+	
+	//go back to previous position
     public void goBack() {
         setPosition(intLastX, intLastY);
     }
@@ -103,8 +104,9 @@ public class Piece {
     }
 
 
+    
+    //compares the list of legal moves to position for each piece based 
     //returns true if the move made was legal
-    //compares the list of
     public boolean isLegalMove(boolean blnHasPiece) {
 
         int[] position = {(intXPos / 90),(intYPos / 90)};
@@ -127,6 +129,6 @@ public class Piece {
             LinkedList<int[]> legalQueenMoves = ChessUtility.getLegalQueenMoves(intLastX, intLastY, blnColor);
             return ChessUtility.isInList(legalQueenMoves, position);
         }
-        return false;
+        return false;//return as illegal move if no legal moves were made
     }
 }
