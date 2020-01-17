@@ -4,8 +4,11 @@ import javax.swing.event.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-//TODO: fix file and diag checking, throws null pointer for some reason
+//this class implements the tutorial mode that is found in the help screen
 public class TutorialMode implements ActionListener {
+    //PROPERTIES
+    private javax.swing.Timer tutorialTimer;
+    //all the tutorials that can be done
     private enum tutorials {
         PAWN,
         ROOK,
@@ -18,8 +21,10 @@ public class TutorialMode implements ActionListener {
     }
 
     private static Board tutorialBoard = new Board(true);
-    private Stack<tutorials> tutorialsDone = new Stack<>();
+    //this stack of tutorials keeps track of the tutorials remaining
+    private Stack<tutorials> tutorialsLeft = new Stack<>();
     private TutorialAnimation tutorialPanel = new TutorialAnimation();
+    //this represents the help screen number and is used to remember what screen the tutorial was launched from
     private int intScreenNum;
     private JLabel serverInfoLabel = new JLabel("CAPTURED PIECES");
     private JLabel[] serverCaptureLabels = new JLabel[5];
@@ -31,40 +36,48 @@ public class TutorialMode implements ActionListener {
     private JLabel tutorialTitle = new JLabel();
     private JLabel tutorialDesc = new JLabel();
 
+    //METHODS
     @Override
     public void actionPerformed(ActionEvent evt) {
         Object event = evt.getSource();
-        if(event == backButton || event == helpButton) {
+        if (event == backButton || event == helpButton) {
+            tutorialTimer.stop();
+            //go back to the help screen at the position that was saved
             Utility.changePanel(new Help(intScreenNum).getHelpPanel());
-        } else if(event == nextButton) {
-            if(tutorialsDone.empty()) {
-                //end tutorial
-                System.out.println("NO MORE TUTORIALS");
+        } else if (event == nextButton) {
+            if (tutorialsLeft.empty()) {
+                //end tutorial because the stack is empty
                 tutorialPanel.endTutorial();
                 tutorialPanel.repaint();
             } else {
+                //run the next tutorial
                 runTutorial();
             }
-        } else if(event == homeButton) {
+        } else if (event == homeButton) {
+            tutorialTimer.stop();
             Utility.changePanel(new MainMenu().getMenuPanel());
-        } else if(event == retryButton) {
+        } else if (event == retryButton) {
+            tutorialTimer.stop();
+            //change to a new instance of the tutorial mode to restart
             Utility.changePanel(new TutorialMode(intScreenNum).tutorialPanel);
         }
     }
 
+    //push all the tutorials to the stack
     private void initTutorials() {
-        tutorialsDone.push(tutorials.PROMOTION);
-        tutorialsDone.push(tutorials.CAPTURING);
-        tutorialsDone.push(tutorials.KING);
-        tutorialsDone.push(tutorials.QUEEN);
-        tutorialsDone.push(tutorials.BISHOP);
-        tutorialsDone.push(tutorials.KNIGHT);
-        tutorialsDone.push(tutorials.ROOK);
-        tutorialsDone.push(tutorials.PAWN);
+        tutorialsLeft.push(tutorials.PROMOTION);
+        tutorialsLeft.push(tutorials.CAPTURING);
+        tutorialsLeft.push(tutorials.KING);
+        tutorialsLeft.push(tutorials.QUEEN);
+        tutorialsLeft.push(tutorials.BISHOP);
+        tutorialsLeft.push(tutorials.KNIGHT);
+        tutorialsLeft.push(tutorials.ROOK);
+        tutorialsLeft.push(tutorials.PAWN);
     }
 
+    //pop the stack and read the value to run the appropriate tutorial
     private void runTutorial() {
-        switch(tutorialsDone.pop()) {
+        switch (tutorialsLeft.pop()) {
             case PAWN:
                 runPawnTutorial();
                 break;
@@ -100,8 +113,9 @@ public class TutorialMode implements ActionListener {
             "They can only capture pieces by moving diagonally. " + "To move the pawn, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,6*90,true,6));
-        tutorialBoard.setPiece(3, 6, 6);
+        //add a pawn and update the board array
+        tutorialBoard.pieces.add(new Piece(3 * 90, 6 * 90, true, Piece.PAWN));
+        tutorialBoard.setPiece(3, 6, Piece.PAWN);
     }
 
     private void runRookTutorial() {
@@ -111,8 +125,9 @@ public class TutorialMode implements ActionListener {
             "To move the rook, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,1));
-        tutorialBoard.setPiece(3, 3, 1);
+        //add a rook and update the board array
+        tutorialBoard.pieces.add(new Piece(3 * 90, 3 * 90, true, Piece.ROOK));
+        tutorialBoard.setPiece(3, 3, Piece.ROOK);
     }
 
     private void runKnightTutorial() {
@@ -122,8 +137,9 @@ public class TutorialMode implements ActionListener {
             "To move the knight, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,2));
-        tutorialBoard.setPiece(3, 3, 2);
+        //add a knight and update the board array
+        tutorialBoard.pieces.add(new Piece(3 * 90, 3 * 90, true, Piece.KNIGHT));
+        tutorialBoard.setPiece(3, 3, Piece.KNIGHT);
     }
 
     private void runBishopTutorial() {
@@ -133,8 +149,9 @@ public class TutorialMode implements ActionListener {
             "To move the bishop, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,3));
-        tutorialBoard.setPiece(3, 3, 3);
+        //add a bishop and update the board array
+        tutorialBoard.pieces.add(new Piece(3 * 90, 3 * 90, true, Piece.BISHOP));
+        tutorialBoard.setPiece(3, 3, Piece.BISHOP);
     }
 
     private void runQueenTutorial() {
@@ -144,8 +161,9 @@ public class TutorialMode implements ActionListener {
             "To move the queen, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,4));
-        tutorialBoard.setPiece(3, 3, 4);
+        //add a queen and update the board
+        tutorialBoard.pieces.add(new Piece(3 * 90, 3 * 90, true, Piece.QUEEN));
+        tutorialBoard.setPiece(3, 3, Piece.QUEEN);
     }
 
     private void runKingTutorial() {
@@ -157,8 +175,9 @@ public class TutorialMode implements ActionListener {
             "To move the king, select it and drag it to the desired position. " +
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
-        tutorialBoard.pieces.add(new Piece(3*90,3*90,true,5));
-        tutorialBoard.setPiece(3, 3, 5);
+        //add a king and update the board
+        tutorialBoard.pieces.add(new Piece(3 * 90, 3 * 90, true, Piece.KING));
+        tutorialBoard.setPiece(3, 3, Piece.KING);
     }
 
     private void runCaptureTutorial() {
@@ -170,20 +189,22 @@ public class TutorialMode implements ActionListener {
             "If the move is not legal, the piece will go back to the original spot" + "</div></html>");
         clearChessBoard();
         //add white pieces
-        tutorialBoard.pieces.add(new Piece(0*90,7*90,true,1));
-        tutorialBoard.pieces.add(new Piece(1*90, 7*90, true, 2));
-        tutorialBoard.pieces.add(new Piece(2*90, 7*90, true, 4));
+        tutorialBoard.pieces.add(new Piece(0 * 90, 7 * 90, true, Piece.ROOK));
+        tutorialBoard.pieces.add(new Piece(1 * 90, 7 * 90, true, Piece.KNIGHT));
+        tutorialBoard.pieces.add(new Piece(2 * 90, 7 * 90, true, Piece.QUEEN));
 
         //add black pieces
-        int [] intBlackPieces = {-1,-2,-3,-4,-5,-3,-2,-1};
-        for(int i = 0; i < intBlackPieces.length; i++) {
-            tutorialBoard.pieces.add(new Piece(i*90,0*90,false,intBlackPieces[i]));
+        int[] intBlackPieces = {-Piece.ROOK, -Piece.KNIGHT, -Piece.BISHOP, -Piece.QUEEN, -Piece.KING, -Piece.BISHOP, -Piece.KNIGHT, -Piece.ROOK
+        };
+        for (int i = 0; i<intBlackPieces.length; i++) {
+            tutorialBoard.pieces.add(new Piece(i * 90, 0 * 90, false, intBlackPieces[i]));
             tutorialBoard.setPiece(i, 0, intBlackPieces[i]);
         }
 
-        tutorialBoard.setPiece(0, 7, 1);
-        tutorialBoard.setPiece(1, 7, 2);
-        tutorialBoard.setPiece(2, 7, 4);
+        //update booard array with white pieces
+        tutorialBoard.setPiece(0, 7, Piece.ROOK);
+        tutorialBoard.setPiece(1, 7, Piece.KNIGHT);
+        tutorialBoard.setPiece(2, 7, Piece.QUEEN);
     }
 
     private void runPromotionTutorial() {
@@ -195,28 +216,24 @@ public class TutorialMode implements ActionListener {
             "Move your pawn to the last spot to promote it and try to capture the black knight" + "</div></html>");
         clearChessBoard();
         //add white piece
-        tutorialBoard.pieces.add(new Piece(7*90,1*90,true,6));
-        tutorialBoard.setPiece(7,1,6);
+        tutorialBoard.pieces.add(new Piece(7 * 90, 1 * 90, true, Piece.PAWN));
+        tutorialBoard.setPiece(7, 1, Piece.PAWN);
         //add black piece
-        tutorialBoard.pieces.add(new Piece(0*90,7*90,false,2));
-        tutorialBoard.setPiece(0,7,-2);
+        tutorialBoard.pieces.add(new Piece(0 * 90, 7 * 90, false, Piece.KNIGHT));
+        tutorialBoard.setPiece(0, 7, -Piece.KNIGHT);
     }
 
+    //empty the board array
     private void clearChessBoard() {
         tutorialBoard.pieces.clear();
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                tutorialBoard.setPiece(j, i, 0);
+        for (int i = 0; i<8; i++) {
+            for (int j = 0; j<8; j++) {
+                tutorialBoard.setPiece(j, i, Piece.EMPTY);
             }
         }
     }
 
-    //stack of strings {movement, captures, promotion}
-    //methods for each tutorial section
-    //fills up pieces list according to tutorial and inits the board array
-    //once they press next, pop from stack and go to next one
-    //reset button to reset the tutorial at that point
-
+    //set properties for JComponents on screen
     public void initComponents() {
         backButton.setLocation(1175, 5);
         backButton.setSize(100, 20);
@@ -236,7 +253,7 @@ public class TutorialMode implements ActionListener {
         serverInfoLabel.setVerticalAlignment(SwingConstants.CENTER);
         Utility.setLabelStyle(serverInfoLabel, 12);
         tutorialPanel.add(serverInfoLabel);
-        for (int i = 0; i < serverCaptureLabels.length; i++) {
+        for (int i = 0; i<serverCaptureLabels.length; i++) {
             serverCaptureLabels[i] = new JLabel("0");
             Utility.setLabelStyle(serverCaptureLabels[i], 18);
             serverCaptureLabels[i].setSize(60, 20);
@@ -266,9 +283,6 @@ public class TutorialMode implements ActionListener {
     }
 
     public static Board getBoard() {
-        if(tutorialBoard == null) {
-            System.out.println("NULLLLLLL");
-        }
         return tutorialBoard;
     }
 
@@ -276,6 +290,7 @@ public class TutorialMode implements ActionListener {
         return tutorialPanel;
     }
 
+    //CONSTRUCTOR
     public TutorialMode(int intHelpScreen) {
         tutorialPanel.setPreferredSize(Utility.panelDimensions);
         intScreenNum = intHelpScreen;
@@ -284,22 +299,20 @@ public class TutorialMode implements ActionListener {
         runTutorial();
     }
 
+    //this class handles the ui for the tutorial screen
     private class TutorialAnimation extends JPanel {
-        private Color darkGrey = new Color(79, 76, 69);
+        //PROPERTIES
         private ArrayList<BufferedImage> whiteCaptureImages = new ArrayList<>();
-        private int [] intPieces = {4,1,3,2,6};
-        private boolean pressed = false, blnFinished = false;
-        private Piece temp = null;
+        //array that stores the order for the captured labels
+        private int[] intPieces = {
+            Piece.QUEEN, Piece.ROOK, Piece.BISHOP, Piece.KNIGHT, Piece.PAWN
+        };
+        private boolean blnPressed = false, blnFinished = false;
+        //piece to hold the current piece object being dragged
+        private Piece tempPiece = null;
 
-        TutorialAnimation() {
-            super(null);
-            BoardAnimation.initImages();
-            setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
-            initCaptureImages();
-            addMouseListener(new TutorialMouse());
-            addMouseMotionListener(new TutorialMouse());
-        }
-
+        //METHODS
+        //removes tutorial JComponents and sets ui for ending the tutorial
         public void endTutorial() {
             blnFinished = true;
             remove(backButton);
@@ -307,87 +320,113 @@ public class TutorialMode implements ActionListener {
             remove(tutorialDesc);
             remove(tutorialTitle);
             remove(serverInfoLabel);
-            for(JLabel label : serverCaptureLabels) {
+            for (JLabel label: serverCaptureLabels) {
                 remove(label);
             }
             repaint();
 
-            homeButton.setSize(235,115);
-            homeButton.setLocation(102,545);
-            Utility.setButtonStyle(homeButton,18);
+            homeButton.setSize(235, 115);
+            homeButton.setLocation(102, 545);
+            Utility.setButtonStyle(homeButton, 18);
 
-            helpButton.setSize(235,115);
-            helpButton.setLocation(518,545);
-            Utility.setButtonStyle(helpButton,18);
+            helpButton.setSize(235, 115);
+            helpButton.setLocation(518, 545);
+            Utility.setButtonStyle(helpButton, 18);
 
-            retryButton.setSize(235,115);
-            retryButton.setLocation(930,545);
-            Utility.setButtonStyle(retryButton,18);
+            retryButton.setSize(235, 115);
+            retryButton.setLocation(930, 545);
+            Utility.setButtonStyle(retryButton, 18);
 
             add(homeButton);
             add(helpButton);
             add(retryButton);
         }
 
+        //load images into the list used for the captured count display
         private void initCaptureImages() {
-            for(int intPiece : intPieces) {
+            for (int intPiece: intPieces) {
                 whiteCaptureImages.add(Utility.resizeImage(BoardAnimation.pieceImages.get(intPiece + 6), 60, 120));
             }
         }
 
+        //get the count of all captured pieces and update the captured display
         public void updateCaptures() {
             int[] intPieces = { 4, 1, 3, 2, 6 };
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i<5; i++) {
                 serverCaptureLabels[i].setText(tutorialBoard.capturedPieceCount(true, intPieces[i]) + "");
             }
         }
 
         private void drawBoard(Graphics g) {
+            //get the board color set in the settings
             Color boardColor = Settings.getBoardColor();
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
+
+            for (int i = 0; i<8; i++) {
+                for (int j = 0; j<8; j++) {
+                    //draw the board with alternating
                     g.setColor(((i % 2 == 0) == (j % 2 == 0)) ? Color.WHITE : boardColor);
                     g.fillRect(j * 90, i * 90, 90, 90);
                 }
             }
         }
 
+        //iterate through all the pieces and draw them
         private void drawPieces(Graphics g) {
-            for (Piece p : tutorialBoard.pieces) {
+            for (Piece p: tutorialBoard.pieces) {
                 p.update(g);
             }
         }
 
+        //draw the captured display
         private void drawCapturedPieces(Graphics g) {
-            for (int i = 0; i < 5; i++) {
-                g.drawImage(whiteCaptureImages.get(i), 800 + (i*80), 50, null);
+            for (int i = 0; i<5; i++) {
+                g.drawImage(whiteCaptureImages.get(i), 800 + (i * 80), 50, null);
             }
         }
 
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if(!blnFinished) {
+            if (!blnFinished) {
                 drawBoard(g);
                 drawPieces(g);
                 g.setColor(Color.WHITE);
                 g.drawLine(720, 0, 720, 720);
                 drawCapturedPieces(g);
             } else {
-                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png"), 0,0,null);
+                //load tutorial end
+                g.drawImage(Utility.loadImage("Assets/" + (Settings.isDark() ? "Dark" : "White") + "_Help/tutorial.png"), 0, 0, null);
             }
         }
 
-        private class TutorialMouse extends MouseAdapter {
-            private boolean blnWrongColor, blnMouseError;
+        //CONSTRUCTOR
+        TutorialAnimation() {
+            super(null);
+            tutorialTimer = new javax.swing.Timer(1000 / 60, event -> repaint());
+            BoardAnimation.initImages();
+            setBackground(Settings.isDark() ? new Color(46, 44, 44) : Color.WHITE);
+            initCaptureImages();
+            addMouseListener(new TutorialMouse());
+            addMouseMotionListener(new TutorialMouse());
+            tutorialTimer.start();
+        }
 
+        //this class handles mouse input for the tutorial
+        private class TutorialMouse extends MouseAdapter {
+            //PROPERTIES
+            // flag for whether the user tried to pick up the opponent's
+            private boolean blnWrongColor;
+            private boolean blnMouseError;
+
+            //METHODS
             @Override
             public void mouseClicked(MouseEvent evt) {
+                // get promotion choice and promote the piece
                 if (tutorialBoard.promotionInProgress()) {
                     ArrayList<Piece> promotionChoices = tutorialBoard.getPromotionChoices(true);
-                    for (Piece piece : promotionChoices) {
-                        if ((evt.getX() <= piece.intXPos + 60 && evt.getX() >= piece.intXPos)
-                                && (evt.getY() >= piece.intYPos && evt.getY() <= piece.intYPos + 120)) {
+                    for (Piece piece: promotionChoices) {
+                        if ((evt.getX()<= piece.intXPos + 60 && evt.getX() >= piece.intXPos) &&
+                            (evt.getY() >= piece.intYPos && evt.getY()<= piece.intYPos + 120)) {
                             tutorialBoard.promotePiece(piece);
                             serverInfoLabel.setText("CAPTURED PIECES");
                             repaint();
@@ -401,33 +440,41 @@ public class TutorialMode implements ActionListener {
             public void mousePressed(MouseEvent evt) {
                 blnWrongColor = false;
                 blnMouseError = false;
+                // get the position of the piece at the pressed
                 int intXPos = tutorialBoard.roundDown(evt.getX(), 90);
                 int intYPos = tutorialBoard.roundDown(evt.getY(), 90);
+                // get the array index corresponding with the coordinates
                 int intXIndex = intXPos / 90;
                 int intYIndex = intYPos / 90;
-                boolean blnInBounds = intXIndex >= 0 && intXIndex < 8 && intYIndex >= 0 && intYIndex < 8;
-                boolean blnCorrectColor = blnInBounds ? tutorialBoard.isWhite(intXIndex, intYIndex): false;
+                // check to see if click was within the board array
+                boolean blnInBounds = intXIndex >= 0 && intXIndex<8 && intYIndex >= 0 && intYIndex<8;
+                // check to see if the user picked their piece
+                boolean blnCorrectColor = blnInBounds ? tutorialBoard.isWhite(intXIndex, intYIndex) : false;
 
-                if (blnInBounds && !tutorialBoard.promotionInProgress()
-                        && tutorialBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
-                    for (Piece piece : tutorialBoard.pieces) {
-                        if ((evt.getX() <= piece.intXPos + 90 && evt.getX() >= piece.intXPos)
-                                && (evt.getY() >= piece.intYPos && evt.getY() <= piece.intYPos + 90) && !pressed && piece.blnColor) {
-                            pressed = true;
-                            temp = piece;
-                            temp.setPreviousPosition(temp.intXPos, temp.intYPos);
+                if (blnInBounds && !tutorialBoard.promotionInProgress() &&
+                    tutorialBoard.getPiece(intXIndex, intYIndex) != 0 && blnCorrectColor) {
+                    for (Piece piece: tutorialBoard.pieces) {
+                        // get the piece at the pressed position
+                        if ((evt.getX()<= piece.intXPos + 90 && evt.getX() >= piece.intXPos) &&
+                            (evt.getY() >= piece.intYPos && evt.getY()<= piece.intYPos + 90) && !blnPressed && piece.blnColor) {
+                            blnPressed = true;
+                            tempPiece = piece;
+                            // record last position to calculate legal moves
+                            tempPiece.setPreviousPosition(tempPiece.intXPos, tempPiece.intYPos);
                             break;
                         }
                     }
-                } else if (blnInBounds && !tutorialBoard.promotionInProgress()
-                        && tutorialBoard.getPiece(intXIndex, intYIndex) != 0 && !blnCorrectColor) {
-                    // user clicks on the other side's piece
+                } else if (blnInBounds && !tutorialBoard.promotionInProgress() &&
+                    tutorialBoard.getPiece(intXIndex, intYIndex) != 0 && !blnCorrectColor) {
+                    //// if user clicks on the other side's piece, let the user know
+                    // reset message after 3 seconds
                     serverInfoLabel.setText("You can only move your own pieces");
                     javax.swing.Timer labelTimer = new javax.swing.Timer(3000, event -> serverInfoLabel.setText("CAPTURED PIECES"));
                     blnWrongColor = true;
                     labelTimer.setRepeats(false);
                     labelTimer.start();
                 } else {
+                    // something went wrong
                     System.out.println("mouse error");
                     blnMouseError = true;
                 }
@@ -435,25 +482,29 @@ public class TutorialMode implements ActionListener {
 
             @Override
             public void mouseDragged(MouseEvent evt) {
-                if (pressed && temp != null && !tutorialBoard.promotionInProgress() && !blnMouseError) {
-                    temp.setPosition(evt.getX(), evt.getY());
+                if (blnPressed && tempPiece != null && !tutorialBoard.promotionInProgress() && !blnMouseError) {
+                    // keep updating the piece position to the cursor location
+                    tempPiece.setPosition(evt.getX(), evt.getY());
                     repaint();
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent evt) {
+                // get the position of where the piece will be dropped
                 int intXPos = tutorialBoard.roundDown(evt.getX(), 90);
                 int intYPos = tutorialBoard.roundDown(evt.getY(), 90);
-                pressed = false;
-                boolean blnInBounds = intXPos / 90 >= 0 && intXPos / 90 < 8 && intYPos / 90 >= 0 && intYPos / 90 < 8;
+                blnPressed = false;
+                // make sure it is within the board array length
+                boolean blnInBounds = intXPos / 90 >= 0 && intXPos / 90<8 && intYPos / 90 >= 0 && intYPos / 90<8;
+                // if something went wrong, don't drop anything
                 if (blnWrongColor || blnMouseError) {
                     return;
-                } else if (temp != null && !blnInBounds && !tutorialBoard.promotionInProgress()) {
+                } else if (tempPiece != null && !blnInBounds && !tutorialBoard.promotionInProgress()) {
                     // placing outside the board
-                    temp.goBack();
-                } else if (temp != null && blnInBounds && !tutorialBoard.promotionInProgress()) {
-                    if (tutorialBoard.executeMove(temp, intXPos, intYPos)) {
+                    tempPiece.goBack();
+                } else if (tempPiece != null && blnInBounds && !tutorialBoard.promotionInProgress()) {
+                    if (tutorialBoard.executeMove(tempPiece, intXPos, intYPos)) {
                         updateCaptures();
                         if (tutorialBoard.promotionInProgress()) {
                             serverInfoLabel.setText("PROMOTION, CHOOSE A PIECE");
